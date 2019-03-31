@@ -1,15 +1,19 @@
 <template>
   <div class="container">
+    <button @click="toTW">TW</button>
+    <button @click="toCH">CH</button>
     <button @click="fetchArticles">Fetch</button>
     <button @click="get">First</button>
     <div class="row">
-      <div class="col-2">Current</div>
-      <div v-html="current" class="col-10"></div>
+      <div class="col-2" style="display: none;">Current</div>
+      <div v-html="current" class="col-10" style="text-align: left;"></div>
     </div>
   </div>
 </template>
 
 <script>
+import {tify, sify} from 'chinese-conv';
+
 export default {
   name: "article",
   mounted() {
@@ -29,8 +33,6 @@ export default {
   methods: {
     get() {
       this.fetchArticle(this.currentIndex).then(data => this.current += data);
-      this.fetchArticle(this.currentIndex++).then(data => this.current += data);
-      this.fetchArticle(this.currentIndex++).then(data => this.current += data);
       this.fetchArticle(this.currentIndex++).then(data => this.current += data);
       this.fetchArticle(this.currentIndex++).then(data => this.current += data);
     },
@@ -66,11 +68,14 @@ export default {
       ]).then(res => {
         let article = "";
         res.forEach(each => {
-          let rawHTML = each.data.Rtn;
+          let rawHTML = each.data.Rtn
+          rawHTML = rawHTML.replace("一秒记住【千千小说网 www.77xsw.la】，更新快，无弹窗，免费读！<br><br>", "");
+          rawHTML = rawHTML.replace("-->><p class=\"text-danger text-center mg0\">本章未完，点击下一页继续阅读</p>", "")
           let rawNovel = rawHTML.match(/<div class="panel-body" id="htmlContent">[\s\S]*?<\/div>/g)[0]
           let novel = rawNovel.substring(41, rawNovel.lastIndexOf("</div>"))
           article += novel;  
         })
+        article += "<br><br>";
         return article
       })
     },
@@ -94,6 +99,12 @@ export default {
           this.loading = false;
         }, 1000);
       }
+    },
+    toTW() {
+      this.current = tify(this.current);
+    },
+    toCH() {
+      this.current = sify(this.current);
     }
   }
 };
