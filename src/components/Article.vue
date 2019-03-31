@@ -1,24 +1,24 @@
 <template>
   <div id="article" class="container" :class="{'light-on': lightOn,'light-off': !lightOn}">
     <div class="row">
-      <aside class="col-2">
+      <aside class="col-2 col-md-1">
         <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
-          <button @click="switchTWCH" class="sticky-bar-el btn btn-md" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="switchTWCH" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             {{ isTW ? "TW" : "CH" }}
           </button><br/>
-          <button @click="switchLight" class="sticky-bar-el btn btn-md" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="switchLight" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fa-lightbulb" :class="{'fa': lightOn, 'far': !lightOn}"></i>
           </button><br />
-          <button @click="fetchArticles" class="sticky-bar-el btn btn-md" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="fetchArticles" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-clipboard-list"></i>
           </button><br />
-          <input v-model="selectIndex" class="sticky-bar-el form-control" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
-          <button @click="get" class="sticky-bar-el btn btn-md" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <input v-model="selectIndex" class="sticky-bar-el form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
+          <button @click="get" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-arrow-right"></i>
           </button>
         </affix>
       </aside>
-      <div class="col-8">
+      <div class="col-10 col-md-10">
         <div id="novel" v-html="current" style="text-align: left;"></div>
       </div>
     </div>
@@ -139,9 +139,10 @@ export default {
   .sticky-bar-el {
     margin-left: 0px;
     margin-top: 1px;
-    width: 60px;
+    width: 40px;
   }
   input.sticky-bar-el {
     font-size: 10px;
+    padding: 3px;
   }
 </style>
