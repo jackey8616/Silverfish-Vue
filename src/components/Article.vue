@@ -37,7 +37,7 @@ export default {
     fetchArticles() {
       this.articles = []
       this.$axios({
-        url: "http://127.0.0.1:8081/proxy",
+        url: this.$backend + "/proxy",
         method: "POST",
         data: {
           'proxy_url': this.targetURL
@@ -61,8 +61,8 @@ export default {
     },
     fetchArticle(index) {
       return this.$axios.all([
-        this.$axios({method: "POST", url: "http://127.0.0.1:8081/proxy", data: {'proxy_url': 'http://www.77xsw.la/book/13192/' + this.articles[index].url}}),
-        this.$axios({method: "POST", url: "http://127.0.0.1:8081/proxy", data: {'proxy_url': 'http://www.77xsw.la/book/13192/' + this.articles[index].url.replace(".html", "_2.html")}}),
+        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': 'http://www.77xsw.la/book/13192/' + this.articles[index].url}}),
+        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': 'http://www.77xsw.la/book/13192/' + this.articles[index].url.replace(".html", "_2.html")}}),
       ]).then(res => {
         let article = "";
         res.forEach(each => {

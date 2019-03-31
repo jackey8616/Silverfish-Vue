@@ -42,7 +42,7 @@ export default {
     fetchArticles() {
       this.articles = []
       this.$axios({
-        url: "http://127.0.0.1:8081/proxy",
+        url: this.$backend + "/proxy",
         method: "POST",
         data: {
           'proxy_url': this.targetURL
