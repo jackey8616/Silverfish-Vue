@@ -13,6 +13,7 @@
     "chinese-conv": "^1.0.1",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.6",
+    "vue-affix": "^0.5.0",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

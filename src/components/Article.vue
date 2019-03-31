@@ -1,29 +1,47 @@
 <template>
-  <div class="container">
-    <button @click="toTW">TW</button>
-    <button @click="toCH">CH</button>
-    <button @click="fetchArticles">Fetch</button>
-    <button @click="get">First</button>
+  <div id="article" class="container" :class="{'light-on': lightOn,'light-off': !lightOn}">
     <div class="row">
-      <div class="col-2" style="display: none;">Current</div>
-      <div v-html="current" class="col-10" style="text-align: left;"></div>
+      <aside class="col-2">
+        <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
+          <button @click="switchTWCH" class="sticky-bar-el btn btn-md" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            {{ isTW ? "TW" : "CH" }}
+          </button><br/>
+          <button @click="switchLight" class="sticky-bar-el btn btn-md" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            <i class="fa-lightbulb" :class="{'fa': lightOn, 'far': !lightOn}"></i>
+          </button><br />
+          <button @click="fetchArticles" class="sticky-bar-el btn btn-md" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            <i class="fas fa-clipboard-list"></i>
+          </button><br />
+          <input v-model="selectIndex" class="sticky-bar-el form-control" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
+          <button @click="get" class="sticky-bar-el btn btn-md" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </affix>
+      </aside>
+      <div class="col-8">
+        <div id="novel" v-html="current" style="text-align: left;"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import {tify, sify} from 'chinese-conv';
+import { tify, sify } from 'chinese-conv';
+import { Affix } from 'vue-affix';
 
 export default {
   name: "article",
+  components: { Affix },
   mounted() {
     this.fetchArticles();
     window.addEventListener('scroll', this.scrollEvent);
   },
   data() {
     return {
+      isTW: false,
+      lightOn: false,
       targetURL: "http://www.77xsw.la/book/13192/",
-      selected: {},
+      selectIndex: 1,
       articles: [],
       currentIndex: 0,
       current: "",
@@ -32,7 +50,8 @@ export default {
   },
   methods: {
     get() {
-      this.fetchArticle(this.currentIndex).then(data => this.current += data);
+      this.currentIndex = this.selectIndex - 1;
+      this.fetchArticle(this.currentIndex).then(data => this.current = data);
       this.fetchArticle(this.currentIndex++).then(data => this.current += data);
       this.fetchArticle(this.currentIndex++).then(data => this.current += data);
     },
@@ -76,6 +95,7 @@ export default {
           article += novel;  
         })
         article += "<br><br>";
+        article = this.isTW ? tify(article) : sify(article);
         return article
       })
     },
@@ -100,12 +120,28 @@ export default {
         }, 1000);
       }
     },
-    toTW() {
-      this.current = tify(this.current);
+    switchTWCH() {
+      this.current = this.isTW ? sify(this.current) : tify(this.current);
+      this.isTW = !this.isTW;
     },
-    toCH() {
-      this.current = sify(this.current);
+    switchLight() {
+      this.lightOn = !this.lightOn;
     }
   }
 };
 </script>
+
+<style scoped>
+  .container.light-on {
+    background-color: white;
+    color:  #2c3e50;
+  }
+  .sticky-bar-el {
+    margin-left: 0px;
+    margin-top: 1px;
+    width: 60px;
+  }
+  input.sticky-bar-el {
+    font-size: 10px;
+  }
+</style>
