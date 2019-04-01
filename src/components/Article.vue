@@ -3,35 +3,41 @@
     <div class="row">
       <aside class="col-2 col-md-1">
         <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
-          <button @click="switchTWCH" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="isTW = !isTW" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             {{ isTW ? "TW" : "CH" }}
           </button><br/>
-          <button @click="switchLight" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="lightOn = !lightOn" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fa-lightbulb" :class="{'fa': lightOn, 'far': !lightOn}"></i>
           </button><br />
           <button @click="fetchArticles" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-clipboard-list"></i>
           </button><br />
           <input v-model="selectIndex" class="sticky-bar-el form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
-          <button @click="get" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="get" :disabled="articles.length === 0" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-arrow-right"></i>
-          </button>
+          </button><br />
+          <button class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">{{ currentIndex }}</button>
         </affix>
       </aside>
       <div class="col-10 col-md-10">
-        <div id="novel" v-html="current" style="text-align: left;"></div>
+        <div id="novel">
+          <chapter-section v-for="each in sections" :key="each.index" :isTW="isTW" :single="each" v-observe-visibility="{
+            callback: (isVisible, entry) => observe(isVisible, entry, each),
+            throttle: 300,
+            }" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { tify, sify } from 'chinese-conv';
 import { Affix } from 'vue-affix';
+import ChapterSection from '@/components/ChapterSection';
 
 export default {
   name: "article",
-  components: { Affix },
+  components: { Affix, ChapterSection },
   mounted() {
     this.fetchArticles();
     window.addEventListener('scroll', this.scrollEvent);
@@ -42,18 +48,21 @@ export default {
       lightOn: false,
       targetURL: "http://www.77xsw.la/book/13192/",
       selectIndex: 1,
+      sections: [],
       articles: [],
+      fetchIndex: 0,
+      loading: false,
       currentIndex: 0,
-      current: "",
-      loading: false
+      viewStatus: [true, false]
     };
   },
   methods: {
     get() {
-      this.currentIndex = this.selectIndex - 1;
-      this.fetchArticle(this.currentIndex).then(data => this.current = data);
-      this.fetchArticle(this.currentIndex++).then(data => this.current += data);
-      this.fetchArticle(this.currentIndex++).then(data => this.current += data);
+      this.sections = [];
+      this.fetchIndex = this.selectIndex - 1;
+      this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+      this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+      this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
     },
     fetchArticles() {
       this.articles = []
@@ -85,18 +94,22 @@ export default {
         this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': 'http://www.77xsw.la/book/13192/' + this.articles[index].url}}),
         this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': 'http://www.77xsw.la/book/13192/' + this.articles[index].url.replace(".html", "_2.html")}}),
       ]).then(res => {
-        let article = "";
+        let section = {
+          index: index,
+          title: this.articles[index].title,
+          content: ""
+        };
+        let novel = "";
         res.forEach(each => {
           let rawHTML = each.data.Rtn
           rawHTML = rawHTML.replace("一秒记住【千千小说网 www.77xsw.la】，更新快，无弹窗，免费读！<br><br>", "");
           rawHTML = rawHTML.replace("-->><p class=\"text-danger text-center mg0\">本章未完，点击下一页继续阅读</p>", "")
           let rawNovel = rawHTML.match(/<div class="panel-body" id="htmlContent">[\s\S]*?<\/div>/g)[0]
-          let novel = rawNovel.substring(41, rawNovel.lastIndexOf("</div>"))
-          article += novel;  
+          novel += rawNovel.substring(41, rawNovel.lastIndexOf("</div>"))
+
         })
-        article += "<br><br>";
-        article = this.isTW ? tify(article) : sify(article);
-        return article
+        section.content = novel + "<br><br>";
+        return section;
       })
     },
     scrollEvent(e) {
@@ -114,18 +127,16 @@ export default {
       
       if (pctScrolled >= 80) {
         this.loading = true;
-        this.fetchArticle(this.currentIndex++).then(data => this.current += data);
+        this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
         setTimeout(() => {
           this.loading = false;
         }, 1000);
       }
     },
-    switchTWCH() {
-      this.current = this.isTW ? sify(this.current) : tify(this.current);
-      this.isTW = !this.isTW;
-    },
-    switchLight() {
-      this.lightOn = !this.lightOn;
+    observe(isVisible, entry, section) {
+      if (isVisible) {
+        this.currentIndex = section.index + 1;
+      }
     }
   }
 };
