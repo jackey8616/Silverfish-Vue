@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <router-view />
+    <navigator />
+    <router-view id="content" />
   </div>
 </template>
 
@@ -12,5 +13,8 @@
   text-align: center;
   color: #D4D8DB;
   background-color: #2c3e50;
+}
+#content {
+  padding-top: 60px;
 }
 </style>

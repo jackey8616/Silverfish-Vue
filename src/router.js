@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Chapter from "./components/Chapter";
-import Atricle from "./components/Article";
+import ArticleList from '@/components/ArticleList';
+import Article from "@/components/Article";
 
 Vue.use(Router);
 
@@ -10,12 +10,13 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Atricle
+      component: ArticleList
     },
     {
-      path: "/chapter",
-      name: "chapter",
-      component: Chapter
+      path: "/article",
+      name: "article",
+      component: Article,
+      props: true
     }
     /*
     {

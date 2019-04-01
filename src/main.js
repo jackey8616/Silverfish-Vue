@@ -6,6 +6,7 @@ import { ObserveVisibility } from 'vue-observe-visibility'
 import "bootstrap/dist/css/bootstrap.css";
 import "./registerServiceWorker";
 
+import Navigator from '@/components/Navigator'
 import Store from './store';
 
 axios.defaults.withCredentials = false;
@@ -15,6 +16,7 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$backend = "http://silverfish-backend.clo5de.info:8080"
 Vue.prototype.$store = Store;
 
+Vue.component('navigator', Navigator)
 Vue.directive('observe-visibility', ObserveVisibility)
 
 new Vue({

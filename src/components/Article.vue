@@ -33,13 +33,13 @@
 <script>
 import { Affix } from 'vue-affix';
 import ChapterSection from '@/components/ChapterSection';
+import { JSDOM } from 'jsdom';
 
 export default {
   name: "article",
   components: { Affix, ChapterSection },
   mounted() {
     (async() => {
-      await this.fetchArticles();
       this.store = this.$store.read();
       this.currentIndex = this.store.lastReadIndex || this.currentIndex;
       this.fetchIndex = this.currentIndex === 0 ? 0 : this.currentIndex - 1;
@@ -47,6 +47,7 @@ export default {
       await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
     })();
   },
+  props: ["targetURL", "articles"],
   data() {
     return {
       store: {},
@@ -54,9 +55,7 @@ export default {
       lightOn: false,
       fontSize: 1,
       loading: false,
-      targetURL: "http://www.77xsw.la/book/13192/",
       sections: [],
-      articles: [],
       fetchIndex: 0,
       currentIndex: 0,
       transitIndex: 0
@@ -72,30 +71,6 @@ export default {
         await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
       })();
     },
-    fetchArticles() {
-      this.articles = []
-      return this.$axios({
-        url: this.$backend + "/proxy",
-        method: "POST",
-        data: {
-          'proxy_url': this.targetURL
-        }
-      }).then(res => {
-        let rawHTML = res.data.Rtn;
-        let matches = rawHTML.match(/<dd class="col-md-3"><a href=("|').*?.html("|') title=".*?">.*?<\/a><\/dd>/gm);
-        let url = null, title = null;
-        matches.forEach((each, index) => {
-          url = each.substring(each.indexOf("href=") + 6, each.indexOf(" title=") - 1)
-          title = each.substring(each.indexOf("title=") + 7, each.lastIndexOf("\">"))
-          this.articles.push({
-            "url": url,
-            "title": title
-          });
-        })
-      }).catch(err => {
-        console.error(err);
-      });
-    },
     fetchArticle(index) {
       return this.$axios.all([
         this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.targetURL + this.articles[index].url}}),
@@ -108,12 +83,11 @@ export default {
         };
         let novel = "";
         res.forEach(each => {
-          let rawHTML = each.data.Rtn
-          rawHTML = rawHTML.replace("一秒记住【千千小说网 www.77xsw.la】，更新快，无弹窗，免费读！<br><br>", "");
-          rawHTML = rawHTML.replace("-->><p class=\"text-danger text-center mg0\">本章未完，点击下一页继续阅读</p>", "")
-          let rawNovel = rawHTML.match(/<div class="panel-body" id="htmlContent">[\s\S]*?<\/div>/g)[0]
-          novel += rawNovel.substring(41, rawNovel.lastIndexOf("</div>"))
-
+          const doc = new JSDOM(each.data.Rtn).window.document;
+          let rawNovel = doc.querySelector('div#htmlContent.panel-body').innerHTML;
+          rawNovel = rawNovel.replace("一秒记住【千千小说网 www.77xsw.la】，更新快，无弹窗，免费读！<br><br>", "");
+          rawNovel = rawNovel.replace("--&gt;&gt;<p class=\"text-danger text-center mg0\">本章未完，点击下一页继续阅读</p>", "");
+          novel += rawNovel
         })
         section.content = novel + "<br><br>";
         return section;
