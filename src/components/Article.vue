@@ -9,6 +9,9 @@
           <button @click="lightOn = !lightOn" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fa-lightbulb" :class="{'fa': lightOn, 'far': !lightOn}"></i>
           </button><br />
+          <button @click="fontSize = fontSize === 4 ? 1 : fontSize + 1" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            {{ ['Sm', 'Md', 'Lg', 'Xl'][fontSize - 1] }}
+          </button>
           <button @click="fetchArticles" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-clipboard-list"></i>
           </button><br />
@@ -22,7 +25,7 @@
         </affix>
       </aside>
       <div class="col-10 col-md-10">
-        <div id="novel">
+        <div id="novel" :class="{'novel-font-sm': fontSize === 1, 'novel-font-md': fontSize === 2, 'novel-font-lg': fontSize === 3, 'novel-font-xl': fontSize === 4}">
           <chapter-section v-for="each in sections" :key="each.index" :isTW="isTW" :single="each" v-observe-visibility="{
             callback: (isVisible, entry) => observe(isVisible, entry, each),
             throttle: 300,
@@ -48,6 +51,7 @@ export default {
     return {
       isTW: false,
       lightOn: false,
+      fontSize: 1,
       targetURL: "http://www.77xsw.la/book/13192/",
       selectIndex: 1,
       sections: [],
@@ -155,11 +159,23 @@ export default {
   }
   .sticky-bar-el {
     margin-left: 0px;
-    margin-top: 1px;
+    margin-top: 3px;
     width: 40px;
   }
   .sticky-bar-el.chapter-text {
     font-size: 10px;
     padding: 3px;
+  }
+  .novel-font-sm {
+    font-size: 1rem;
+  }
+  .novel-font-md {
+    font-size: 1.125rem;
+  }
+  .novel-font-lg {
+    font-size: 1.25rem;
+  }
+  .novel-font-xl {
+    font-size: 1.5rem;
   }
 </style>
