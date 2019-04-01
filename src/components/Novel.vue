@@ -3,6 +3,9 @@
     <div class="row">
       <aside class="col-2 col-md-1">
         <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
+          <router-link :to="{name: 'home'}" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            <i class="fas fa-home"></i>
+          </router-link><br/>
           <button @click="isTW = !isTW" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             {{ isTW ? "TW" : "CH" }}
           </button><br/>
@@ -13,7 +16,7 @@
             {{ ['Sm', 'Md', 'Lg', 'Xl'][fontSize - 1] }}
           </button><br />
           <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
-          <button @click="get" :disabled="articles.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="get" :disabled="novel.articles.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-arrow-right"></i>
           </button><br />
         </affix>
@@ -36,18 +39,18 @@ import ChapterSection from '@/components/ChapterSection';
 import { JSDOM } from 'jsdom';
 
 export default {
-  name: "article",
+  name: "novel",
   components: { Affix, ChapterSection },
   mounted() {
     (async() => {
-      this.store = this.$store.read();
+      this.store = this.$store.fetch(this.novel.title) || this.store;
       this.currentIndex = this.store.lastReadIndex || this.currentIndex;
       this.fetchIndex = this.currentIndex === 0 ? 0 : this.currentIndex - 1;
       await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
       await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
     })();
   },
-  props: ["targetURL", "articles"],
+  props: ["novelObj"],
   data() {
     return {
       store: {},
@@ -55,9 +58,10 @@ export default {
       lightOn: false,
       fontSize: 1,
       loading: false,
+      novel: this.novelObj,
       sections: [],
       fetchIndex: 0,
-      currentIndex: 0,
+      currentIndex: 1,
       transitIndex: 0
     };
   },
@@ -73,12 +77,12 @@ export default {
     },
     fetchArticle(index) {
       return this.$axios.all([
-        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.targetURL + this.articles[index].url}}),
-        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.targetURL + this.articles[index].url.replace(".html", "_2.html")}}),
+        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.novel.url + this.novel.articles[index].url}}),
+        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.novel.url + this.novel.articles[index].url.replace(".html", "_2.html")}}),
       ]).then(res => {
         let section = {
           index: index,
-          title: this.articles[index].title,
+          title: this.novel.articles[index].title,
           content: ""
         };
         let novel = "";
@@ -99,7 +103,7 @@ export default {
           this.currentIndex = section.index + 1;
           this.transitIndex = section.index;
           this.store.lastReadIndex = this.currentIndex;
-          this.$store.save(this.store);
+          this.$store.updateSave(this.novel.title, this.store);
           if (!this.loading && this.fetchIndex - this.currentIndex < 1) {
             this.loading = true;
             this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));

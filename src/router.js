@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import ArticleList from '@/components/ArticleList';
-import Article from "@/components/Article";
+import NovelList from '@/components/NovelList';
+import Novel from "@/components/Novel";
 
 Vue.use(Router);
 
@@ -10,12 +10,12 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: ArticleList
+      component: NovelList
     },
     {
-      path: "/article",
-      name: "article",
-      component: Article,
+      path: "/novel",
+      name: "novel",
+      component: Novel,
       props: true
     }
     /*
