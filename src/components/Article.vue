@@ -12,11 +12,13 @@
           <button @click="fetchArticles" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-clipboard-list"></i>
           </button><br />
-          <input v-model="selectIndex" class="sticky-bar-el form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
+          <input v-model="selectIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
           <button @click="get" :disabled="articles.length === 0" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-arrow-right"></i>
           </button><br />
-          <button class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">{{ currentIndex }}</button>
+          <button class="sticky-bar-el chapter-text btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            {{ currentIndex === 0 ? "-" : currentIndex }}
+          </button>
         </affix>
       </aside>
       <div class="col-10 col-md-10">
@@ -60,9 +62,13 @@ export default {
     get() {
       this.sections = [];
       this.fetchIndex = this.selectIndex - 1;
-      this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
-      this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
-      this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+      this.fetchArticle(this.fetchIndex++).then(data => {
+        this.sections.push(data)
+        return this.fetchArticle(this.fetchIndex++)
+      }).then(data => {
+        this.sections.push(data)
+        return this.fetchArticle(this.fetchIndex++)
+      }).then(data => this.sections.push(data));
     },
     fetchArticles() {
       this.articles = []
@@ -152,7 +158,7 @@ export default {
     margin-top: 1px;
     width: 40px;
   }
-  input.sticky-bar-el {
+  .sticky-bar-el.chapter-text {
     font-size: 10px;
     padding: 3px;
   }
