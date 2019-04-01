@@ -11,7 +11,7 @@
           </button><br />
           <button @click="fontSize = fontSize === 4 ? 1 : fontSize + 1" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             {{ ['Sm', 'Md', 'Lg', 'Xl'][fontSize - 1] }}
-          </button>
+          </button><br />
           <button @click="fetchArticles" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-clipboard-list"></i>
           </button><br />
