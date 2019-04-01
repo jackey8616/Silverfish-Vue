@@ -3,25 +3,19 @@
     <div class="row">
       <aside class="col-2 col-md-1">
         <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
-          <button @click="isTW = !isTW" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="isTW = !isTW" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             {{ isTW ? "TW" : "CH" }}
           </button><br/>
-          <button @click="lightOn = !lightOn" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="lightOn = !lightOn" class="sticky-bar-el btn-circle btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fa-lightbulb" :class="{'fa': lightOn, 'far': !lightOn}"></i>
           </button><br />
-          <button @click="fontSize = fontSize === 4 ? 1 : fontSize + 1" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="fontSize = fontSize === 4 ? 1 : fontSize + 1" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             {{ ['Sm', 'Md', 'Lg', 'Xl'][fontSize - 1] }}
           </button><br />
-          <button @click="fetchArticles" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <i class="fas fa-clipboard-list"></i>
-          </button><br />
-          <input v-model="selectIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
-          <button @click="get" :disabled="articles.length === 0" class="sticky-bar-el btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
+          <button @click="get" :disabled="articles.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <i class="fas fa-arrow-right"></i>
           </button><br />
-          <button class="sticky-bar-el chapter-text btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            {{ currentIndex === 0 ? "-" : currentIndex }}
-          </button>
         </affix>
       </aside>
       <div class="col-10 col-md-10">
@@ -44,32 +38,43 @@ export default {
   name: "article",
   components: { Affix, ChapterSection },
   mounted() {
-    this.fetchArticles();
+    (async() => {
+      await this.fetchArticles();
+      this.store = this.$store.read();
+      this.currentIndex = this.store.lastReadIndex || this.currentIndex;
+      this.fetchIndex = this.currentIndex === 0 ? 0 : this.currentIndex - 1;
+      await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+      await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+    })();
   },
   data() {
     return {
+      store: {},
       isTW: true,
       lightOn: false,
       fontSize: 1,
+      loading: false,
       targetURL: "http://www.77xsw.la/book/13192/",
-      selectIndex: 1,
       sections: [],
       articles: [],
       fetchIndex: 0,
-      loading: false,
       currentIndex: 0,
-      viewStatus: [true, false]
+      transitIndex: 0
     };
   },
   methods: {
     get() {
-      this.sections = [];
-      this.fetchIndex = this.selectIndex - 1;
-      this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+      (async() => {
+        this.sections = [];
+        this.fetchIndex = this.currentIndex - 1;
+        this.transitIndex = this.currentIndex - 1;
+        await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+        await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+      })();
     },
     fetchArticles() {
       this.articles = []
-      this.$axios({
+      return this.$axios({
         url: this.$backend + "/proxy",
         method: "POST",
         data: {
@@ -87,7 +92,6 @@ export default {
             "title": title
           });
         })
-        console.log("DONE");
       }).catch(err => {
         console.error(err);
       });
@@ -117,13 +121,18 @@ export default {
     },
     observe(isVisible, entry, section) {
       if (isVisible) {
-        this.currentIndex = section.index + 1;
-        if (!this.loading && this.fetchIndex - this.currentIndex < 1) {
-          this.loading = true;
-          this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
-          setTimeout(() => {
-            this.loading = false;
-          }, 1000);
+        if (this.transitIndex < section.index) {
+          this.currentIndex = section.index + 1;
+          this.transitIndex = section.index;
+          this.store.lastReadIndex = this.currentIndex;
+          this.$store.save(this.store);
+          if (!this.loading && this.fetchIndex - this.currentIndex < 1) {
+            this.loading = true;
+            this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+            setTimeout(() => {
+              this.loading = false;
+            }, 1000);
+          }
         }
       }
     }
@@ -136,14 +145,24 @@ export default {
     background-color: white;
     color:  #2c3e50;
   }
+  .container.light-off {
+    color: #d3d3d3;
+  }
   .sticky-bar-el {
     margin-left: 0px;
-    margin-top: 3px;
+    margin-top: 5px;
     width: 40px;
+    height: 31px;
   }
   .sticky-bar-el.chapter-text {
     font-size: 10px;
     padding: 3px;
+  }
+  input.sticky-bar-el {
+    text-align: center;
+    line-height: 31px;
+    height: 40px;
+    border-radius: 20px;
   }
   .novel-font-sm {
     font-size: 1rem;
@@ -156,5 +175,13 @@ export default {
   }
   .novel-font-xl {
     font-size: 1.5rem;
+  }
+  .btn-circle {
+    width: 40px;
+    height: 40px;
+    padding: 6px 0px;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 1.42857;
   }
 </style>
