@@ -45,11 +45,10 @@ export default {
   components: { Affix, ChapterSection },
   mounted() {
     this.fetchArticles();
-    window.addEventListener('scroll', this.scrollEvent);
   },
   data() {
     return {
-      isTW: false,
+      isTW: true,
       lightOn: false,
       fontSize: 1,
       targetURL: "http://www.77xsw.la/book/13192/",
@@ -66,13 +65,7 @@ export default {
     get() {
       this.sections = [];
       this.fetchIndex = this.selectIndex - 1;
-      this.fetchArticle(this.fetchIndex++).then(data => {
-        this.sections.push(data)
-        return this.fetchArticle(this.fetchIndex++)
-      }).then(data => {
-        this.sections.push(data)
-        return this.fetchArticle(this.fetchIndex++)
-      }).then(data => this.sections.push(data));
+      this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
     },
     fetchArticles() {
       this.articles = []
@@ -101,8 +94,8 @@ export default {
     },
     fetchArticle(index) {
       return this.$axios.all([
-        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': 'http://www.77xsw.la/book/13192/' + this.articles[index].url}}),
-        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': 'http://www.77xsw.la/book/13192/' + this.articles[index].url.replace(".html", "_2.html")}}),
+        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.targetURL + this.articles[index].url}}),
+        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.targetURL + this.articles[index].url.replace(".html", "_2.html")}}),
       ]).then(res => {
         let section = {
           index: index,
@@ -122,30 +115,16 @@ export default {
         return section;
       })
     },
-    scrollEvent(e) {
-      if(this.loading) return;
-      const D = document
-      const docheight = Math.max(
-        D.body.scrollHeight, D.documentElement.scrollHeight,
-        D.body.offsetHeight, D.documentElement.offsetHeight,
-        D.body.clientHeight, D.documentElement.clientHeight
-      )
-      const winheight= window.innerHeight || (D.documentElement || D.body).clientHeight
-      const scrollTop = window.pageYOffset || (D.documentElement || D.body.parentNode || D.body).scrollTop
-      const trackLength = docheight - winheight
-      const pctScrolled = Math.floor(scrollTop/trackLength * 100)
-      
-      if (pctScrolled >= 80) {
-        this.loading = true;
-        this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
-        setTimeout(() => {
-          this.loading = false;
-        }, 1000);
-      }
-    },
     observe(isVisible, entry, section) {
       if (isVisible) {
         this.currentIndex = section.index + 1;
+        if (!this.loading && this.fetchIndex - this.currentIndex < 1) {
+          this.loading = true;
+          this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+          setTimeout(() => {
+            this.loading = false;
+          }, 1000);
+        }
       }
     }
   }
