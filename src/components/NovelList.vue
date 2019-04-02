@@ -29,16 +29,16 @@ export default {
   },
   mounted() {
     for (let each of this.urls) {
-      this.fetchArticles(each);
+      this.fetchNovel(each);
     }
   },
   methods: {
-    fetchArticles(targetURL) {
+    fetchNovel(targetURL) {
       return this.$axios({
-        url: this.$backend + "/proxy",
+        url: this.$backend + "/fetch_novel",
         method: "POST",
         data: {
-          'proxy_url': targetURL
+          'novel_url': targetURL
         }
       }).then(res => {
         const novel = res.data.Rtn;

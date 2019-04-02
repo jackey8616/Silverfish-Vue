@@ -46,8 +46,8 @@ export default {
       this.store = this.$store.fetch(this.novel.title) || this.store;
       this.currentIndex = this.store.lastReadIndex || this.currentIndex;
       this.fetchIndex = this.currentIndex === 0 ? 0 : this.currentIndex - 1;
-      await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
-      await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+      await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
+      await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
     })();
   },
   props: ["novelObj"],
@@ -71,14 +71,14 @@ export default {
         this.sections = [];
         this.fetchIndex = this.currentIndex - 1;
         this.transitIndex = this.currentIndex - 1;
-        await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
-        await this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+        await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
+        await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
       })();
     },
-    fetchArticle(index) {
+    fetchChapter(index) {
       return this.$axios.all([
-        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.novel.url + this.novel.articles[index].url}}),
-        this.$axios({method: "POST", url: this.$backend + "/proxy", data: {'proxy_url': this.novel.url + this.novel.articles[index].url.replace(".html", "_2.html")}}),
+        this.$axios({method: "POST", url: this.$backend + "/fetch_chapter", data: {'chapter_url': this.novel.url + this.novel.articles[index].url}}),
+        this.$axios({method: "POST", url: this.$backend + "/fetch_chapter", data: {'chapter_url': this.novel.url + this.novel.articles[index].url.replace(".html", "_2.html")}}),
       ]).then(res => {
         let section = {
           index: index,
@@ -106,7 +106,7 @@ export default {
           this.$store.updateSave(this.novel.title, this.store);
           if (!this.loading && this.fetchIndex - this.currentIndex < 1) {
             this.loading = true;
-            this.fetchArticle(this.fetchIndex++).then(data => this.sections.push(data));
+            this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
             setTimeout(() => {
               this.loading = false;
             }, 1000);
