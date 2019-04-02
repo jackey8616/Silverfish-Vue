@@ -1,6 +1,6 @@
 <template>
   <div id="article" class="container" :class="{'light-on': lightOn,'light-off': !lightOn}">
-    <div class="row">
+    <div v-if="Object.keys(novel).length !== 0" class="row">
       <aside class="col-2 col-md-1">
         <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
           <router-link :to="{name: 'home'}" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
@@ -41,36 +41,45 @@ import { JSDOM } from 'jsdom';
 export default {
   name: "novel",
   components: { Affix, ChapterSection },
-  mounted() {
-    (async() => {
-      this.store = this.$store.fetch(this.novel.title) || this.store;
-      this.currentIndex = this.store.lastReadIndex || this.currentIndex;
-      this.fetchIndex = this.currentIndex === 0 ? 0 : this.currentIndex - 1;
-      await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
-      await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
-    })();
-  },
-  props: ["novelObj"],
   data() {
     return {
-      store: {},
+      novelID: "",
       isTW: true,
       lightOn: false,
       fontSize: 1,
       loading: false,
-      novel: this.novelObj,
       sections: [],
       fetchIndex: 0,
       currentIndex: 1,
       transitIndex: 0
     };
   },
+  created () {
+    this.novelID = this.$route.params.novelID;
+    (async() => {
+      if (!this.$vuex.getters.isNovelIDExists(this.novelID)) {
+        let novel = await this.$fetchNovelByID(this.novelID)
+        this.$vuex.commit('insertNovel', {novelID: this.novelID, novel: novel});
+      } else {
+        this.currentIndex = this.bookmark['lastReadIndex'] || this.currentIndex;
+      }
+      this.get();
+    })();
+  },
+  computed: {
+    bookmark() {
+      return this.$vuex.getters.getBookmarkByID(this.novelID) || {}
+    },
+    novel() {
+      return this.$vuex.getters.getNovelByID(this.novelID) || {}
+    }
+  },
   methods: {
     get() {
+      this.sections = [];
+      this.fetchIndex = this.currentIndex - 1;
+      this.transitIndex = this.currentIndex - 1;
       (async() => {
-        this.sections = [];
-        this.fetchIndex = this.currentIndex - 1;
-        this.transitIndex = this.currentIndex - 1;
         await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
         await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
       })();
@@ -102,8 +111,8 @@ export default {
         if (this.transitIndex < section.index) {
           this.currentIndex = section.index + 1;
           this.transitIndex = section.index;
-          this.store.lastReadIndex = this.currentIndex;
-          this.$store.updateSave(this.novel.title, this.store);
+          this.bookmark['lastReadIndex'] = this.currentIndex;
+          this.$vuex.commit('insertBookmark', { novelID: this.novel.novelID, bookmark: this.bookmark});
           if (!this.loading && this.fetchIndex - this.currentIndex < 1) {
             this.loading = true;
             this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));

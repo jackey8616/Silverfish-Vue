@@ -13,7 +13,7 @@ export default new Router({
       component: NovelList
     },
     {
-      path: "/novel",
+      path: "/novel/:novelID",
       name: "novel",
       component: Novel,
       props: true

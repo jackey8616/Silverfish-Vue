@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div v-for="novel in novels" :key="novel.title" class="col-6 col-md-2">
-        <router-link :to="{ name: 'novel', params: { 'novelObj': novel }}">
+    <div v-if="novels !== {}" class="row">
+      <div v-for="(novel, novelID) in novels" :key="novelID" class="col-6 col-md-2">
+        <router-link :to="{ path: '/novel/' + novelID, params: { 'novelObj': novel }}">
           <img :src="novel.cover_url"/><br />
           {{ novel.title }}
         </router-link>
@@ -23,13 +23,27 @@ export default {
         "http://www.77xsw.la/book/11072/",
         "http://www.77xsw.la/book/11198/",
         "http://www.77xsw.la/book/13192/"
-      ],
-      novels: []
+      ]
+    }
+  },
+  computed: {
+    novels() {
+      return this.$vuex.state.Novels;
     }
   },
   mounted() {
-    for (let each of this.urls) {
-      this.fetchNovel(each);
+    let vuxNovels = this.$vuex.state.Novels
+    if (Object.keys(vuxNovels).length !== this.urls.length) {
+      for (let each of this.urls) {
+        this.fetchNovel(each);
+      }
+    } else {
+      for(let novel in Object.values(vuxNovels)) {
+        let delta = (new Date() - new Date(novel.lastCrawlTime)) / (1000 * 60 * 60 * 24);
+        if (delta >= 1) {
+          this.fetchNovel(novel.url);
+        }
+      };
     }
   },
   methods: {
@@ -42,12 +56,19 @@ export default {
         }
       }).then(res => {
         const novel = res.data.Rtn;
-        this.novels.push({
+        return {
+          novelID: novel.novelID,
+          author: novel.author,
+          description: novel.description,
+          dns: novel.dns,
           url: novel.url,
           title: novel.title,
           cover_url: novel.coverUrl,
-          articles: novel.chapters
-        });
+          articles: novel.chapters,
+          lastCrawlTime: novel.lastCrawlTime
+        };
+      }).then(novel => {
+        this.$vuex.commit('upsertNovel', {novelID: novel.novelID, novel: novel});
       }).catch(err => {
         console.error(err);
       });
