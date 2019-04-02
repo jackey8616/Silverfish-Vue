@@ -34,12 +34,6 @@ export default {
   },
   methods: {
     fetchArticles(targetURL) {
-      let novel = {
-        title: "",
-        cover_url: "",
-        url: "",
-        articles: []
-      };
       return this.$axios({
         url: this.$backend + "/proxy",
         method: "POST",
@@ -52,7 +46,7 @@ export default {
           url: novel.url,
           title: novel.title,
           cover_url: novel.coverUrl,
-          articels: novel.chapters
+          articles: novel.chapters
         });
       }).catch(err => {
         console.error(err);
