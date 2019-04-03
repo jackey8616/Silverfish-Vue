@@ -14,30 +14,50 @@ Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 //Vue.prototype.$backend = "http://127.0.0.1:8080"
 Vue.prototype.$backend = "http://silverfish-backend.clo5de.info:8080"
+Vue.prototype.$api_ver = "/api/v1"
 Vue.prototype.$vuex = store;
+
+Vue.prototype.$fetchNovels = function () {
+  return new Promise(async (resolve, reject) => {
+    let res = await axios({
+      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/novels",
+      method: "GET"
+    })
+
+    if (res.data.success) {
+      return resolve(res.data.data)
+    } else {
+      return reject(res.data.data)
+    }
+  })
+}
 
 Vue.prototype.$fetchNovelByID = function (id) {
   return new Promise(async (resolve, reject) => {
     let res = await axios({
-      url: Vue.prototype.$backend + "/fetch_novel",
-      method: "POST",
-      data: {
+      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/novel",
+      method: "GET",
+      params: {
         "novel_id": id
       }
     })
 
-    const novel = res.data.Rtn;
-    return resolve({
-      novelID: novel.novelID,
-      author: novel.author,
-      description: novel.description,
-      dns: novel.dns,
-      url: novel.url,
-      title: novel.title,
-      cover_url: novel.coverUrl,
-      articles: novel.chapters,
-      lastCrawlTime: novel.lastCrawlTime
-    });
+    if (res.data.success) {
+      const novel = res.data.data;
+      return resolve({
+        novelID: novel.novelID,
+        author: novel.author,
+        description: novel.description,
+        dns: novel.dns,
+        url: novel.url,
+        title: novel.title,
+        cover_url: novel.coverUrl,
+        articles: novel.chapters,
+        lastCrawlTime: novel.lastCrawlTime
+      });
+    } else {
+      return reject(res.data.data);
+    }
   })
 }
 

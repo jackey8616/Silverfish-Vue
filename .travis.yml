@@ -23,7 +23,7 @@ after_success:
   - git config user.email "jackey8616@gmail.com"
   - git add .
   - git commit -m "Travis Build Bot Update"
-  - git push --force --quiet "https://${GH_TOKEN}@github.com/jackey8616/Silverfish-vue" master:gh-pages
+  - git push --force --quiet "https://${GH_TOKEN}@github.com/jackey8616/Silverfish-Vue" master:gh-pages
 
 branches:
   only:
