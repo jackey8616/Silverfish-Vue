@@ -13,7 +13,7 @@ axios.defaults.withCredentials = false;
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 //Vue.prototype.$backend = "http://127.0.0.1:8080"
-Vue.prototype.$backend = "http://silverfish-backend.clo5de.info:8080"
+Vue.prototype.$backend = "https://silverfish-backend.clo5de.info:2087"
 Vue.prototype.$api_ver = "/api/v1"
 Vue.prototype.$vuex = store;
 
