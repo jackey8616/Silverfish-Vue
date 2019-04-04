@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import { JSDOM } from 'jsdom';
-
 export default {
   name: 'novel-list',
   data() {

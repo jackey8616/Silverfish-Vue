@@ -36,7 +36,6 @@
 <script>
 import { Affix } from 'vue-affix';
 import ChapterSection from '@/components/ChapterSection';
-import { JSDOM } from 'jsdom';
 
 export default {
   name: "novel",
@@ -85,25 +84,12 @@ export default {
       })();
     },
     fetchChapter(index) {
-      return this.$axios.all([
-        this.$axios({method: "POST", url: this.$backend + "/fetch_chapter", data: {'chapter_url': this.novel.url + this.novel.articles[index].url}}),
-        this.$axios({method: "POST", url: this.$backend + "/fetch_chapter", data: {'chapter_url': this.novel.url + this.novel.articles[index].url.replace(".html", "_2.html")}}),
-      ]).then(res => {
-        let section = {
+      return this.$fetchChapter(this.novelID, index).then(data => {
+        return {
           index: index,
           title: this.novel.articles[index].title,
-          content: ""
+          content: data
         };
-        let novel = "";
-        res.forEach(each => {
-          const doc = new JSDOM(each.data.Rtn).window.document;
-          let rawNovel = doc.querySelector('div#htmlContent.panel-body').innerHTML;
-          rawNovel = rawNovel.replace("一秒记住【千千小说网 www.77xsw.la】，更新快，无弹窗，免费读！<br><br>", "");
-          rawNovel = rawNovel.replace("--&gt;&gt;<p class=\"text-danger text-center mg0\">本章未完，点击下一页继续阅读</p>", "");
-          novel += rawNovel
-        })
-        section.content = novel + "<br><br>";
-        return section;
       })
     },
     observe(isVisible, entry, section) {

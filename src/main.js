@@ -32,13 +32,13 @@ Vue.prototype.$fetchNovels = function () {
   })
 }
 
-Vue.prototype.$fetchNovelByID = function (id) {
+Vue.prototype.$fetchNovelByID = function (novelID) {
   return new Promise(async (resolve, reject) => {
     let res = await axios({
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/novel",
       method: "GET",
       params: {
-        "novel_id": id
+        "novel_id": novelID
       }
     })
 
@@ -57,6 +57,24 @@ Vue.prototype.$fetchNovelByID = function (id) {
       });
     } else {
       return reject(res.data.data);
+    }
+  })
+}
+
+Vue.prototype.$fetchChapter = function (novelID, chapterIndex) {
+  return new Promise(async (resolve, reject) => {
+    let res = await axios({
+      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/chapter_new",
+      method: "GET",
+      params: {
+        "novel_id": novelID,
+        "chapter_index": chapterIndex
+      }
+    })
+    if (res.data.success) {
+      return resolve(res.data.data)
+    } else {
+      return reject(res.data.data)
     }
   })
 }
