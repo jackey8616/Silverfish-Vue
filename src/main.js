@@ -64,7 +64,7 @@ Vue.prototype.$fetchNovelByID = function (novelID) {
 Vue.prototype.$fetchChapter = function (novelID, chapterIndex) {
   return new Promise(async (resolve, reject) => {
     let res = await axios({
-      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/chapter_new",
+      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/chapter",
       method: "GET",
       params: {
         "novel_id": novelID,
