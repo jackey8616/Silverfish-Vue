@@ -18,6 +18,7 @@ script:
 
 after_success:
   - cd ./dist
+  - echo "silverfish.clo5de.info" > CNAME
   - git init
   - git config user.name "Clooooode"
   - git config user.email "jackey8616@gmail.com"
