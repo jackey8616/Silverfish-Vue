@@ -60,6 +60,10 @@ export default {
         let novel = await this.$fetchNovelByID(this.novelID)
         this.$vuex.commit('insertNovel', {novelID: this.novelID, novel: novel});
       } else {
+        if (this.$vuex.getters.isNovelNeedUpdate(this.novelID)) {
+          let novel = await this.$fetchNovelByID(this.novelID)
+          this.$vuex.commit('updateNovelChapters', {novelID: this.novelID, chapters: novel.chapters})
+        }
         this.currentIndex = this.bookmark['lastReadIndex'] || this.currentIndex;
       }
       this.get();

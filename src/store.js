@@ -21,6 +21,11 @@ export default new Vuex.Store({
         Vue.set(state.Novels, payload.novelID, payload.novel);
       }
     },
+    updateNovelChapters(state, payload) {
+      if (payload.novelID in state.Novels) {
+        state.Novels[payload.novelID].chapters = payload.chapters;
+      }
+    },
     insertBookmark(state, payload) {
       Vue.set(state.Bookmarks, payload.novelID, payload.bookmark)
     }
@@ -28,6 +33,10 @@ export default new Vuex.Store({
   getters: {
     isNovelIDExists: state => novelID => {
       return novelID in state.Novels
+    },
+    isNovelNeedUpdate: state => novelID => {
+      let hour_offset = (new Date() - new Date(state.Novels[novelID].lastCrawlTime)) / 1000 / 60 / 60;
+      return hour_offset >= 24;
     },
     getNovelByID: state => novelID => {
       return state.Novels[novelID];
