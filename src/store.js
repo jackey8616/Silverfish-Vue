@@ -21,9 +21,10 @@ export default new Vuex.Store({
         Vue.set(state.Novels, payload.novelID, payload.novel);
       }
     },
-    updateNovelChapters(state, payload) {
+    updateNovel(state, payload) {
       if (payload.novelID in state.Novels) {
-        state.Novels[payload.novelID].chapters = payload.chapters;
+        state.Novels[payload.novelID].chapters = payload.novel.chapters;
+        state.Novels[payload.novelID].lastCrawlTime = payload.novel.lastCrawlTime;
       }
     },
     insertBookmark(state, payload) {
