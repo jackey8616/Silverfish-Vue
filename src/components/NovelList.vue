@@ -12,7 +12,7 @@
     <hr>
     <h1>Comics</h1>
     <div v-if="comics.length !== 0" class="row">
-      <div v-for="comic in comics" :key="comic.comicID" class="col-6, col-md-2">
+      <div v-for="comic in comics" :key="comic.comicID" class="col-6 col-md-2">
         <router-link :to="{ path: '/comic/' + comic.comicID }">
           <img :src="comic.coverUrl"/><br />
           {{ comic.title }}
