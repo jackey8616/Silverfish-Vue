@@ -8,6 +8,7 @@ export default new Vuex.Store({
   plugins: [createPersistedState({ key: "SILVERFISH", storage: window.localStorage })],
   state: {
     Novels: {},
+    Comics: {},
     Bookmarks: {}
   },
   mutations: {
@@ -25,6 +26,22 @@ export default new Vuex.Store({
       if (payload.novelID in state.Novels) {
         state.Novels[payload.novelID].chapters = payload.novel.chapters;
         state.Novels[payload.novelID].lastCrawlTime = payload.novel.lastCrawlTime;
+      }
+    },
+    insertComic(state, payload) {
+      Vue.set(state.Comics, payload.comicID, payload.comic);
+    },
+    upsertComic(state, payload) {
+      if (payload.comicID in state.Comics) {
+        state.Comics[payload.comicID] = payload.comic;
+      } else {
+        Vue.set(state.Comics, payload.comicID, payload.comic);
+      }
+    },
+    updateComic(state, payload) {
+      if (payload.comicID in state.COmics) {
+        state.Comics[payload.comicID].chapters = payload.comic.chapters;
+        state.Comics[payload.comicID].lastCrawlTime = payload.comic.lastCrawlTime;
       }
     },
     insertBookmark(state, payload) {
@@ -49,6 +66,16 @@ export default new Vuex.Store({
         }
       }
       return null;
+    },
+    isComicIDExists: state => comicID => {
+      return comicID in state.Comics;
+    },
+    isComicNeedUpdate: state => comicID => {
+      let hour_offset = (new Date() - new Date(state.Comics[comicID].lastCrawlTime)) / 1000 / 60 / 60;
+      return hour_offset >= 24;
+    },
+    getComicByID: state => comicID => {
+      return state.Comics[comicID];
     },
     getBookmarkByID: state => novelID => {
       return state.Bookmarks[novelID];

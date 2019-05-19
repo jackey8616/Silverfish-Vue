@@ -79,6 +79,68 @@ Vue.prototype.$fetchChapter = function (novelID, chapterIndex) {
   })
 }
 
+Vue.prototype.$fetchComics = function () {
+  return new Promise(async(resolve, reject) => {
+    let res = await axios({
+      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comics",
+      method: "GET"
+    })
+
+    if (res.data.success) {
+      return resolve(res.data.data)
+    } else {
+      return reject(res.data.data)
+    }
+  })
+}
+
+Vue.prototype.$fetchComicByID = function (comicID) {
+  return new Promise(async(resolve, reject) => {
+    let res = await axios({
+      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comic",
+      method: "GET",
+      params: {
+        "comic_id": comicID
+      }
+    })
+
+    if (res.data.success) {
+      const comic = res.data.data;
+      return resolve({
+        comicID: comic.comicID,
+        author: comic.author,
+        description: comic.description,
+        dns: comic.dns,
+        url: comic.url,
+        title: comic.title,
+        cover_url: comic.coverUrl,
+        articles: comic.chapters,
+        lastCrawlTime: comic.lastCrawlTime
+      });
+    } else {
+      return reject(res.data.data);
+    }
+  })
+}
+
+Vue.prototype.$fetchComicChapter = function (comicID, chapterIndex) {
+  return new Promise(async (resolve, reject) => {
+    let res = await axios({
+      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comic/chapter",
+      method: "GET",
+      params: {
+        "comic_id": comicID,
+        "chapter_index": chapterIndex
+      }
+    })
+    if (res.data.success) {
+      return resolve(res.data.data)
+    } else {
+      return reject(res.data.data)
+    }
+  })
+}
+
 Vue.component('navigator', Navigator)
 Vue.directive('observe-visibility', ObserveVisibility)
 
