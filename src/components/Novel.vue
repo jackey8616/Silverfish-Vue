@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     bookmark() {
-      return this.$vuex.getters.getBookmarkByID(this.novelID) || {}
+      return this.$vuex.getters.getNovelBookmarkByID(this.novelID) || {}
     },
     novel() {
       return this.$vuex.getters.getNovelByID(this.novelID) || {}
@@ -102,7 +102,7 @@ export default {
           this.currentIndex = section.index + 1;
           this.transitIndex = section.index;
           this.bookmark['lastReadIndex'] = this.currentIndex;
-          this.$vuex.commit('insertBookmark', { novelID: this.novel.novelID, bookmark: this.bookmark});
+          this.$vuex.commit('insertNovelBookmark', { novelID: this.novel.novelID, bookmark: this.bookmark});
           if (!this.loading && this.fetchIndex - this.currentIndex < 1) {
             this.loading = true;
             this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));

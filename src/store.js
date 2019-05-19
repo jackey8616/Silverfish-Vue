@@ -9,7 +9,10 @@ export default new Vuex.Store({
   state: {
     Novels: {},
     Comics: {},
-    Bookmarks: {}
+    Bookmarks: {
+      Novel: {},
+      Comic: {}
+    }
   },
   mutations: {
     insertNovel(state, payload) {
@@ -28,6 +31,9 @@ export default new Vuex.Store({
         state.Novels[payload.novelID].lastCrawlTime = payload.novel.lastCrawlTime;
       }
     },
+    insertNovelBookmark(state, payload) {
+      Vue.set(state.Bookmarks.Novel, payload.novelID, payload.bookmark)
+    },
     insertComic(state, payload) {
       Vue.set(state.Comics, payload.comicID, payload.comic);
     },
@@ -44,8 +50,8 @@ export default new Vuex.Store({
         state.Comics[payload.comicID].lastCrawlTime = payload.comic.lastCrawlTime;
       }
     },
-    insertBookmark(state, payload) {
-      Vue.set(state.Bookmarks, payload.novelID, payload.bookmark)
+    insertComicBookmark(state, payload) {
+      Vue.set(state.Bookmarks.Comic, payload.comicID, payload.bookmark)
     }
   },
   getters: {
@@ -67,6 +73,9 @@ export default new Vuex.Store({
       }
       return null;
     },
+    getNovelBookmarkByID: state => novelID => {
+      return state.Bookmarks.Novel[novelID];
+    },
     isComicIDExists: state => comicID => {
       return comicID in state.Comics;
     },
@@ -77,8 +86,8 @@ export default new Vuex.Store({
     getComicByID: state => comicID => {
       return state.Comics[comicID];
     },
-    getBookmarkByID: state => novelID => {
-      return state.Bookmarks[novelID];
+    getComicBookmarkByID: state => comicID => {
+      return state.Bookmarks.Comic[comicID];
     }
   }
 })

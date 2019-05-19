@@ -114,7 +114,7 @@ Vue.prototype.$fetchComicByID = function (comicID) {
         url: comic.url,
         title: comic.title,
         cover_url: comic.coverUrl,
-        articles: comic.chapters,
+        chapters: comic.chapters,
         lastCrawlTime: comic.lastCrawlTime
       });
     } else {
