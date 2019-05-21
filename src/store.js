@@ -45,7 +45,7 @@ export default new Vuex.Store({
       }
     },
     updateComic(state, payload) {
-      if (payload.comicID in state.COmics) {
+      if (payload.comicID in state.Comics) {
         state.Comics[payload.comicID].chapters = payload.comic.chapters;
         state.Comics[payload.comicID].lastCrawlTime = payload.comic.lastCrawlTime;
       }
