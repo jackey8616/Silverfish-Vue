@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Info from "@/components/Info";
 import NovelList from '@/components/NovelList';
 import Novel from "@/components/Novel";
 import Comic from "@/components/Comic";
@@ -17,6 +18,12 @@ export default new Router({
       path: "/novel/:novelID",
       name: "novel",
       component: Novel,
+      props: true
+    },
+    {
+      path: "/novel_intro/:novelID",
+      name: "novel_intro",
+      component: Info,
       props: true
     },
     {
