@@ -4,17 +4,27 @@
       <img :src="entry.coverUrl">
       <div class="text-info-section">
         <div style="text-align: left;">
-        <strong>{{ entry.title }}</strong>
+          <h6><strong>{{ entry.title }}</strong></h6>
         </div>
         <div style="text-align: right;">
-        <small>{{ entry.author }} / 著</small>
+          <small>{{ entry.author }} / 著</small>
         </div>
       </div>
-      <div class="icon-info-section">
+      <div class="icon-info-section d-none d-lg-block">
         <router-link :to="{ path: (entry.novelID !== undefined ? '/novel_intro/' + entry.novelID : '/comic_intro/' + entry.comicID) }" tag="small" class="btn-xm btn-primary intro">簡介</router-link>
         &nbsp;
         <router-link :to="{ path: (entry.novelID !== undefined ? '/novel/' + entry.novelID : '/comic/' + entry.comicID) }" tag="small" class="btn-xm btn-primary intro">閱讀</router-link><br>
         <small class="btn-xm btn-success intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>
+      </div>
+      <div class="d-md-none">
+        <router-link :to="{ path: (entry.novelID !== undefined ? '/novel_intro/' + entry.novelID : '/comic_intro/' + entry.comicID) }" tag="small" class="btn-xm btn-primary intro">
+          <i class="fas fa-info-circle"></i>
+        </router-link>
+        &nbsp;
+        <router-link :to="{ path: (entry.novelID !== undefined ? '/novel/' + entry.novelID : '/comic/' + entry.comicID) }" tag="small" class="btn-xm btn-primary intro">
+          <i class="fas fa-book-open"></i>
+        </router-link><br>
+        <small class="btn-xm btn-success intro">{{ simpleFormatDate(entry.lastCrawlTime) }}</small>
       </div>
     </router-link>
   </div>
@@ -32,6 +42,13 @@ export default {
       let h = `0${date.getHours()}`.slice(-2);
       let M = `0${date.getMinutes()}`.slice(-2);
       return `${date.getFullYear()}/${m}/${d} ${h}:${M}`;
+    },
+    simpleFormatDate (dateStr) {
+      let date = new Date(dateStr);
+      let y = date.getFullYear().toString().substr(-2);
+      let m = `0${date.getMonth() + 1}`.slice(-2);
+      let d = `0${date.getDate()}`.slice(-2);
+      return `${y}/${m}/${d}`;
     }
   }
 }
