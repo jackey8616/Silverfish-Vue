@@ -3,6 +3,15 @@ import App from "./App.vue";
 import router from "./router";
 import axios from "axios";
 import { ObserveVisibility } from 'vue-observe-visibility'
+// FontAwesome
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { 
+  faHome, faArrowRight, faLightbulb as fasLightbulb,
+  faLink, faInfoCircle, faBookOpen 
+} from '@fortawesome/free-solid-svg-icons'
+import { faLightbulb as farLightbulb } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+// Bootstrap
 import "bootstrap/dist/css/bootstrap.css";
 import "./registerServiceWorker";
 
@@ -10,6 +19,9 @@ import Navigator from '@/components/Navigator'
 import store from './store';
 
 axios.defaults.withCredentials = false;
+
+library.add(faHome, faArrowRight, fasLightbulb, farLightbulb, faLink, faInfoCircle, faBookOpen);
+
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 //Vue.prototype.$backend = "http://127.0.0.1:8080"
@@ -141,6 +153,7 @@ Vue.prototype.$fetchComicChapter = function (comicID, chapterIndex) {
   })
 }
 
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('navigator', Navigator)
 Vue.directive('observe-visibility', ObserveVisibility)
 

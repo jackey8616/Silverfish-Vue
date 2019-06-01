@@ -18,11 +18,11 @@
       </div>
       <div class="d-md-none">
         <router-link :to="{ path: (entry.novelID !== undefined ? '/novel_intro/' + entry.novelID : '/comic_intro/' + entry.comicID) }" tag="small" class="btn-xm btn-color-2 intro">
-          <i class="fas fa-info-circle"></i>
+          <font-awesome-icon icon="info-circle"/>
         </router-link>
         &nbsp;
         <router-link :to="{ path: (entry.novelID !== undefined ? '/novel/' + entry.novelID : '/comic/' + entry.comicID) }" tag="small" class="btn-xm btn-color-3 intro">
-          <i class="fas fa-book-open"></i>
+          <font-awesome-icon icon="book-open"/>
         </router-link><br>
         <small class="btn-xm btn-color-1 intro">{{ simpleFormatDate(entry.lastCrawlTime) }}</small>
       </div>

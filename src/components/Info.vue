@@ -18,7 +18,7 @@
           <div class="d-md-none" style="text-align: right;">
             <a :href="entry.url">
               <small class="btn-xs btn-color-2 intro">
-                <i class="fas fa-link">Source</i>
+                <font-awesome-icon icon="link"/>&nbsp;Source
               </small>
             </a>
             &nbsp;

@@ -4,20 +4,21 @@
       <aside class="col-2 col-md-1">
         <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
           <router-link :to="{name: 'home'}" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <i class="fas fa-home"></i>
+            <font-awesome-icon icon="home"/>
           </router-link><br/>
           <button @click="isTW = !isTW" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             {{ isTW ? "TW" : "CH" }}
           </button><br/>
           <button @click="lightOn = !lightOn" class="sticky-bar-el btn-circle btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <i class="fa-lightbulb" :class="{'fa': lightOn, 'far': !lightOn}"></i>
+            <font-awesome-icon v-if="lightOn" :icon="['fa', 'lightbulb']"/>
+            <font-awesome-icon v-if="!lightOn" :icon="['far', 'lightbulb']"/>
           </button><br />
           <button @click="fontSize = fontSize === 4 ? 1 : fontSize + 1" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             {{ ['Sm', 'Md', 'Lg', 'Xl'][fontSize - 1] }}
           </button><br />
           <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
           <button @click="get" :disabled="novel.articles.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <i class="fas fa-arrow-right"></i>
+            <font-awesome-icon icon="arrow-right"/>
           </button><br />
         </affix>
       </aside>
