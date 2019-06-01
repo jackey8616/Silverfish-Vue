@@ -31,6 +31,12 @@ export default new Router({
       name: "comic",
       component: Comic,
       props: true
+    },
+    {
+      path: "/comic_intro/:comicID",
+      name: "comic_intro",
+      component: Info,
+      props: true
     }
     /*
     {

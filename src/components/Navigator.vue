@@ -1,6 +1,6 @@
 <template>
   <nav id="navigator" class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="#">書蠹</a>
+    <router-link to="/" class="navbar-brand">書蠹</router-link>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbatNav" aria-expanded="false" aria-label="Toggle navgaton">
       <span class="navbar-toggler-icon"></span>
     </button>
