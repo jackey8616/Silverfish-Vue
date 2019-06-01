@@ -11,18 +11,18 @@
             <h4><strong>{{ entry.title }}</strong></h4>
           </div>
           <div class="d-none d-lg-block" style="text-align: right;">
-            <a :href="entry.url"><small class="btn-xs btn-warning intro">{{ entry.dns }}</small></a>
+            <a :href="entry.url"><small class="btn-xs btn-color-2 intro">{{ entry.dns }}</small></a>
             &nbsp;
-            <small class="btn-xs btn-success intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>
+            <small class="btn-xs btn-color-1 intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>
           </div>
           <div class="d-md-none" style="text-align: right;">
             <a :href="entry.url">
-              <small class="btn-xs btn-warning intro">
+              <small class="btn-xs btn-color-2 intro">
                 <i class="fas fa-link">Source</i>
               </small>
             </a>
             &nbsp;
-            <small class="btn-xs btn-success intro">{{ simpleFormatDate(entry.lastCrawlTime) }}</small><br>
+            <small class="btn-xs btn-color-1 intro">{{ simpleFormatDate(entry.lastCrawlTime) }}</small><br>
           </div>
         </div>
         <hr>
