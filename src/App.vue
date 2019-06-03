@@ -32,4 +32,12 @@
     background-color: #9d5b8b;
     border-color: #9d5b8b;
   }
+
+  input.form-control {
+    background-color: #8b968d;
+    border-color: #8b968d;
+  }
+  input.form-control::placeholder {
+    color: #203744;
+  }
 </style>

@@ -1,18 +1,35 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Login from "@/components/auth/Login";
+import Register from "@/components/auth/Register";
 import Info from "@/components/Info";
-import NovelList from '@/components/NovelList';
+import List from '@/components/List';
 import Novel from "@/components/Novel";
 import Comic from "@/components/Comic";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: "/",
       name: "home",
-      component: NovelList
+      component: List
+    },
+    {
+      path: "/list",
+      name: "list",
+      component: List
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register
     },
     {
       path: "/novel/:novelID",
@@ -51,3 +68,17 @@ export default new Router({
     */
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (Vue.prototype.$vuex.getters.isLogging() === false) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      });
+    }
+  }
+  next();
+});
+
+export default router;
