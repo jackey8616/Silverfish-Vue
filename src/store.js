@@ -30,7 +30,10 @@ export default new Vuex.Store({
       state.auth.account = payload.account
       state.auth.registerDatetime = payload.registerDatetime
       state.auth.lastLoginDatetime = payload.lastLoginDatetime
-      state.auth.bookmark = payload.bookmark
+      state.auth.bookmark = {
+        Novel: payload.bookmark.Novel == null ? {} : payload.bookmark.Novel,
+        Comic: payload.bookmark.Comic == null ? {} : payload.bookmark.Comic
+      }
     },
     logout(state, payload) {
       state.auth = {
