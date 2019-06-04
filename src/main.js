@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import axios from "axios";
 import store from './store';
+import "./registerServiceWorker";
 
 // Vue-Observe-Visibility
 import { ObserveVisibility } from 'vue-observe-visibility'
@@ -15,8 +16,8 @@ import {
 import { faLightbulb as farLightbulb, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // Bootstrap
+import 'bootstrap';
 import "bootstrap/dist/css/bootstrap.css";
-import "./registerServiceWorker";
 // Vue-Toasted
 import Toasted from 'vue-toasted';
 

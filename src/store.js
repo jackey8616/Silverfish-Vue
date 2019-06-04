@@ -17,7 +17,13 @@ export default new Vuex.Store({
       }
     },
     Novels: {},
-    Comics: {}
+    Comics: {},
+    Omine: {
+      toggle: true,
+      loginID: "9d70aae19ef74a69b0d8b1be64d3b498",
+      thread: "-1",
+      throttle: 50
+    }
   },
   mutations: {
     login(state, payload) {
@@ -77,6 +83,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    getOmine: state => () => {
+      return state.Omine;
+    },
     isLogging: state => () => {
       return state.auth.account !== "" && state.auth.account !== "guest"
     },
