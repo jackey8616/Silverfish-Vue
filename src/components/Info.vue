@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 col-md-2 offset-md-2">
-      <img :src="entry.cover_url">
+      <img :src="entry.cover_url" :alt="entry.title" />
     </div>
     <div class="col-10 offset-1 col-md-5 offset-md-0">
       <div style="padding-top: 10px;">
