@@ -1,3 +1,3 @@
 User-agent: *
 Disallow:
-Sitemap: https://silverfish.clo5de.info/sitemap.xml
+Sitemap: https://silverfish.cc/sitemap.xml
