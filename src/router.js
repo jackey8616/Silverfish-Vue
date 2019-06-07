@@ -1,11 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Login from "@/components/auth/Login";
-import Register from "@/components/auth/Register";
-import Info from "@/components/Info";
-import List from '@/components/List';
-import Novel from "@/components/Novel";
-import Comic from "@/components/Comic";
 
 Vue.use(Router);
 
@@ -14,45 +8,53 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: List
+      component: () => 
+        import(/* webpackChunkName: "list" */"@/components/List"),
     },
     {
       path: "/list",
       name: "list",
-      component: List
+      component: () => 
+        import(/* webpackChunkName: "list" */"@/components/List"),
     },
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: () => 
+        import(/* webpackChunkName: "login" */"@/components/auth/Login"),
     },
     {
       path: "/register",
       name: "register",
-      component: Register
+      component: () => 
+        import(/* webpackChunkName: "register" */"@/components/auth/Register"),
     },
     {
       path: "/novel/:novelID",
       name: "novel",
-      component: Novel,
+      component: () => 
+        import(/* webpackChunkName: "novel" */"@/components/Novel"),
       props: true
     },
     {
       path: "/novel_intro/:novelID",
       name: "novel_intro",
-      component: Info,
+      component: () => 
+        import(/* webpackChunkName: "info" */"@/components/Info"),
       props: true
     },
     {
       path: "/comic/:comicID",
       name: "comic",
-      component: Comic,
+      component: () =>
+        import(/* webpackChunkName: "comic" */"@/components/Comic"),
       props: true
     },
     {
       path: "/comic_intro/:comicID",
       name: "comic_intro",
-      component: Info,
+      component: () => 
+        import(/* webpackChunkName: "info" */"@/components/Info"),
       props: true
     }
     /*
@@ -63,7 +65,7 @@ const router = new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () =>
-        import(/* webpackChunkName: "about" "./views/About.vue")
+        import(/*webpackChunkName: "about""./views/About.vue")
     }
     */
   ]

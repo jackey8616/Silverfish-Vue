@@ -15,7 +15,7 @@
       </ul>
       <ul id="right-nav" class="navbar-nav col-4">
         <li class="nav-item">
-          <div class="fb-like" data-href="https://silverfish.cc/" data-width="" data-layout="button_count" data-action="recommend" data-size="large" data-show-faces="true" data-share="true"></div>
+          <div class="fb-like" data-href="https://www.facebook.com/silverfish.compose/" data-width="" data-layout="button_count" data-action="recommend" data-size="large" data-show-faces="true" data-share="true"></div>
         </li>&nbsp;
         <li class="nav-item"><Omine /></li>
         <!--li class="nav-item">
