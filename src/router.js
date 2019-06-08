@@ -1,7 +1,13 @@
 import Vue from "vue";
 import Router from "vue-router";
+// Vue-Meta
+import VueMeta from 'vue-meta';
 
 Vue.use(Router);
+
+Vue.use(VueMeta, {
+  refreshOnceOnNavigation: true
+})
 
 const router = new Router({
   routes: [

@@ -38,6 +38,19 @@
 <script>
 export default {
   name: 'info',
+  metaInfo () {
+    return {
+      title: this.entry.title,
+      meta: [
+        { vmid: 'description', name: 'description', content: this.entry.description },
+        { vmid: 'og:title', property: 'og:title', content: this.entry.title },
+        { vmid: 'og:url' , property: 'og:url', content: `novel_intro/${this.entry.novelID}` },
+        { vmid: 'og:description', property: 'og:description', content: this.entry.description },
+        { vmid: 'og:image', property: 'og:image', content: this.entry.coverURL },
+        { vmid: 'og:type', property: 'og:type', content: 'novel' },
+      ]
+    }
+  },
   data () {
     return {
       type: '',

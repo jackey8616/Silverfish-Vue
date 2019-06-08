@@ -184,6 +184,27 @@ Vue.use(Toasted, {
 
 new Vue({
   router,
+  metaInfo: () => {
+    return {
+      htmlAttrs: {
+        prefix: 'og: http://ogp.me/ns#',
+        lang: 'zh-Hant-TW'
+      },
+      title: '首頁',
+      titleTemplate: '%s - 書蠹付梓 | 無縫閱讀',
+      meta: [
+        { charset: 'utf-8' },
+        { vmid: 'description', name: 'description', content: '提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。' },
+        { vmid: 'og:title', property: 'og:title', content: '首頁', template: chunk => `${chunk}  - 書蠹付梓 | 無縫閱讀` },
+        { vmid: 'og:site_name', property: 'og:site_name', content: '書蠹付梓 | 無縫閱讀' },
+        { vmid: 'og:url' , property: 'og:url', content:'', template: chunk => `https://silverfish.cc/#/${chunk}` },
+        { vmid: 'os:description', property: 'og:description', content: '提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。' },
+        { vmid: 'os:image', property: 'og:image', content: '' },
+        { vmid: 'og:type', property: 'og:type', content: 'website' },
+        { property: 'fb:app_id', content: '1284931168337983' },
+      ]
+    }
+  },
   store,
   render: h => h(App)
 }).$mount("#app");
