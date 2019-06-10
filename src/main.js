@@ -240,7 +240,17 @@ new Vue({
         { vmid: "og:image", property: "og:image", content: "" },
         { vmid: "og:type", property: "og:type", content: "website" },
         { property: "fb:app_id", content: "1284931168337983" }
-      ]
+      ],
+      script: [
+        {
+          vmid: "ldjson-schema",
+          innerHTML: "",
+          type: "application/ld+json"
+        }
+      ],
+      __dangerouslyDisableSanitizersByTagID: {
+        "ldjson-schema": ["innerHTML"]
+      }
     };
   },
   store,

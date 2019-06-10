@@ -48,6 +48,22 @@ export default {
         { vmid: 'og:description', property: 'og:description', content: this.entry.description },
         { vmid: 'og:image', property: 'og:image', content: this.entry.coverURL },
         { vmid: 'og:type', property: 'og:type', content: this.type },
+      ],
+      script: [
+        {
+          vmid: "ldjson-schema",
+          innerHTML: `{
+            "@context": "http://schema.org",
+            "@type": "Article",
+            "name": "${this.entry.title}",
+            "author": {
+              "@type": "Person",
+              "name": "${this.entry.author}"
+            },
+            "image": "${this.entry.cover_url}"
+          }`,
+          type: "application/ld+json"
+        }
       ]
     }
   },
