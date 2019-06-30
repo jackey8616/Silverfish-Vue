@@ -88,7 +88,7 @@ Vue.prototype.$fetchNovelByID = function(novelID) {
         url: novel.url,
         title: novel.title,
         cover_url: novel.coverUrl,
-        articles: novel.chapters,
+        chapters: novel.chapters,
         lastCrawlTime: novel.lastCrawlTime
       });
     } else {
