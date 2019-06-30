@@ -17,7 +17,7 @@
             {{ ['Sm', 'Md', 'Lg', 'Xl'][fontSize - 1] }}
           </button><br />
           <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
-          <button @click="get" :disabled="novel.articles.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <button @click="get" :disabled="novel.chapters.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <font-awesome-icon icon="arrow-right"/>
           </button><br />
         </affix>
@@ -92,7 +92,7 @@ export default {
       return this.$fetchChapter(this.novelID, index).then(data => {
         return {
           index: index,
-          title: this.novel.articles[index].title,
+          title: this.novel.chapters[index].title,
           content: data
         };
       })
