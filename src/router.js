@@ -36,6 +36,15 @@ const router = new Router({
         import(/* webpackChunkName: "register" */"@/components/auth/Register"),
     },
     {
+      path: "/user_info",
+      name: "user-info",
+      component: () =>
+        import(/* webpackChunkName: "user-info" */"@/components/auth/UserInfo"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: "/novel/:novelID",
       name: "novel",
       component: () => 

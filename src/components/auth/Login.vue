@@ -64,7 +64,6 @@ export default {
         });
 
         if (res.data.success === true) {
-          console.log(res.data);
           this.$vuex.commit('login', res.data.data);
           this.$toasted.success('登入成功');
           this.$router.push({ name: 'list'});

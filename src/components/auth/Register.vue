@@ -1,11 +1,17 @@
 <template>
   <div class="row">
     <div id="form" class="col-8 offset-2 col-md-4 offset-md-4">
+      <b><big>為什麼需要註冊？</big></b>
       <p>
-        為什麼需要註冊？<br>
         壹、保持多裝置間閱讀書籤的紀錄可以同步。<br>
-        貳、針對每隻書蟲的閱讀習慣推薦相似的書籍。（未來功能）<br>
+        貳、針對每隻書蟲的閱讀習慣推薦相似的書籍。<small>（未來功能）</small><br>
         <del>參、大家都有註冊，好像我們沒有也不行。</del>
+      </p>
+      <b><big>我的資料安全嗎？</big></b>
+      <p>
+        　　每個帳號的使用過程中，我們只會紀錄該帳號的註冊時間, 上次登錄時間及閱讀紀錄。<br>
+        　　註冊時並不會收集除帳號密碼外的任何額外資料，未來規劃也只會使用閱讀紀錄來做分析使用者習慣。<br>
+        　　如果您仍然有安全上的疑慮，可以使用簡單好紀的帳號密碼申請即可。<br>
       </p>
       <form>
         <div class="input-group mb-3">
@@ -88,5 +94,9 @@ export default {
     padding: 20px 20px 20px 20px;
     border-radius: .5em;
     background-color: rgba(255, 255, 255, 0.212);
+  }
+  p {
+    font-size: 14px;
+    text-align: left;
   }
 </style>

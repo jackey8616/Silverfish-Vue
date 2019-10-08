@@ -7,35 +7,52 @@
     <div id="navbarNav" class="navbar-collapse collapse row">
       <ul id="left-nav" class="navbar-nav col-8">
         <li class="nav-item">
-          <router-link to="/" class="nav-link">首頁</router-link>
+          <router-link to="/" class="nav-link">
+            <font-awesome-icon icon="home"/>  首頁
+          </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/list" class="nav-link">列表</router-link>
+          <router-link to="/list" class="nav-link">
+            <font-awesome-icon icon="book-open"/> 列表
+          </router-link>
         </li>
       </ul>
       <ul id="right-nav" class="navbar-nav col-4">
         <li class="nav-item">
           <div class="fb-like" data-href="https://www.facebook.com/silverfish.compose/" data-width="" data-layout="button_count" data-action="recommend" data-size="large" data-show-faces="true" data-share="true"></div>
         </li>&nbsp;
-        <li class="nav-item"><Omine /></li>
-        <!--li class="nav-item">
-          <router-link v-if="$vuex.getters.isLogging() === false" to="/login">{{ $vuex.getters.getAuth().account }}</router-link>
-          <router-link v-else to="/">{{ $vuex.getters.getAuth().account }}</router-link>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <font-awesome-icon icon="user"/>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <div v-if="$vuex.getters.isLogging() === true">
+              <a class="dropdown-item" href="#">
+                {{ $vuex.getters.getAuth().account }}
+              </a>
+              <!--a class="dropdown-item" href="#">
+                <router-link to="/user_info" class="nav-link">資訊</router-link>
+              </a-->
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">
+                <a @click="logout()" class="nav-link">登出</a>
+              </a>
+            </div>
+            <div v-else>
+              <a class="dropdown-item" href="#">{{ $vuex.getters.getAuth().account }}</a>
+              <router-link to="/register" class="dropdown-item">註冊</router-link>
+              <router-link to="/login" class="dropdown-item">登入</router-link>
+            </div>
+          </div>
         </li>
-        <li class="nav-item">
-          <a v-if="$vuex.getters.isLogging()" @click="logout()" class="nav-link">登出</a>
-        </li-->
       </ul>
     </div>
   </nav>
 </template>
 
 <script>
-import Omine from '@/components/Omine';
-
 export default {
   name: 'navigator',
-  components: { Omine },
   methods: {
     logout () {
       this.$vuex.commit('logout');
@@ -61,5 +78,15 @@ export default {
   }
   #right-nav .nav-item,.nav-link {
     display: inline;
+  }
+  div.dropdown-menu {
+    background-color: #222426;
+  }
+  .dropdown-item {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .dropdown-item:hover,.dropdown-item:focus {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #222426;
   }
 </style>

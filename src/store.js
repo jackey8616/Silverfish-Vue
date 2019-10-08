@@ -90,9 +90,6 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getOmine: state => () => {
-      return state.Omine;
-    },
     isLogging: state => () => {
       return state.auth.account !== "" && state.auth.account !== "guest";
     },

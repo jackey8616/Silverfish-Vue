@@ -15,7 +15,8 @@ import {
   faLightbulb as fasLightbulb,
   faLink,
   faInfoCircle,
-  faBookOpen
+  faBookOpen,
+  faUser
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faLightbulb as farLightbulb,
@@ -40,7 +41,8 @@ library.add(
   faLink,
   faInfoCircle,
   faBookOpen,
-  faTimesCircle
+  faTimesCircle,
+  faUser
 );
 
 Vue.config.productionTip = false;
@@ -70,9 +72,6 @@ Vue.prototype.$fetchNovelByID = function(novelID) {
     let res = await axios({
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/novel",
       method: "GET",
-      headers: {
-        //"Reader": Vue.prototype.$vuex.getters.getAuth().account
-      },
       params: {
         novel_id: novelID
       }
@@ -103,7 +102,7 @@ Vue.prototype.$fetchChapter = function(novelID, chapterIndex) {
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/chapter",
       method: "GET",
       headers: {
-        //"Reader": Vue.prototype.$vuex.getters.getAuth().account
+        "Reader": Vue.prototype.$vuex.getters.getAuth().account
       },
       params: {
         novel_id: novelID,
@@ -138,9 +137,6 @@ Vue.prototype.$fetchComicByID = function(comicID) {
     let res = await axios({
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comic",
       method: "GET",
-      headers: {
-        //"Reader": Vue.prototype.$vuex.getters.getAuth().account
-      },
       params: {
         comic_id: comicID
       }
@@ -171,7 +167,7 @@ Vue.prototype.$fetchComicChapter = function(comicID, chapterIndex) {
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comic/chapter",
       method: "GET",
       headers: {
-        //"Reader": Vue.prototype.$vuex.getters.getAuth().account
+        "Reader": Vue.prototype.$vuex.getters.getAuth().account
       },
       params: {
         comic_id: comicID,
