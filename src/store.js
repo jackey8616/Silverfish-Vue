@@ -53,9 +53,9 @@ export default new Vuex.Store({
     },
     upsertNovel(state, payload) {
       if (payload.novelID in state.Novels) {
-        state.Novels[payload.novelID] = payload.novel;
+        state.Novels[payload.novelID] = payload;
       } else {
-        Vue.set(state.Novels, payload.novelID, payload.novel);
+        Vue.set(state.Novels, payload.novelID, payload);
       }
     },
     updateNovel(state, payload) {
@@ -73,9 +73,9 @@ export default new Vuex.Store({
     },
     upsertComic(state, payload) {
       if (payload.comicID in state.Comics) {
-        state.Comics[payload.comicID] = payload.comic;
+        state.Comics[payload.comicID] = payload;
       } else {
-        Vue.set(state.Comics, payload.comicID, payload.comic);
+        Vue.set(state.Comics, payload.comicID, payload);
       }
     },
     updateComic(state, payload) {

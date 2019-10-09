@@ -2,12 +2,34 @@
   <div class="container">
     <h1>Novels</h1>
     <div v-if="novels.length !== 0" class="row">
-      <list-card v-for="novel in novels" :key="novel.novelID" :entry="novel"></list-card>
+      <div class="col-6 col-md-3">
+        <list-card v-for="novel in novels.filter((item, index) => index % 4 == 0)" :key="novel.novelID" :entry="novel"></list-card>
+      </div>
+      <div class="col-6 col-md-3">
+        <list-card v-for="novel in novels.filter((item, index) => index % 4 == 1)" :key="novel.novelID" :entry="novel"></list-card>
+      </div>
+      <div class="col-6 col-md-3">
+        <list-card v-for="novel in novels.filter((item, index) => index % 4 == 2)" :key="novel.novelID" :entry="novel"></list-card>
+      </div>
+      <div class="col-6 col-md-3">
+        <list-card v-for="novel in novels.filter((item, index) => index % 4 == 3)" :key="novel.novelID" :entry="novel"></list-card>
+      </div>
     </div>
     <hr>
     <h1>Comics</h1>
     <div v-if="comics.length !== 0" class="row">
-      <list-card v-for="comic in comics" :key="comic.comicID" :entry="comic"></list-card>
+      <div class="col-6 col-md-3">
+        <list-card v-for="comic in comics.filter((item, index) => index % 4 == 0)" :key="comic.comicID" :entry="comic"></list-card>
+      </div>
+      <div class="col-6 col-md-3">
+        <list-card v-for="comic in comics.filter((item, index) => index % 4 == 1)" :key="comic.comicID" :entry="comic"></list-card>
+      </div>
+      <div class="col-6 col-md-3">
+        <list-card v-for="comic in comics.filter((item, index) => index % 4 == 2)" :key="comic.comicID" :entry="comic"></list-card>
+      </div>
+      <div class="col-6 col-md-3">
+        <list-card v-for="comic in comics.filter((item, index) => index % 4 == 3)" :key="comic.comicID" :entry="comic"></list-card>
+      </div>
     </div>
   </div>
 </template>
@@ -25,8 +47,18 @@ export default {
     }
   },
   mounted() {
-    this.$fetchNovels().then(novels => this.novels = novels)
-    this.$fetchComics().then(comics => this.comics = comics)
+    this.$fetchNovels().then(novels => {
+      this.novels = novels;
+      this.novels.forEach((val, index, arr) => {
+        this.$vuex.commit("upsertNovel", val);
+      })
+    });
+    this.$fetchComics().then(comics => {
+      this.comics = comics;
+      this.comics.forEach((val, index, arr) => {
+        this.$vuex.commit("upsertComic", val);
+      })
+    });
   }
 }
 </script>

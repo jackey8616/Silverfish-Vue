@@ -186,7 +186,7 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("navigator", Navigator);
 Vue.directive("observe-visibility", ObserveVisibility);
 Vue.use(Toasted, {
-  duration: 5000,
+  duration: 2500,
   keepOnHover: true,
   iconPack: "fontawesome",
   theme: "bubble"

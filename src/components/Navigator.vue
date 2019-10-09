@@ -34,9 +34,7 @@
                 <router-link to="/user_info" class="nav-link">資訊</router-link>
               </a-->
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">
-                <a @click="logout()" class="nav-link">登出</a>
-              </a>
+              <a @click="logout()" class="dropdown-item" href="#">登出</a>
             </div>
             <div v-else>
               <a class="dropdown-item" href="#">{{ $vuex.getters.getAuth().account }}</a>
