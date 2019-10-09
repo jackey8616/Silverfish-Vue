@@ -20,12 +20,6 @@ export default new Vuex.Store({
     },
     Novels: {},
     Comics: {},
-    Omine: {
-      toggle: true,
-      loginID: "9d70aae19ef74a69b0d8b1be64d3b498",
-      thread: "-1",
-      throttle: 50
-    }
   },
   mutations: {
     login(state, payload) {
@@ -53,15 +47,17 @@ export default new Vuex.Store({
     },
     upsertNovel(state, payload) {
       if (payload.novelID in state.Novels) {
-        state.Novels[payload.novelID] = payload;
+        for (let each in payload) {
+          state.Novels[payload.novelID][each] = payload[each];
+        }
       } else {
         Vue.set(state.Novels, payload.novelID, payload);
       }
     },
     updateNovel(state, payload) {
       if (payload.novelID in state.Novels) {
-        state.Novels[payload.novelID].chapters = payload.novel.chapters;
-        state.Novels[payload.novelID].lastCrawlTime =
+        state.Novels[payload.novelID]["chapters"] = payload.novel.chapters;
+        state.Novels[payload.novelID]["lastCrawlTime"] =
           payload.novel.lastCrawlTime;
       }
     },
@@ -73,15 +69,17 @@ export default new Vuex.Store({
     },
     upsertComic(state, payload) {
       if (payload.comicID in state.Comics) {
-        state.Comics[payload.comicID] = payload;
+        for (let each in payload) {
+          state.Comics[payload.comicID][each] = payload[each];
+        }
       } else {
         Vue.set(state.Comics, payload.comicID, payload);
       }
     },
     updateComic(state, payload) {
       if (payload.comicID in state.Comics) {
-        state.Comics[payload.comicID].chapters = payload.comic.chapters;
-        state.Comics[payload.comicID].lastCrawlTime =
+        state.Comics[payload.comicID]["chapters"] = payload.comic.chapters;
+        state.Comics[payload.comicID]["lastCrawlTime"] =
           payload.comic.lastCrawlTime;
       }
     },

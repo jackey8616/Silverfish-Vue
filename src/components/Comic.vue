@@ -48,7 +48,8 @@ export default {
         let comic = await this.$fetchComicByID(this.comicID)
         this.$vuex.commit('insertComic', {comicID: this.comicID, comic: comic})
       } else {
-        if (this.$vuex.getters.isComicNeedUpdate(this.comicID)) {
+        let localComic = this.$vuex.getters.getComicByID(this.comicID);
+        if (localComic.cahpers === undefined || this.$vuex.getters.isComicNeedUpdate(this.comicID)) {
           let comic = await this.$fetchComicByID(this.comicID)
           this.$vuex.commit('updateComic', {comicID: this.comicID, comic: comic})
         }
