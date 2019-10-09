@@ -32,7 +32,14 @@
         </div>
         <div class="form-group row"  style="text-align: right;">
           <div class="col-6">
-            <button @click="register()" :disabled="valid()" class="btn-sm btn-color-2" type="button">註冊</button>
+            <vue-recaptcha
+              ref="invisibleRecaptcha"
+              size="invisible"
+              @verify="onRecaptchaVerfiy"
+              @expired="onRecaptchaExpired"
+              :loadRecaptchaScript="true"
+              sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"></vue-recaptcha>
+            <button @click="submitRegister()" :disabled="valid()" class="btn-sm btn-color-2" type="button">註冊</button>
           </div>
         </div>
       </form>
@@ -41,10 +48,12 @@
 </template>
 
 <script>
+import VueRecaptcha from 'vue-recaptcha';
 import qs from 'qs';
 
 export default {
   name: 'register',
+  components: { VueRecaptcha },
   data () {
     return {
       auth: {
@@ -62,12 +71,18 @@ export default {
     valid: function () {
       return this.auth.account === "" || this.auth.password === "";
     },
-    register: function () {
+    submitRegister: function () {
+      this.$refs.invisibleRecaptcha.execute();
+    },
+    onRecaptchaExpired: function () {
+      this.$refs.invisibleRecaptcha.reset();
+    },
+    onRecaptchaVerfiy: function (recaptchaToken) {
       (async () => {
         let res = await this.$axios({
           url: this.$backend + "/auth/register",
           method: "POST",
-          data: qs.stringify(this.auth)
+          data: qs.stringify({...{"recaptchaToken": recaptchaToken}, ...this.auth})
         });
 
         if (res.data.success === true) {
@@ -82,6 +97,7 @@ export default {
             this.$toasted.error('未知錯誤！');
             console.error(res.data)
           }
+          this.onRecaptchaExpired();
         }
       }) ();
     }

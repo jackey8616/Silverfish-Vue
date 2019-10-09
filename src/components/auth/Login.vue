@@ -20,7 +20,14 @@
         </div>
         <div class="form-group row"  style="text-align: right;">
           <div class="col-6">
-            <button @click="login()" :disabled="valid()" class="btn-sm btn-color-2" type="button">登入</button>
+            <vue-recaptcha
+              ref="invisibleRecaptcha"
+              size="invisible"
+              @verify="onRecaptchaVerfiy"
+              @expired="onRecaptchaExpired"
+              :loadRecaptchaScript="true"
+              sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"></vue-recaptcha>
+            <button @click="submitLogin()" :disabled="valid()" class="btn-sm btn-color-2" type="button">登入</button>
           </div>
           <div class="col-6">
             <router-link to="/register" tag="small">註冊</router-link>
@@ -34,10 +41,12 @@
 </template>
 
 <script>
+import VueRecaptcha from 'vue-recaptcha';
 import qs from 'qs';
 
 export default {
   name: 'login',
+  components: { VueRecaptcha },
   data () {
     return {
       auth: {
@@ -55,12 +64,18 @@ export default {
     valid: function () {
       return this.auth.account === "" || this.auth.password === "";
     },
-    login: function () {
+    submitLogin: function () {
+      this.$refs.invisibleRecaptcha.execute();
+    },
+    onRecaptchaExpired: function () {
+      this.$refs.invisibleRecaptcha.reset();
+    },
+    onRecaptchaVerfiy: function (recaptchaToken) {
       (async () => {
         let res = await this.$axios({
           url: this.$backend + "/auth/login",
           method: "POST",
-          data: qs.stringify(this.auth)
+          data: qs.stringify({...{"recaptchaToken": recaptchaToken}, ...this.auth})
         });
 
         if (res.data.success === true) {
@@ -77,6 +92,7 @@ export default {
             this.$toasted.error('未知錯誤！');
             console.error(res.data);
           }
+          this.onRecaptchaExpired();
         }
       }) ();
     }
