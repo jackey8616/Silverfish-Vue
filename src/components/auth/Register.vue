@@ -30,17 +30,25 @@
             </button>
           </div>
         </div>
-        <div class="form-group row"  style="text-align: right;">
-          <div class="col-6">
-            <vue-recaptcha
-              ref="invisibleRecaptcha"
-              size="invisible"
-              @verify="onRecaptchaVerfiy"
-              @expired="onRecaptchaExpired"
-              :loadRecaptchaScript="true"
-              sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"></vue-recaptcha>
-            <button @click="submitRegister()" :disabled="valid()" class="btn-sm btn-color-2" type="button">註冊</button>
-          </div>
+        <div class="form-group"  style="text-align: right;">
+          <vue-recaptcha
+            ref="invisibleRecaptcha"
+            size="invisible"
+            @verify="onRecaptchaVerfiy"
+            @expired="onRecaptchaExpired"
+            :loadRecaptchaScript="true"
+            sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"></vue-recaptcha>
+            <div class="row">
+              <div class="col-10 offset-1">
+                <div v-if="load == false" style="text-align: left;">
+                  <input @click="submitRegister()" :disabled="valid()" class="btn-sm btn-color-2" type="button" value="註冊"/>
+                </div>
+                <div v-else>
+                  <br>
+                  <center><loading :size="80"/></center>
+                </div>
+              </div>
+            </div>
         </div>
       </form>
     </div>
@@ -56,6 +64,7 @@ export default {
   components: { VueRecaptcha },
   data () {
     return {
+      load: false,
       auth: {
         account: '',
         password: ''
@@ -72,6 +81,7 @@ export default {
       return this.auth.account === "" || this.auth.password === "";
     },
     submitRegister: function () {
+      this.load = true;
       this.$refs.invisibleRecaptcha.execute();
     },
     onRecaptchaExpired: function () {
@@ -100,6 +110,7 @@ export default {
             console.error(res.data)
           }
           this.onRecaptchaExpired();
+          this.load = false;
         }
       }) ();
     }

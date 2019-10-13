@@ -29,6 +29,10 @@
             throttle: 300,
             }" />
         </div>
+        <div>
+          <br><br>
+          <center><loading :size="150"/></center>
+        </div>
       </div>
     </div>
   </div>

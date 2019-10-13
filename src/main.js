@@ -32,6 +32,7 @@ import Toasted from "vue-toasted";
 import ToggleButton from 'vue-js-toggle-button'
 
 import Navigator from "@/components/Navigator";
+import Loading from "@/components/Loading";
 
 axios.defaults.withCredentials = false;
 
@@ -216,6 +217,7 @@ Vue.prototype.$fetchComicChapter = function(comicID, chapterIndex) {
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("navigator", Navigator);
+Vue.component("loading", Loading);
 Vue.directive("observe-visibility", ObserveVisibility);
 Vue.use(Toasted, {
   duration: 2500,

@@ -19,6 +19,10 @@
             <hr v-observe-visibility="{callback: (isVisible, entry) => observe(isVisible, entry, each)}"/>
           </div>
         </div>
+        <div>
+          <br><br>
+          <center><loading :size="150"/></center>
+        </div>
       </div>
     </div>
   </div>

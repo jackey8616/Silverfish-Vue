@@ -26,24 +26,27 @@
               @expired="onRecaptchaExpired"
               :loadRecaptchaScript="true"
               sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"/>
-          
-          
-          
-          <div class="row justify-content-around">
-            <div class="col-2" style="text-align: left;">
-              <input @click="submitLogin()" :disabled="valid()" class="btn-sm btn-color-2" type="button" value="登入"/>
+          <div v-if="load == false">
+            <div class="row justify-content-around">
+              <div class="col-2" style="text-align: left;">
+                <input @click="submitLogin()" :disabled="valid()" class="btn-sm btn-color-2" type="button" value="登入"/>
+              </div>
+              <div class="col-8" title="保持連續一周的登入狀態">
+                <small>保持登入?</small>
+                <toggle-button v-model="auth.keepLogin" :width="38" :height="19" :marge="0"/>
+              </div>
             </div>
-            <div class="col-8" title="保持連續一周的登入狀態">
-              <small>保持登入?</small>
-              <toggle-button v-model="auth.keepLogin" :width="38" :height="19" :marge="0"/>
+            <div class="row">
+              <div class="col align-self-end" style="text-align: right;">
+                <router-link to="/register" tag="small">註冊</router-link>
+                &nbsp;
+                <small title="關我屁事">忘記密碼?</small>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col align-self-end" style="text-align: right;">
-              <router-link to="/register" tag="small">註冊</router-link>
-              &nbsp;
-              <small title="關我屁事">忘記密碼?</small>
-            </div>
+          <div v-else>
+            <br>
+            <center><loading :size="80"/></center>
           </div>
         </div>
       </form>
@@ -60,6 +63,7 @@ export default {
   components: { VueRecaptcha },
   data () {
     return {
+      load: false,
       auth: {
         keepLogin: false,
         account: '',
@@ -77,6 +81,7 @@ export default {
       return this.auth.account === "" || this.auth.password === "";
     },
     submitLogin: function () {
+      this.load = true;
       this.$refs.invisibleRecaptcha.execute();
     },
     onRecaptchaExpired: function () {
@@ -110,6 +115,7 @@ export default {
             console.error(res.data);
           }
           this.onRecaptchaExpired();
+          this.load = false;
         }
       }) ();
     }

@@ -15,6 +15,9 @@
         <list-card v-for="novel in novels.filter((item, index) => index % 4 == 3)" :key="novel.novelID" :entry="novel"></list-card>
       </div>
     </div>
+    <div v-else>
+      <center><loading :size="150"/></center>
+    </div>
     <hr>
     <h1>Comics</h1>
     <div v-if="comics.length !== 0" class="row">
@@ -30,6 +33,9 @@
       <div class="col-6 col-md-3">
         <list-card v-for="comic in comics.filter((item, index) => index % 4 == 3)" :key="comic.comicID" :entry="comic"></list-card>
       </div>
+    </div>
+    <div v-else>
+      <center><loading :size="150"/></center>
     </div>
   </div>
 </template>
