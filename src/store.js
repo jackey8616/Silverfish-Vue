@@ -15,8 +15,8 @@ export default new Vuex.Store({
       registerDatetime: "",
       lastLoginDatetime: "",
       bookmark: {
-        Novel: {},
-        Comic: {}
+        novel: {},
+        comic: {}
       }
     },
     Novels: {},
@@ -29,8 +29,8 @@ export default new Vuex.Store({
       state.auth.registerDatetime = payload.user.registerDatetime;
       state.auth.lastLoginDatetime = payload.user.lastLoginDatetime;
       state.auth.bookmark = {
-        Novel: payload.user.bookmark.Novel == null ? {} : payload.user.bookmark.Novel,
-        Comic: payload.user.bookmark.Comic == null ? {} : payload.user.bookmark.Comic
+        novel: payload.user.bookmark.novel == null ? {} : payload.user.bookmark.novel,
+        comic: payload.user.bookmark.comic == null ? {} : payload.user.bookmark.comic
       };
     },
     logout(state) {
@@ -40,8 +40,8 @@ export default new Vuex.Store({
         registerDatetime: "",
         lastLoginDatetime: "",
         bookmark: {
-          Novel: {},
-          Comic: {}
+          novel: {},
+          comic: {}
         }
       };
     },
@@ -68,7 +68,7 @@ export default new Vuex.Store({
       }
     },
     insertNovelBookmark(state, payload) {
-      Vue.set(state.auth.bookmark.Novel, payload.novelID, payload.bookmark);
+      Vue.set(state.auth.bookmark.novel, payload.novelID, payload.bookmark);
     },
     insertComic(state, payload) {
       Vue.set(state.Comics, payload.comicID, payload.comic);
@@ -90,7 +90,7 @@ export default new Vuex.Store({
       }
     },
     insertComicBookmark(state, payload) {
-      Vue.set(state.auth.bookmark.Comic, payload.comicID, payload.bookmark);
+      Vue.set(state.auth.bookmark.comic, payload.comicID, payload.bookmark);
     }
   },
   getters: {
@@ -123,7 +123,7 @@ export default new Vuex.Store({
       return null;
     },
     getNovelBookmarkByID: state => novelID => {
-      return state.auth.bookmark.Novel[novelID];
+      return state.auth.bookmark.novel[novelID];
     },
     isComicIDExists: state => comicID => {
       return comicID in state.Comics;
@@ -137,7 +137,7 @@ export default new Vuex.Store({
       return state.Comics[comicID];
     },
     getComicBookmarkByID: state => comicID => {
-      return state.auth.bookmark.Comic[comicID];
+      return state.auth.bookmark.comic[comicID];
     }
   }
 });
