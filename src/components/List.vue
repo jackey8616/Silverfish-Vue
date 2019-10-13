@@ -46,19 +46,43 @@ export default {
       comics: []
     }
   },
-  mounted() {
-    this.$fetchNovels().then(novels => {
-      this.novels = novels;
-      this.novels.forEach((val, index, arr) => {
-        this.$vuex.commit("upsertNovel", val);
-      })
-    });
-    this.$fetchComics().then(comics => {
-      this.comics = comics;
-      this.comics.forEach((val, index, arr) => {
-        this.$vuex.commit("upsertComic", val);
-      })
-    });
+  mounted () {
+    this.fetchList();
+    this.fetchBookmark();
+  },
+  watch: {
+    '$route' (to, from) {
+      if (["home", "list"].includes(to.name) == false) {
+        return;
+      }
+      this.fetchList();
+      this.fetchBookmark();
+    }
+  },
+  methods: {
+    fetchList () {
+      this.$fetchNovels().then(novels => {
+        this.novels = novels;
+        this.novels.forEach((val, index, arr) => {
+          this.$vuex.commit("upsertNovel", val);
+        })
+      });
+      this.$fetchComics().then(comics => {
+        this.comics = comics;
+        this.comics.forEach((val, index, arr) => {
+          this.$vuex.commit("upsertComic", val);
+        })
+      });
+    },
+    fetchBookmark () {
+      (async () => {
+        if (this.$vuex.getters.isLogging() == true) {
+          this.$fetchLatestBookmark().then(data => {
+            this.$vuex.commit("updateBookmark", data);
+          });
+        }
+      })();
+    }
   }
 }
 </script>

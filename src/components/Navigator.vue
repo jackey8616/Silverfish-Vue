@@ -51,11 +51,45 @@
 <script>
 export default {
   name: 'navigator',
+  watch: {
+    '$route' (to, from) {
+      this.status(this.$vuex.getters.getSession());
+    }
+  },
   methods: {
+    status (sessionToken) {
+      if (sessionToken === "") {
+        return;
+      }
+      (async () => {
+        let res = await this.$axios({
+          url: this.$backend + "/auth/status",
+          method: "GET",
+          headers: {
+            Authorization: sessionToken,
+          }
+        });
+        if (res.data.success == true) {
+          if (res.data.data == false) {
+            this.$vuex.commit('logout')
+            this.$toasted.show('Session過期，請重新登入')
+          }
+        }
+      })();
+    },
     logout () {
-      this.$vuex.commit('logout');
-      this.$toasted.success('登出成功')
-      this.$router.push({'path': '/'})
+      (async () => {
+        let res = await this.$axios({
+          url: this.$backend + "/auth/logout",
+          method: "GET",
+          headers: {
+            Authorization: this.$vuex.getters.getSession(),
+          }
+        });
+        this.$vuex.commit('logout');
+        this.$toasted.success('登出成功')
+        this.$router.push({'path': '/'})
+      })();
     }
   }
 }

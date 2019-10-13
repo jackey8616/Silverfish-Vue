@@ -28,6 +28,8 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 // Vue-Toasted
 import Toasted from "vue-toasted";
+// Vue-Js-Toggle-Button
+import ToggleButton from 'vue-js-toggle-button'
 
 import Navigator from "@/components/Navigator";
 
@@ -52,11 +54,32 @@ Vue.prototype.$backend = "https://silverfish-backend.clo5de.info:2087";
 Vue.prototype.$api_ver = "/api/v1";
 Vue.prototype.$vuex = store;
 
+Vue.prototype.$fetchLatestBookmark = function () {
+  return new Promise(async (resolve, reject) => {
+    let res = await axios({
+      url: Vue.prototype.$backend + "/user/bookmark",
+      method: "GET",
+      headers: {
+        Authorization: Vue.prototype.$vuex.getters.getSession()
+      }
+    });
+
+    if (res.data.success) {
+      return resolve(res.data.data);
+    } else {
+      return reject(res.data.data);
+    }
+  });
+};
+
 Vue.prototype.$fetchNovels = function() {
   return new Promise(async (resolve, reject) => {
     let res = await axios({
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/novels",
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: Vue.prototype.$vuex.getters.getSession()
+      }
     });
 
     if (res.data.success) {
@@ -72,6 +95,9 @@ Vue.prototype.$fetchNovelByID = function(novelID) {
     let res = await axios({
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/novel",
       method: "GET",
+      headers: {
+        Authorization: Vue.prototype.$vuex.getters.getSession()
+      },
       params: {
         novel_id: novelID
       }
@@ -102,7 +128,7 @@ Vue.prototype.$fetchChapter = function(novelID, chapterIndex) {
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/chapter",
       method: "GET",
       headers: {
-        "Reader": Vue.prototype.$vuex.getters.getAuth().account
+        Authorization: Vue.prototype.$vuex.getters.getSession(),
       },
       params: {
         novel_id: novelID,
@@ -121,7 +147,10 @@ Vue.prototype.$fetchComics = function() {
   return new Promise(async (resolve, reject) => {
     let res = await axios({
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comics",
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: Vue.prototype.$vuex.getters.getSession()
+      }
     });
 
     if (res.data.success) {
@@ -137,6 +166,9 @@ Vue.prototype.$fetchComicByID = function(comicID) {
     let res = await axios({
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comic",
       method: "GET",
+      headers: {
+        Authorization: Vue.prototype.$vuex.getters.getSession()
+      },
       params: {
         comic_id: comicID
       }
@@ -167,7 +199,7 @@ Vue.prototype.$fetchComicChapter = function(comicID, chapterIndex) {
       url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comic/chapter",
       method: "GET",
       headers: {
-        "Reader": Vue.prototype.$vuex.getters.getAuth().account
+        Authorization: Vue.prototype.$vuex.getters.getSession(),
       },
       params: {
         comic_id: comicID,
@@ -191,6 +223,7 @@ Vue.use(Toasted, {
   iconPack: "fontawesome",
   theme: "bubble"
 });
+Vue.use(ToggleButton);
 
 new Vue({
   router,

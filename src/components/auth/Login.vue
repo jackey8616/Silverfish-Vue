@@ -18,21 +18,32 @@
             </button>
           </div>
         </div>
-        <div class="form-group row"  style="text-align: right;">
-          <div class="col-6">
-            <vue-recaptcha
+        <div class="form-group"  style="text-align: right;">
+          <vue-recaptcha
               ref="invisibleRecaptcha"
               size="invisible"
               @verify="onRecaptchaVerfiy"
               @expired="onRecaptchaExpired"
               :loadRecaptchaScript="true"
-              sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"></vue-recaptcha>
-            <button @click="submitLogin()" :disabled="valid()" class="btn-sm btn-color-2" type="button">登入</button>
+              sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"/>
+          
+          
+          
+          <div class="row justify-content-around">
+            <div class="col-2" style="text-align: left;">
+              <input @click="submitLogin()" :disabled="valid()" class="btn-sm btn-color-2" type="button" value="登入"/>
+            </div>
+            <div class="col-8" title="保持連續一周的登入狀態">
+              <small>保持登入?</small>
+              <toggle-button v-model="auth.keepLogin" :width="38" :height="19" :marge="0"/>
+            </div>
           </div>
-          <div class="col-6">
-            <router-link to="/register" tag="small">註冊</router-link>
-            &nbsp;
-            <small title="關我屁事">忘記密碼?</small>
+          <div class="row">
+            <div class="col align-self-end" style="text-align: right;">
+              <router-link to="/register" tag="small">註冊</router-link>
+              &nbsp;
+              <small title="關我屁事">忘記密碼?</small>
+            </div>
           </div>
         </div>
       </form>
@@ -50,6 +61,7 @@ export default {
   data () {
     return {
       auth: {
+        keepLogin: false,
         account: '',
         password: ''
       }
@@ -75,6 +87,9 @@ export default {
         let res = await this.$axios({
           url: this.$backend + "/auth/login",
           method: "POST",
+          headers: {
+            Authorization: this.$vuex.getters.getSession()
+          },
           data: qs.stringify({...{"recaptchaToken": recaptchaToken}, ...this.auth})
         });
 
@@ -84,9 +99,11 @@ export default {
           this.$router.push({ name: 'list'});
         } else if (res.data.fail === true) {
           // Fail
-          if (res.data.data.reason === 'Account or Password wrong.') {
+          if (res.data.data.reason === 'Recaptcha verify failed') {
+            this.$toasted.error('Google Recaptch 驗證失敗！')
+          } else if (res.data.data.reason === 'Account or Password wrong') {
             this.$toasted.error('帳號或密碼錯誤！');
-          } else if (res.data.data.reason === 'Account not exists.') {
+          } else if (res.data.data.reason === 'Account not exists') {
             this.$toasted.error('帳號不存在！');
           } else {
             this.$toasted.error('未知錯誤！');
@@ -105,5 +122,8 @@ export default {
     padding: 20px 20px 20px 20px;
     border-radius: .5em;
     background-color: rgba(255, 255, 255, 0.212);
+  }
+  label.vue-js-switch {
+    margin-bottom: 0px;
   }
 </style>

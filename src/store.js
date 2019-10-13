@@ -9,6 +9,7 @@ export default new Vuex.Store({
     createPersistedState({ key: "SILVERFISH", storage: window.localStorage })
   ],
   state: {
+    session: "",
     auth: {
       account: "guest",
       registerDatetime: "",
@@ -23,15 +24,17 @@ export default new Vuex.Store({
   },
   mutations: {
     login(state, payload) {
-      state.auth.account = payload.account;
-      state.auth.registerDatetime = payload.registerDatetime;
-      state.auth.lastLoginDatetime = payload.lastLoginDatetime;
+      state.session = payload.session
+      state.auth.account = payload.user.account;
+      state.auth.registerDatetime = payload.user.registerDatetime;
+      state.auth.lastLoginDatetime = payload.user.lastLoginDatetime;
       state.auth.bookmark = {
-        Novel: payload.bookmark.Novel == null ? {} : payload.bookmark.Novel,
-        Comic: payload.bookmark.Comic == null ? {} : payload.bookmark.Comic
+        Novel: payload.user.bookmark.Novel == null ? {} : payload.user.bookmark.Novel,
+        Comic: payload.user.bookmark.Comic == null ? {} : payload.user.bookmark.Comic
       };
     },
     logout(state) {
+      state.session = ""
       state.auth = {
         account: "guest",
         registerDatetime: "",
@@ -41,6 +44,9 @@ export default new Vuex.Store({
           Comic: {}
         }
       };
+    },
+    updateBookmark(state, payload) {
+      state.auth.bookmark = payload;
     },
     insertNovel(state, payload) {
       Vue.set(state.Novels, payload.novelID, payload.novel);
@@ -90,6 +96,9 @@ export default new Vuex.Store({
   getters: {
     isLogging: state => () => {
       return state.auth.account !== "" && state.auth.account !== "guest";
+    },
+    getSession: state => () => {
+      return state.session;
     },
     getAuth: state => () => {
       return state.auth;

@@ -91,7 +91,9 @@ export default {
           this.$router.push({ name: 'list'});
         } else if (res.data.fail === true) {
           // Fail
-          if (res.data.data.reason === "account exists.") {
+          if (res.data.data.reason === 'Recaptcha verify failed') {
+            this.$toasted.error('Google Recaptch 驗證失敗！')
+          } else if (res.data.data.reason === "account exists") {
             this.$toasted.error('帳號已存在！');
           } else {
             this.$toasted.error('未知錯誤！');
