@@ -1,18 +1,18 @@
 <template>
   <nav id="navigator" class="navbar navbar-expand-lg navbar-dark">
-    <router-link to="/" class="navbar-brand">書蠹付梓 | 無縫閱讀</router-link>
+    <router-link :to="{ name: 'home' }" class="navbar-brand">書蠹付梓 | 無縫閱讀</router-link>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div id="navbarNav" class="navbar-collapse collapse row">
       <ul id="left-nav" class="navbar-nav col-8">
         <li class="nav-item">
-          <router-link to="/" class="nav-link">
+          <router-link :to="{ name: 'home' }" class="nav-link">
             <font-awesome-icon icon="home"/>  首頁
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/list" class="nav-link">
+          <router-link :to="{ name: 'list' }" class="nav-link">
             <font-awesome-icon icon="book-open"/> 列表
           </router-link>
         </li>
@@ -28,14 +28,14 @@
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             <div v-if="$vuex.getters.isLogging() === true">
               <a class="dropdown-item" href="#">{{ $vuex.getters.getAuth().account }}</a>
-              <router-link to="/user_info" class="dropdown-item">資訊</router-link>
+              <router-link :to="{ name: 'userinfo' }" class="dropdown-item">資訊</router-link>
               <div class="dropdown-divider"></div>
               <a @click="logout()" class="dropdown-item" href="#">登出</a>
             </div>
             <div v-else>
               <a class="dropdown-item" href="#">{{ $vuex.getters.getAuth().account }}</a>
-              <router-link to="/register" class="dropdown-item">註冊</router-link>
-              <router-link to="/login" class="dropdown-item">登入</router-link>
+              <router-link :to="{ name: 'register' }" class="dropdown-item">註冊</router-link>
+              <router-link :to="{ name: 'login' }" class="dropdown-item">登入</router-link>
             </div>
           </div>
         </li>

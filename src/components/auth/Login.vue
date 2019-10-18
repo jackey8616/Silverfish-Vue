@@ -39,7 +39,7 @@
             </div>
             <div class="row">
               <div class="col align-self-end" style="text-align: right;">
-                <router-link to="/register" tag="small">註冊</router-link>
+                <router-link :to="{ name: 'register' }" tag="small">註冊</router-link>
                 &nbsp;
                 <small title="關我屁事">忘記密碼?</small>
               </div>

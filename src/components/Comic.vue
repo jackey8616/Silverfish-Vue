@@ -3,7 +3,7 @@
     <div v-if="Object.keys(comic).length !== 0" class="row">
       <aside class="col-2 col-md-1">
         <affix class="sidebar-menu" relative-element-selector="#comic" align="left">
-          <router-link :to="{name: 'home'}" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <router-link :to="{ name: 'home' }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <font-awesome-icon icon="home"/>
           </router-link><br/>
           <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />

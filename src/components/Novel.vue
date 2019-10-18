@@ -3,7 +3,7 @@
     <div v-if="Object.keys(novel).length !== 0" class="row">
       <aside class="col-2 col-md-1">
         <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
-          <router-link :to="{name: 'home'}" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+          <router-link :to="{ name: 'home' }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
             <font-awesome-icon icon="home"/>
           </router-link><br/>
           <button @click="isTW = !isTW" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
