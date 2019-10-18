@@ -36,10 +36,10 @@ const router = new Router({
         import(/* webpackChunkName: "register" */"@/components/auth/Register"),
     },
     {
-      path: "/user_info",
-      name: "user-info",
+      path: "/userinfo",
+      name: "userinfo",
       component: () =>
-        import(/* webpackChunkName: "user-info" */"@/components/auth/UserInfo"),
+        import(/* webpackChunkName: "userinfo" */"@/components/auth/UserInfo"),
       meta: {
         requiresAuth: true,
       },

@@ -33,6 +33,7 @@
               </div>
               <div class="col-8" title="保持連續一周的登入狀態">
                 <small>保持登入?</small>
+                &nbsp;
                 <toggle-button v-model="auth.keepLogin" :width="38" :height="19" :marge="0"/>
               </div>
             </div>

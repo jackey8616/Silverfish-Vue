@@ -27,12 +27,8 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             <div v-if="$vuex.getters.isLogging() === true">
-              <a class="dropdown-item" href="#">
-                {{ $vuex.getters.getAuth().account }}
-              </a>
-              <!--a class="dropdown-item" href="#">
-                <router-link to="/user_info" class="nav-link">資訊</router-link>
-              </a-->
+              <a class="dropdown-item" href="#">{{ $vuex.getters.getAuth().account }}</a>
+              <router-link to="/user_info" class="dropdown-item">資訊</router-link>
               <div class="dropdown-divider"></div>
               <a @click="logout()" class="dropdown-item" href="#">登出</a>
             </div>
