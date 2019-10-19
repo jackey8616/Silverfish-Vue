@@ -1,5 +1,9 @@
 <template>
-  <div class="row">
+  <div v-if="load == true">
+    <br>
+    <center><loading :size="160"/></center>
+  </div>
+  <div v-else class="row">
     <div class="col-12 col-md-2 offset-md-2">
       <img :src="entry.cover_url" :alt="entry.title" />
     </div>
@@ -30,6 +34,13 @@
       </div>
       <div style="padding-top: 10px; text-align: left;">
         <p>{{ entry.description }}</p><br>
+      </div>
+    </div>
+    <div class="col-10 offset-1">
+      <div class="row">
+        <div v-for="each in entry.chapters" :key="each.title" class="col-md-3 col-6 left middle">
+          {{ each.title }}
+        </div>
       </div>
     </div>
   </div>
@@ -69,6 +80,7 @@ export default {
   },
   data () {
     return {
+      load: true,
       type: '',
       id: '',
       entry: {}
@@ -85,6 +97,7 @@ export default {
         this.id = this.$route.params.comicID;
         this.entry = await this.$fetchComicByID(this.id)
       }
+      this.load = false;
     })();
   },
   methods: {
@@ -123,5 +136,12 @@ export default {
     border-width: 1px;
     border-style: solid;
     padding: 0 10px;
+  }
+  .left {
+    text-align: left;
+  }
+  .middle {
+    margin-top: auto;
+    margin-bottom: auto;
   }
 </style>

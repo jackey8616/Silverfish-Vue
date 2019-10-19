@@ -14,6 +14,7 @@ import {
   faArrowRight,
   faLightbulb as fasLightbulb,
   faLink,
+  faInfo,
   faInfoCircle,
   faBookOpen,
   faUser
@@ -43,6 +44,7 @@ library.add(
   fasLightbulb,
   farLightbulb,
   faLink,
+  faInfo,
   faInfoCircle,
   faBookOpen,
   faTimesCircle,
