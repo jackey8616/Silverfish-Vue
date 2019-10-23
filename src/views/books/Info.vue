@@ -1,45 +1,47 @@
 <template>
-  <div v-if="load == true">
-    <br>
-    <center><loading :size="160"/></center>
-  </div>
-  <div v-else class="row">
-    <div class="col-12 col-md-2 offset-md-2">
-      <img :src="entry.cover_url" :alt="entry.title" />
+  <div id="content" class="container">
+    <div v-if="load == true">
+      <br>
+      <center><loading :size="160"/></center>
     </div>
-    <div class="col-10 offset-1 col-md-5 offset-md-0">
-      <div style="padding-top: 10px;">
-        <div>
-          <div style="text-align: left;">
-            <big class="btn-xs intro">{{ type === 'novel' ? '小說' : '漫畫' }}</big>
-            <h4><strong>{{ entry.title }}</strong></h4>
+    <div v-else class="row">
+      <div class="col-12 col-md-2 offset-md-2">
+        <img :src="entry.cover_url" :alt="entry.title" />
+      </div>
+      <div class="col-10 offset-1 col-md-5 offset-md-0">
+        <div style="padding-top: 10px;">
+          <div>
+            <div style="text-align: left;">
+              <big class="btn-xs intro">{{ type === 'novel' ? '小說' : '漫畫' }}</big>
+              <h4><strong>{{ entry.title }}</strong></h4>
+            </div>
+            <div class="d-none d-lg-block" style="text-align: right;">
+              <a :href="entry.url"><small class="btn-xs btn-color-2 intro">{{ entry.dns }}</small></a>
+              &nbsp;
+              <small class="btn-xs btn-color-1 intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>
+            </div>
+            <div class="d-md-none" style="text-align: right;">
+              <a :href="entry.url">
+                <small class="btn-xs btn-color-2 intro">
+                  <font-awesome-icon icon="link"/>&nbsp;Source
+                </small>
+              </a>
+              &nbsp;
+              <small class="btn-xs btn-color-1 intro">{{ simpleFormatDate(entry.lastCrawlTime) }}</small><br>
+            </div>
           </div>
-          <div class="d-none d-lg-block" style="text-align: right;">
-            <a :href="entry.url"><small class="btn-xs btn-color-2 intro">{{ entry.dns }}</small></a>
-            &nbsp;
-            <small class="btn-xs btn-color-1 intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>
-          </div>
-          <div class="d-md-none" style="text-align: right;">
-            <a :href="entry.url">
-              <small class="btn-xs btn-color-2 intro">
-                <font-awesome-icon icon="link"/>&nbsp;Source
-              </small>
-            </a>
-            &nbsp;
-            <small class="btn-xs btn-color-1 intro">{{ simpleFormatDate(entry.lastCrawlTime) }}</small><br>
-          </div>
+          <hr>
+          <h6 style="text-align: right;"><strong>{{ entry.author }} / 著</strong></h6>
         </div>
-        <hr>
-        <h6 style="text-align: right;"><strong>{{ entry.author }} / 著</strong></h6>
+        <div style="padding-top: 10px; text-align: left;">
+          <p>{{ entry.description }}</p><br>
+        </div>
       </div>
-      <div style="padding-top: 10px; text-align: left;">
-        <p>{{ entry.description }}</p><br>
-      </div>
-    </div>
-    <div class="col-10 offset-1">
-      <div class="row">
-        <div v-for="each in entry.chapters" :key="each.title" class="col-md-3 col-6 left middle">
-          {{ each.title }}
+      <div class="col-10 offset-1">
+        <div class="row">
+          <div v-for="each in entry.chapters" :key="each.title" class="col-md-3 col-6 left middle">
+            {{ each.title }}
+          </div>
         </div>
       </div>
     </div>
@@ -78,6 +80,23 @@ export default {
       ]
     }
   },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      (async() => {
+        vm.type = vm.$route.params.type;
+        vm.id = vm.$route.params.id;
+        if (vm.type == "novel") {
+          vm.entry = await vm.$fetchNovelByID(vm.id)
+        } else if (vm.type == "comic") {
+          vm.entry = await vm.$fetchComicByID(vm.id)
+        } else {
+          return false;
+        }
+        vm.load = false;
+        return true;
+      })();
+    });
+  },
   data () {
     return {
       load: true,
@@ -85,20 +104,6 @@ export default {
       id: '',
       entry: {}
     }
-  },
-  created () {
-    (async() => {
-      if (this.$route.params.novelID !== undefined) {
-        this.type = 'novel';
-        this.id = this.$route.params.novelID;
-        this.entry = await this.$fetchNovelByID(this.id)
-      } else {
-        this.type = 'comic';
-        this.id = this.$route.params.comicID;
-        this.entry = await this.$fetchComicByID(this.id)
-      }
-      this.load = false;
-    })();
   },
   methods: {
     formatDate (dateStr) {

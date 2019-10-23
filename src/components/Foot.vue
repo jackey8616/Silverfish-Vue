@@ -56,7 +56,6 @@ export default {
 <style scoped>
   div {
     color: rgba(255, 255, 255, 0.7);
-    margin-top: 100px;
     padding: 15px 0px;
     background-color: #383c3c;
     font-size: 13px;

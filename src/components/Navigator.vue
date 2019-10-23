@@ -1,6 +1,6 @@
 <template>
   <nav id="navigator" class="navbar navbar-expand-lg navbar-dark">
-    <router-link :to="{ name: 'home' }" class="navbar-brand">書蠹付梓 | 無縫閱讀</router-link>
+    <router-link :to="{ name: 'home' }" class="navbar-brand">{{ brand == 'false' ? '|' : '書蠹付梓 | 無縫閱讀' }}</router-link>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -47,6 +47,7 @@
 <script>
 export default {
   name: 'navigator',
+  props: [ "brand" ],
   watch: {
     '$route' (to, from) {
       this.status(this.$vuex.getters.getSession());

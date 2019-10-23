@@ -1,30 +1,32 @@
 <template>
-  <div id="article" class="container">
-    <div v-if="Object.keys(comic).length !== 0" class="row">
-      <aside class="col-2 col-md-1">
-        <affix class="sidebar-menu" relative-element-selector="#comic" align="left">
-          <router-link :to="{ name: 'home' }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <font-awesome-icon icon="home"/>
-          </router-link><br/>
-          <router-link :to="{ path: ('/comic_intro/' + comicID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <font-awesome-icon icon="info"/>
-          </router-link><br/>
-          <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
-          <button @click="get" :disabled="comic.chapters.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <font-awesome-icon icon="arrow-right"/>
-          </button><br />
-        </affix>
-      </aside>
-      <div class="col-10 col-md-10">
-        <div id="comic">
-          <div v-for="each in sections" :key="each.index">
-            <img v-for="every in each.content" :key="every" :src="every"/>
-            <hr v-observe-visibility="{callback: (isVisible, entry) => observe(isVisible, entry, each)}"/>
+  <div id="content">
+    <div id="article" class="container">
+      <div v-if="Object.keys(comic).length !== 0" class="row">
+        <aside class="col-2 col-md-1">
+          <affix class="sidebar-menu" relative-element-selector="#comic" align="left">
+            <button @click="$router.go(-1)" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              <font-awesome-icon icon="home"/>
+            </button><br/>
+            <router-link :to="{ path: ('/comic_intro/' + comicID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              <font-awesome-icon icon="info"/>
+            </router-link><br/>
+            <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
+            <button @click="get" :disabled="comic.chapters.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              <font-awesome-icon icon="arrow-right"/>
+            </button><br />
+          </affix>
+        </aside>
+        <div class="col-10 col-md-10">
+          <div id="comic">
+            <div v-for="each in sections" :key="each.index">
+              <img v-for="every in each.content" :key="every" :src="every"/>
+              <hr v-observe-visibility="{callback: (isVisible, entry) => observe(isVisible, entry, each)}"/>
+            </div>
           </div>
-        </div>
-        <div>
-          <br><br>
-          <center><loading :size="150"/></center>
+          <div>
+            <br><br>
+            <center><loading :size="150"/></center>
+          </div>
         </div>
       </div>
     </div>

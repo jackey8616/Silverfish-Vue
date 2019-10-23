@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="icon-info-section d-none d-lg-block">
-      <router-link :to="{ path: (entry.novelID !== undefined ? '/novel_intro/' + entry.novelID : '/comic_intro/' + entry.comicID) }" tag="small" class="btn-xm btn-color-2 intro">簡介</router-link>
+      <router-link :to="{ path: '/info/' + (entry.novelID !== undefined ? 'novel/' + entry.novelID : 'comic/' + entry.comicID) }" tag="small" class="btn-xm btn-color-2 intro">簡介</router-link>
       &nbsp;
       <router-link :to="{ path: (entry.novelID !== undefined ? '/novel/' + entry.novelID : '/comic/' + entry.comicID) }" tag="small" class="btn-xm btn-color-3 intro">閱讀</router-link><br>
       <small class="btn-xm btn-color-1 intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>

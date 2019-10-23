@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <navigator />
-    <div class="container">
-      <router-view id="content" />
-    </div>
+    <router-view name="nav" />
+    <router-view />
     <foot />
   </div>
 </template>
@@ -18,7 +16,8 @@
     background-color: #2c3e50;
   }
   #content {
-    padding-top: 60px;
+    min-height: 85.1vh;
+    padding: 60px 0;
   }
   .btn-color-1 {
     color: #ffffff;

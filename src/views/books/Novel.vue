@@ -1,40 +1,42 @@
 <template>
-  <div id="article" class="container" :class="{'light-on': lightOn,'light-off': !lightOn}">
-    <div v-if="Object.keys(novel).length !== 0" class="row">
-      <aside class="col-2 col-md-1">
-        <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
-          <router-link :to="{ name: 'home' }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <font-awesome-icon icon="home"/>
-          </router-link><br/>
-          <router-link :to="{ path: ('/novel_intro/' + novelID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <font-awesome-icon icon="info"/>
-          </router-link><br/>
-          <button @click="isTW = !isTW" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            {{ isTW ? "TW" : "CH" }}
-          </button><br/>
-          <button @click="lightOn = !lightOn" class="sticky-bar-el btn-circle btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <font-awesome-icon v-if="lightOn" :icon="['fa', 'lightbulb']"/>
-            <font-awesome-icon v-if="!lightOn" :icon="['far', 'lightbulb']"/>
-          </button><br />
-          <button @click="fontSize = fontSize === 4 ? 1 : fontSize + 1" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            {{ ['Sm', 'Md', 'Lg', 'Xl'][fontSize - 1] }}
-          </button><br />
-          <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
-          <button @click="get" :disabled="novel.chapters.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-            <font-awesome-icon icon="arrow-right"/>
-          </button><br />
-        </affix>
-      </aside>
-      <div class="col-10 col-md-10">
-        <div id="novel" :class="{'novel-font-sm': fontSize === 1, 'novel-font-md': fontSize === 2, 'novel-font-lg': fontSize === 3, 'novel-font-xl': fontSize === 4}">
-          <chapter-section v-for="each in sections" :key="each.index" :isTW="isTW" :single="each" v-observe-visibility="{
-            callback: (isVisible, entry) => observe(isVisible, entry, each),
-            throttle: 300,
-            }" />
-        </div>
-        <div>
-          <br><br>
-          <center><loading :size="150"/></center>
+  <div id="content">
+    <div id="article" class="container" :class="{'light-on': lightOn,'light-off': !lightOn}">
+      <div v-if="Object.keys(novel).length !== 0" class="row">
+        <aside class="col-2 col-md-1">
+          <affix class="sidebar-menu" relative-element-selector="#novel" align="left">
+            <button @click="$router.go(-1)" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              <font-awesome-icon icon="home"/>
+            </button><br/>
+            <router-link :to="{ path: ('/novel_intro/' + novelID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              <font-awesome-icon icon="info"/>
+            </router-link><br/>
+            <button @click="isTW = !isTW" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              {{ isTW ? "TW" : "CH" }}
+            </button><br/>
+            <button @click="lightOn = !lightOn" class="sticky-bar-el btn-circle btn btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              <font-awesome-icon v-if="lightOn" :icon="['fa', 'lightbulb']"/>
+              <font-awesome-icon v-if="!lightOn" :icon="['far', 'lightbulb']"/>
+            </button><br />
+            <button @click="fontSize = fontSize === 4 ? 1 : fontSize + 1" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              {{ ['Sm', 'Md', 'Lg', 'Xl'][fontSize - 1] }}
+            </button><br />
+            <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
+            <button @click="get" :disabled="novel.chapters.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+              <font-awesome-icon icon="arrow-right"/>
+            </button><br />
+          </affix>
+        </aside>
+        <div class="col-10 col-md-10">
+          <div id="novel" :class="{'novel-font-sm': fontSize === 1, 'novel-font-md': fontSize === 2, 'novel-font-lg': fontSize === 3, 'novel-font-xl': fontSize === 4}">
+            <chapter-section v-for="each in sections" :key="each.index" :isTW="isTW" :single="each" v-observe-visibility="{
+              callback: (isVisible, entry) => observe(isVisible, entry, each),
+              throttle: 300,
+              }" />
+          </div>
+          <div>
+            <br><br>
+            <center><loading :size="150"/></center>
+          </div>
         </div>
       </div>
     </div>

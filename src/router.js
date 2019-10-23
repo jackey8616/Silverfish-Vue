@@ -15,69 +15,70 @@ const router = new Router({
       path: "/",
       name: "home",
       component: () => 
-        import(/* webpackChunkName: "list" */"@/components/List"),
-    },
-    {
-      path: "/working_home",
-      name: "working_home",
-      component: () =>
-        import(/* webpackChunkName: "working_home" */"@/components/Home"),
+        import(/* webpackChunkName: "index" */"@/views/Index"),
     },
     {
       path: "/list",
       name: "list",
-      component: () => 
-        import(/* webpackChunkName: "list" */"@/components/List"),
+      components: {
+        default: () => import(/* webpackChunkName: "list" */"@/views/List"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
     },
     {
       path: "/login",
       name: "login",
-      component: () => 
-        import(/* webpackChunkName: "login" */"@/components/auth/Login"),
+      components: {
+        default: () => import(/* webpackChunkName: "login" */"@/views/auth/Login"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
     },
     {
       path: "/register",
       name: "register",
-      component: () => 
-        import(/* webpackChunkName: "register" */"@/components/auth/Register"),
+      components: {
+        default: () => import(/* webpackChunkName: "register" */"@/views/auth/Register"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
     },
     {
       path: "/userinfo",
       name: "userinfo",
-      component: () =>
-        import(/* webpackChunkName: "userinfo" */"@/components/auth/UserInfo"),
+      components: {
+        default: () => import(/* webpackChunkName: "userinfo" */"@/views/auth/UserInfo"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
       meta: {
         requiresAuth: true,
       },
     },
     {
-      path: "/novel/:novelID",
-      name: "novel",
-      component: () => 
-        import(/* webpackChunkName: "novel" */"@/components/Novel"),
+      path: "/info/:type/:id",
+      name: "info",
+      components: {
+        default: () => import(/* webpackChunkName: "info" */"@/views/books/Info"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
       props: true
     },
     {
-      path: "/novel_intro/:novelID",
-      name: "novel_intro",
-      component: () => 
-        import(/* webpackChunkName: "info" */"@/components/Info"),
+      path: "/novel/:novelID",
+      name: "novel",
+      components: {
+        default: () => import(/* webpackChunkName: "novel" */"@/views/books/Novel"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
       props: true
     },
     {
       path: "/comic/:comicID",
       name: "comic",
-      component: () =>
-        import(/* webpackChunkName: "comic" */"@/components/Comic"),
+      components: {
+        default: () => import(/* webpackChunkName: "comic" */"@/views/books/Comic"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
       props: true
     },
-    {
-      path: "/comic_intro/:comicID",
-      name: "comic_intro",
-      component: () => 
-        import(/* webpackChunkName: "info" */"@/components/Info"),
-      props: true
-    }
     /*
     {
       path: "/about",

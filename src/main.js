@@ -17,7 +17,8 @@ import {
   faInfo,
   faInfoCircle,
   faBookOpen,
-  faUser
+  faUser,
+  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faLightbulb as farLightbulb,
@@ -31,6 +32,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import Toasted from "vue-toasted";
 // Vue-Js-Toggle-Button
 import ToggleButton from 'vue-js-toggle-button'
+// Vue-ScrollTo
+import VueScrollTo from 'vue-scrollto';
 
 import Navigator from "@/components/Navigator";
 import Loading from "@/components/Loading";
@@ -48,7 +51,8 @@ library.add(
   faInfoCircle,
   faBookOpen,
   faTimesCircle,
-  faUser
+  faUser,
+  faChevronDown,
 );
 
 Vue.config.productionTip = false;
@@ -230,6 +234,7 @@ Vue.use(Toasted, {
   theme: "bubble"
 });
 Vue.use(ToggleButton);
+Vue.use(VueScrollTo);
 
 new Vue({
   router,
