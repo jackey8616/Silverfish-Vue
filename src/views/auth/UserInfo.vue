@@ -1,5 +1,5 @@
 <template>
-  <div id="content" class="container">
+  <div id="content" class="container" :style="{ 'min-height': $root.$data.height + 'px' }">
     <div class="row">
       <div class="col-10 offset-1 col-md-6 offset-md-3">
         <div class="row">
@@ -8,12 +8,12 @@
         </div>
         <div class="row">
           註冊時間<br>
-          <div class="col-12 right">&nbsp;{{ formatDate(registerDatetime) }}</div>
+          <div class="col-12 right">&nbsp;{{ $root.formatDate(registerDatetime) }}</div>
         </div>
         <div class="row">
           上次登入時間<br>
           <div class="col-12 right">
-          &nbsp;{{ formatDate(lastLoginDatetime)}}
+          &nbsp;{{ $root.formatDate(lastLoginDatetime)}}
           </div>
         </div>
         <div class="row">
@@ -110,17 +110,6 @@ export default {
       }
     }
   },
-  methods: {
-    formatDate (dateStr) {
-      let date = new Date(dateStr);
-      let m = `0${date.getMonth() + 1}`.slice(-2);
-      let d = `0${date.getDate()}`.slice(-2);
-      let h = `0${date.getHours()}`.slice(-2);
-      let M = `0${date.getMinutes()}`.slice(-2);
-      let s = `0${date.getSeconds()}`.slice(-2);
-      return `${date.getFullYear()}/${m}/${d} ${h}:${M}:${s}`;
-    }
-  }
 }
 </script>
 

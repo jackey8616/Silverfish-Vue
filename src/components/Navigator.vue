@@ -19,7 +19,7 @@
       </ul>
       <ul id="right-nav" class="navbar-nav col-4">
         <li class="nav-item">
-          <div class="fb-like" data-href="https://www.facebook.com/silverfish.compose/" data-width="" data-layout="button_count" data-action="recommend" data-size="large" data-show-faces="true" data-share="true"></div>
+          <div class="fb-like" data-href="https://www.facebook.com/silverfish.compose/" data-width="" data-layout="button_count" data-action="recommend" data-size="small" data-show-faces="false" data-share="true"></div>
         </li>&nbsp;
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <navigator brand="false" />
-    <div id="top">
+    <navigator brand="false" ref="navigator" />
+    <div id="top" :style="{ height: $root.$data.height + 'px' }">
       <div class="top-bg" />
       <div class="title-zone">
         <h1 class="title">書蠹付梓 | 無縫閱讀</h1>
@@ -32,18 +32,13 @@
 </template>
 
 <script>
-import Navigator from "@/components/Navigator";
-
 export default {
-  name: 'index'
+  name: 'index',
 }
 </script>
 
 <style scoped>
-  #top {
-    height: 94.1vh;
-  }
-  .top-bg {
+  #top > div.top-bg {
     background-image: url(/bg.jpg);
     background-position: 50%;
     background-repeat: no-repeat;

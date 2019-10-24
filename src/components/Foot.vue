@@ -35,21 +35,10 @@ export default {
         method: 'GET'
       })
       this.last_update_master_hash = masterRes.data.sha
-      this.last_update_master_time = this.formatDate(masterRes.data.commit.committer.date);
-      this.last_deploy_time = this.formatDate(ghRes.data.commit.committer.date);
+      this.last_update_master_time = this.$root.formatDate(masterRes.data.commit.committer.date, true);
+      this.last_deploy_time = this.$root.formatDate(ghRes.data.commit.committer.date, true);
     })();
   },
-  methods: {
-    formatDate (dateStr) {
-      let date = new Date(dateStr);
-      let m = `0${date.getMonth() + 1}`.slice(-2);
-      let d = `0${date.getDate()}`.slice(-2);
-      let h = `0${date.getHours()}`.slice(-2);
-      let M = `0${date.getMinutes()}`.slice(-2);
-      let s = `0${date.getSeconds()}`.slice(-2);
-      return `${date.getFullYear()}/${m}/${d} ${h}:${M}:${s}`;
-    }
-  }
 }
 </script>
 

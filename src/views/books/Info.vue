@@ -18,7 +18,7 @@
             <div class="d-none d-lg-block" style="text-align: right;">
               <a :href="entry.url"><small class="btn-xs btn-color-2 intro">{{ entry.dns }}</small></a>
               &nbsp;
-              <small class="btn-xs btn-color-1 intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>
+              <small class="btn-xs btn-color-1 intro">{{ $root.formatDate(entry.lastCrawlTime) }}</small><br>
             </div>
             <div class="d-md-none" style="text-align: right;">
               <a :href="entry.url">
@@ -27,7 +27,7 @@
                 </small>
               </a>
               &nbsp;
-              <small class="btn-xs btn-color-1 intro">{{ simpleFormatDate(entry.lastCrawlTime) }}</small><br>
+              <small class="btn-xs btn-color-1 intro">{{ $root.simpleFormatDate(entry.lastCrawlTime) }}</small><br>
             </div>
           </div>
           <hr>
@@ -105,23 +105,6 @@ export default {
       entry: {}
     }
   },
-  methods: {
-    formatDate (dateStr) {
-      let date = new Date(dateStr);
-      let m = `0${date.getMonth() + 1}`.slice(-2);
-      let d = `0${date.getDate()}`.slice(-2);
-      let h = `0${date.getHours()}`.slice(-2);
-      let M = `0${date.getMinutes()}`.slice(-2);
-      return `${date.getFullYear()}/${m}/${d} ${h}:${M}`;
-    },
-    simpleFormatDate (dateStr) {
-      let date = new Date(dateStr);
-      let y = date.getFullYear().toString().substr(-2);
-      let m = `0${date.getMonth() + 1}`.slice(-2);
-      let d = `0${date.getDate()}`.slice(-2);
-      return `${y}/${m}/${d}`;
-    }
-  }
 }
 </script>
 

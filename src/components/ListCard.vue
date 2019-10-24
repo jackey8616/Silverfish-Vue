@@ -13,17 +13,17 @@
       <router-link :to="{ path: '/info/' + (entry.novelID !== undefined ? 'novel/' + entry.novelID : 'comic/' + entry.comicID) }" tag="small" class="btn-xm btn-color-2 intro">簡介</router-link>
       &nbsp;
       <router-link :to="{ path: (entry.novelID !== undefined ? '/novel/' + entry.novelID : '/comic/' + entry.comicID) }" tag="small" class="btn-xm btn-color-3 intro">閱讀</router-link><br>
-      <small class="btn-xm btn-color-1 intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>
+      <small class="btn-xm btn-color-1 intro">{{ $root.formatDate(entry.lastCrawlTime) }}</small><br>
     </div>
     <div class="d-md-none">
-      <router-link :to="{ path: (entry.novelID !== undefined ? '/novel_intro/' + entry.novelID : '/comic_intro/' + entry.comicID) }" tag="small" class="btn-xm btn-color-2 intro">
+      <router-link :to="{ path: '/info' + (entry.novelID !== undefined ? '/novel/' + entry.novelID : '/comic/' + entry.comicID) }" tag="small" class="btn-xm btn-color-2 intro">
         <font-awesome-icon icon="info-circle"/>
       </router-link>
       &nbsp;
       <router-link :to="{ path: (entry.novelID !== undefined ? '/novel/' + entry.novelID : '/comic/' + entry.comicID) }" tag="small" class="btn-xm btn-color-3 intro">
         <font-awesome-icon icon="book-open"/>
       </router-link><br>
-      <small class="btn-xm btn-color-1 intro">{{ simpleFormatDate(entry.lastCrawlTime) }}</small>
+      <small class="btn-xm btn-color-1 intro">{{ $root.simpleFormatDate(entry.lastCrawlTime) }}</small>
     </div>
   </router-link>
 </template>
@@ -33,21 +33,6 @@ export default {
   name: 'list-card',
   props: ['entry'],
   methods: {
-    formatDate (dateStr) {
-      let date = new Date(dateStr);
-      let m = `0${date.getMonth() + 1}`.slice(-2);
-      let d = `0${date.getDate()}`.slice(-2);
-      let h = `0${date.getHours()}`.slice(-2);
-      let M = `0${date.getMinutes()}`.slice(-2);
-      return `${date.getFullYear()}/${m}/${d} ${h}:${M}`;
-    },
-    simpleFormatDate (dateStr) {
-      let date = new Date(dateStr);
-      let y = date.getFullYear().toString().substr(-2);
-      let m = `0${date.getMonth() + 1}`.slice(-2);
-      let d = `0${date.getDate()}`.slice(-2);
-      return `${y}/${m}/${d}`;
-    }
   }
 }
 </script>

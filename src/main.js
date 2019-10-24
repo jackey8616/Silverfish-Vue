@@ -5,6 +5,8 @@ import axios from "axios";
 import store from "./store";
 import "./registerServiceWorker";
 
+// ResizeObserver
+import ResizeObserver from 'resize-observer-polyfill';
 // Vue-Observe-Visibility
 import { ObserveVisibility } from "vue-observe-visibility";
 // FontAwesome
@@ -294,5 +296,48 @@ new Vue({
     };
   },
   store,
+  data () {
+    return {
+      height: 0,
+    }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      const ro = new ResizeObserver((entries) => {
+        this.$nextTick(() => {
+          const el = document.getElementById('navigator');
+          if (el != null)
+            this.height = window.innerHeight - el.clientHeight;
+        });
+      });
+      const el = document.getElementById('navigator');
+      ro.observe(document.body);
+      if (el != null) {
+        ro.observe(el);
+      }
+    })
+  },
+  methods: {
+    formatDate (dateStr, second) {
+      let date = new Date(dateStr);
+      let m = `0${date.getMonth() + 1}`.slice(-2);
+      let d = `0${date.getDate()}`.slice(-2);
+      let h = `0${date.getHours()}`.slice(-2);
+      let M = `0${date.getMinutes()}`.slice(-2);
+      if (second == undefined || second == false) {
+        return `${date.getFullYear()}/${m}/${d} ${h}:${M}`; 
+      } else {
+        let s = `0${date.getSeconds()}`.slice(-2);
+        return `${date.getFullYear()}/${m}/${d} ${h}:${M}:${s}`;
+      }
+    },
+    simpleFormatDate (dateStr) {
+      let date = new Date(dateStr);
+      let y = date.getFullYear().toString().substr(-2);
+      let m = `0${date.getMonth() + 1}`.slice(-2);
+      let d = `0${date.getDate()}`.slice(-2);
+      return `${y}/${m}/${d}`;
+    }
+  },
   render: h => h(App)
 }).$mount("#app");
