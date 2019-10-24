@@ -1,5 +1,5 @@
 <template>
-  <div id="content">
+  <div id="content" :style="{ 'min-height': $root.$data.height + 'px' }">
     <div id="article" class="container">
       <div v-if="Object.keys(comic).length !== 0" class="row">
         <aside class="col-2 col-md-1">

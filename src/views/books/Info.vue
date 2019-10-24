@@ -1,5 +1,5 @@
 <template>
-  <div id="content" class="container">
+  <div id="content" class="container" :style="{ 'min-height': $root.$data.height + 'px' }">
     <div v-if="load == true">
       <br>
       <center><loading :size="160"/></center>
@@ -39,7 +39,7 @@
       </div>
       <div class="col-10 offset-1">
         <div class="row">
-          <div v-for="each in entry.chapters" :key="each.title" class="col-md-3 col-6 left middle">
+          <div v-for="each in entry.chapters" :key="each.title" class="col-md-3 offset-md-0 col-11 offset-1 left middle" style="padding: 3px 0;">
             {{ each.title }}
           </div>
         </div>
