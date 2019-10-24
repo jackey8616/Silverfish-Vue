@@ -59,30 +59,16 @@ export default {
         return;
       }
       (async () => {
-        let res = await this.$axios({
-          url: this.$backend + "/auth/status",
-          method: "GET",
-          headers: {
-            Authorization: sessionToken,
-          }
-        });
-        if (res.data.success == true) {
-          if (res.data.data == false) {
-            this.$vuex.commit('logout')
-            this.$toasted.show('Session過期，請重新登入')
-          }
+        let statusData = await this.$api.authStatus(sessionToken);
+        if (statusData == false) {
+          this.$vuex.commit('logout')
+          this.$toasted.show('Session過期，請重新登入')
         }
       })();
     },
     logout () {
       (async () => {
-        let res = await this.$axios({
-          url: this.$backend + "/auth/logout",
-          method: "GET",
-          headers: {
-            Authorization: this.$vuex.getters.getSession(),
-          }
-        });
+        await this.$api.authLogout(this.$vuex.getters.getSession());
         this.$vuex.commit('logout');
         this.$toasted.success('登出成功')
         this.$router.push({'path': '/'})

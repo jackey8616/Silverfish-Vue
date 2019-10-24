@@ -1,9 +1,9 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import axios from "axios";
 import store from "./store";
 import "./registerServiceWorker";
+import APIUsecase from "./api";
 
 // ResizeObserver
 import ResizeObserver from 'resize-observer-polyfill';
@@ -41,8 +41,6 @@ import Navigator from "@/components/Navigator";
 import Loading from "@/components/Loading";
 import Foot from "@/components/Foot";
 
-axios.defaults.withCredentials = false;
-
 library.add(
   faHome,
   faArrowRight,
@@ -57,172 +55,13 @@ library.add(
   faChevronDown,
 );
 
+// const backend = "http://127.0.0.1:8080";
+const backend = "https://silverfish-backend.clo5de.info:2087";
+const api_ver = "/api/v1";
+
 Vue.config.productionTip = false;
-Vue.prototype.$axios = axios;
-//Vue.prototype.$backend = "http://127.0.0.1:8080";
-Vue.prototype.$backend = "https://silverfish-backend.clo5de.info:2087";
-Vue.prototype.$api_ver = "/api/v1";
 Vue.prototype.$vuex = store;
-
-Vue.prototype.$fetchLatestBookmark = function () {
-  return new Promise(async (resolve, reject) => {
-    let res = await axios({
-      url: Vue.prototype.$backend + "/user/bookmark",
-      method: "GET",
-      headers: {
-        Authorization: Vue.prototype.$vuex.getters.getSession()
-      }
-    });
-
-    if (res.data.success) {
-      return resolve(res.data.data);
-    } else {
-      return reject(res.data.data);
-    }
-  });
-};
-
-Vue.prototype.$fetchNovels = function() {
-  return new Promise(async (resolve, reject) => {
-    let res = await axios({
-      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/novels",
-      method: "GET",
-      headers: {
-        Authorization: Vue.prototype.$vuex.getters.getSession()
-      }
-    });
-
-    if (res.data.success) {
-      return resolve(res.data.data);
-    } else {
-      return reject(res.data.data);
-    }
-  });
-};
-
-Vue.prototype.$fetchNovelByID = function(novelID) {
-  return new Promise(async (resolve, reject) => {
-    let res = await axios({
-      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/novel",
-      method: "GET",
-      headers: {
-        Authorization: Vue.prototype.$vuex.getters.getSession()
-      },
-      params: {
-        novel_id: novelID
-      }
-    });
-
-    if (res.data.success) {
-      const novel = res.data.data;
-      return resolve({
-        novelID: novel.novelID,
-        author: novel.author,
-        description: novel.description,
-        dns: novel.dns,
-        url: novel.url,
-        title: novel.title,
-        cover_url: novel.coverUrl,
-        chapters: novel.chapters,
-        lastCrawlTime: novel.lastCrawlTime
-      });
-    } else {
-      return reject(res.data.data);
-    }
-  });
-};
-
-Vue.prototype.$fetchChapter = function(novelID, chapterIndex) {
-  return new Promise(async (resolve, reject) => {
-    let res = await axios({
-      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/chapter",
-      method: "GET",
-      headers: {
-        Authorization: Vue.prototype.$vuex.getters.getSession(),
-      },
-      params: {
-        novel_id: novelID,
-        chapter_index: chapterIndex
-      }
-    });
-    if (res.data.success) {
-      return resolve(res.data.data);
-    } else {
-      return reject(res.data.data);
-    }
-  });
-};
-
-Vue.prototype.$fetchComics = function() {
-  return new Promise(async (resolve, reject) => {
-    let res = await axios({
-      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comics",
-      method: "GET",
-      headers: {
-        Authorization: Vue.prototype.$vuex.getters.getSession()
-      }
-    });
-
-    if (res.data.success) {
-      return resolve(res.data.data);
-    } else {
-      return reject(res.data.data);
-    }
-  });
-};
-
-Vue.prototype.$fetchComicByID = function(comicID) {
-  return new Promise(async (resolve, reject) => {
-    let res = await axios({
-      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comic",
-      method: "GET",
-      headers: {
-        Authorization: Vue.prototype.$vuex.getters.getSession()
-      },
-      params: {
-        comic_id: comicID
-      }
-    });
-
-    if (res.data.success) {
-      const comic = res.data.data;
-      return resolve({
-        comicID: comic.comicID,
-        author: comic.author,
-        description: comic.description,
-        dns: comic.dns,
-        url: comic.url,
-        title: comic.title,
-        cover_url: comic.coverUrl,
-        chapters: comic.chapters,
-        lastCrawlTime: comic.lastCrawlTime
-      });
-    } else {
-      return reject(res.data.data);
-    }
-  });
-};
-
-Vue.prototype.$fetchComicChapter = function(comicID, chapterIndex) {
-  return new Promise(async (resolve, reject) => {
-    let res = await axios({
-      url: Vue.prototype.$backend + Vue.prototype.$api_ver + "/comic/chapter",
-      method: "GET",
-      headers: {
-        Authorization: Vue.prototype.$vuex.getters.getSession(),
-      },
-      params: {
-        comic_id: comicID,
-        chapter_index: chapterIndex
-      }
-    });
-    if (res.data.success) {
-      return resolve(res.data.data);
-    } else {
-      return reject(res.data.data);
-    }
-  });
-};
+Vue.prototype.$api = new APIUsecase(backend, api_ver);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("navigator", Navigator);
@@ -318,6 +157,16 @@ new Vue({
     })
   },
   methods: {
+    fetchBookmark () {
+      if (this.$vuex.getters.isLogging() == true) {
+        this.$api.fetchLatestBookmark(this.$vuex.getters.getSession())
+          .then(data => {
+            this.$vuex.commit("updateBookmark", data);
+          }).catch(err => {
+            console.log(err);
+          });
+      }
+    },
     formatDate (dateStr, second) {
       let date = new Date(dateStr);
       let m = `0${date.getMonth() + 1}`.slice(-2);

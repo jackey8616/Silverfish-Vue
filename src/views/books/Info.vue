@@ -83,12 +83,13 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       (async() => {
+        const session = vm.$vuex.getters.getSession();
         vm.type = vm.$route.params.type;
         vm.id = vm.$route.params.id;
         if (vm.type == "novel") {
-          vm.entry = await vm.$fetchNovelByID(vm.id)
+          vm.entry = await vm.$api.fetchNovelByID(session, vm.id)
         } else if (vm.type == "comic") {
-          vm.entry = await vm.$fetchComicByID(vm.id)
+          vm.entry = await vm.$api.fetchComicByID(session, vm.id)
         } else {
           return false;
         }

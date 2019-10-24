@@ -7,7 +7,7 @@
             <button @click="$router.go(-1)" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
               <font-awesome-icon icon="home"/>
             </button><br/>
-            <router-link :to="{ path: ('/comic_intro/' + comicID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            <router-link :to="{ path: ('/info/comic/' + comicID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
               <font-awesome-icon icon="info"/>
             </router-link><br/>
             <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
@@ -51,15 +51,16 @@ export default {
     }
   },
   created () {
+    const session = this.$vuex.getters.getSession();
     this.comicID = this.$route.params.comicID;
     (async() => {
       if (!this.$vuex.getters.isComicIDExists(this.comicID)) {
-        let comic = await this.$fetchComicByID(this.comicID)
+        let comic = await this.$api.fetchComicByID(session, this.comicID)
         this.$vuex.commit('insertComic', {comicID: this.comicID, comic: comic})
       } else {
         let localComic = this.$vuex.getters.getComicByID(this.comicID);
         if (localComic.cahpers === undefined || this.$vuex.getters.isComicNeedUpdate(this.comicID)) {
-          let comic = await this.$fetchComicByID(this.comicID)
+          let comic = await this.$api.fetchComicByID(session, this.comicID)
           this.$vuex.commit('updateComic', {comicID: this.comicID, comic: comic})
         }
         this.currentIndex = this.bookmark['lastReadIndex'] || this.currentIndex
@@ -86,7 +87,7 @@ export default {
       })();
     },
     fetchComicChapter (index) {
-      return this.$fetchComicChapter(this.comicID, index).then(data => {
+      return this.$api.fetchComicChapter(this.$vuex.getters.getSession(), this.comicID, index).then(data => {
         return {
           index: index,
           content: data

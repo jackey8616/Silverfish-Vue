@@ -1,5 +1,5 @@
 <template>
-  <div id="content" class="container">
+  <div id="content" class="container" :style="{ 'min-height': $root.$data.height + 'px' }">
     <div class="row">
       <div id="form" class="col-8 offset-2 col-md-4 offset-md-4">
         <b><big>為什麼需要註冊？</big></b>
@@ -59,7 +59,6 @@
 
 <script>
 import VueRecaptcha from 'vue-recaptcha';
-import qs from 'qs';
 
 export default {
   name: 'register',
@@ -90,31 +89,22 @@ export default {
       this.$refs.invisibleRecaptcha.reset();
     },
     onRecaptchaVerfiy: function (recaptchaToken) {
-      (async () => {
-        let res = await this.$axios({
-          url: this.$backend + "/auth/register",
-          method: "POST",
-          data: qs.stringify({...{"recaptchaToken": recaptchaToken}, ...this.auth})
-        });
-
-        if (res.data.success === true) {
-          this.$vuex.commit('login', res.data.data);
-          this.$toasted.success('註冊成功');
-          this.$router.push({ name: 'list'});
-        } else if (res.data.fail === true) {
-          // Fail
-          if (res.data.data.reason === 'Recaptcha verify failed') {
-            this.$toasted.error('Google Recaptch 驗證失敗！')
-          } else if (res.data.data.reason === "account exists") {
-            this.$toasted.error('帳號已存在！');
-          } else {
-            this.$toasted.error('未知錯誤！');
-            console.error(res.data)
-          }
-          this.onRecaptchaExpired();
-          this.load = false;
+      this.$api.authRegister(recaptchaToken, this.auth).then((data) => {
+        this.$vuex.commit('login', data);
+        this.$toasted.success('註冊成功');
+        this.$router.push({ name: 'list'});
+      }).catch((errData) => {
+        if (errData.reason === 'Recaptcha verify failed') {
+          this.$toasted.error('Google Recaptch 驗證失敗！')
+        } else if (errData.reason === "account exists") {
+          this.$toasted.error('帳號已存在！');
+        } else {
+          this.$toasted.error('未知錯誤！');
+          console.error(errData)
         }
-      }) ();
+        this.onRecaptchaExpired();
+        this.load = false;
+      });
     }
   }
 }

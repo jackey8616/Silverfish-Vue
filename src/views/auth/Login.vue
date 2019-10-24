@@ -59,7 +59,6 @@
 
 <script>
 import VueRecaptcha from 'vue-recaptcha';
-import qs from 'qs';
 
 export default {
   name: 'login',
@@ -91,36 +90,24 @@ export default {
       this.$refs.invisibleRecaptcha.reset();
     },
     onRecaptchaVerfiy: function (recaptchaToken) {
-      (async () => {
-        let res = await this.$axios({
-          url: this.$backend + "/auth/login",
-          method: "POST",
-          headers: {
-            Authorization: this.$vuex.getters.getSession()
-          },
-          data: qs.stringify({...{"recaptchaToken": recaptchaToken}, ...this.auth})
-        });
-
-        if (res.data.success === true) {
-          this.$vuex.commit('login', res.data.data);
-          this.$toasted.success('登入成功');
-          this.$router.push({ name: 'list'});
-        } else if (res.data.fail === true) {
-          // Fail
-          if (res.data.data.reason === 'Recaptcha verify failed') {
-            this.$toasted.error('Google Recaptch 驗證失敗！')
-          } else if (res.data.data.reason === 'Account or Password wrong') {
-            this.$toasted.error('帳號或密碼錯誤！');
-          } else if (res.data.data.reason === 'Account not exists') {
-            this.$toasted.error('帳號不存在！');
-          } else {
-            this.$toasted.error('未知錯誤！');
-            console.error(res.data);
-          }
-          this.onRecaptchaExpired();
-          this.load = false;
+      this.$api.authLogin(this.$vuex.getters.getSession(), recaptchaToken, this.auth).then((data) => {
+        this.$vuex.commit('login', data);
+        this.$toasted.success('登入成功');
+        this.$router.push({ name: 'list'});
+      }).catch((errData) => {
+        if (errData.reason === 'Recaptcha verify failed') {
+          this.$toasted.error('Google Recaptch 驗證失敗！')
+        } else if (errData.reason === 'Account or Password wrong') {
+          this.$toasted.error('帳號或密碼錯誤！');
+        } else if (errData.reason === 'Account not exists') {
+          this.$toasted.error('帳號不存在！');
+        } else {
+          this.$toasted.error('未知錯誤！');
+          console.error(errData);
         }
-      }) ();
+        this.onRecaptchaExpired();
+        this.load = false;
+      });
     }
   }
 }

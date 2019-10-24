@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'foot',
   data () {
@@ -26,11 +28,11 @@ export default {
   },
   mounted () {
     (async () => {
-      let masterRes = await this.$axios({
+      let masterRes = await axios({
         url: 'https://api.github.com/repos/jackey8616/Silverfish-Vue/commits/master',
         method: 'GET'
       });
-      let ghRes = await this.$axios({
+      let ghRes = await axios({
         url: 'https://api.github.com/repos/jackey8616/Silverfish-Vue/commits/gh-pages',
         method: 'GET'
       })

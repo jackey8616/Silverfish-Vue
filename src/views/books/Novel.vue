@@ -7,7 +7,7 @@
             <button @click="$router.go(-1)" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
               <font-awesome-icon icon="home"/>
             </button><br/>
-            <router-link :to="{ path: ('/novel_intro/' + novelID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
+            <router-link :to="{ path: ('/info/novel/' + novelID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
               <font-awesome-icon icon="info"/>
             </router-link><br/>
             <button @click="isTW = !isTW" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
@@ -64,15 +64,16 @@ export default {
     };
   },
   created () {
+    const session = this.$vuex.getters.getSession();
     this.novelID = this.$route.params.novelID;
     (async() => {
       if (!this.$vuex.getters.isNovelIDExists(this.novelID)) {
-        let novel = await this.$fetchNovelByID(this.novelID)
+        let novel = await this.$api.fetchNovelByID(session, this.novelID)
         this.$vuex.commit('insertNovel', {novelID: this.novelID, novel: novel});
       } else {
         let localNovel = this.$vuex.getters.getNovelByID(this.novelID);
         if (localNovel.chapters === undefined || this.$vuex.getters.isNovelNeedUpdate(this.novelID)) {
-          let novel = await this.$fetchNovelByID(this.novelID);
+          let novel = await this.$api.fetchNovelByID(session, this.novelID);
           this.$vuex.commit('updateNovel', {novelID: this.novelID, novel: novel})
         }
         this.currentIndex = this.bookmark['lastReadIndex'] || this.currentIndex;
@@ -99,7 +100,7 @@ export default {
       })();
     },
     fetchChapter(index) {
-      return this.$fetchChapter(this.novelID, index).then(data => {
+      return this.$api.fetchNovelChapter(this.$vuex.getters.getSession(), this.novelID, index).then(data => {
         return {
           index: index,
           title: this.novel.chapters[index].title,

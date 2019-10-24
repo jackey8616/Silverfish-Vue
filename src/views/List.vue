@@ -56,7 +56,7 @@ export default {
   },
   mounted () {
     this.fetchList();
-    this.fetchBookmark();
+    this.$root.fetchBookmark();
   },
   watch: {
     '$route' (to, from) {
@@ -64,33 +64,24 @@ export default {
         return;
       }
       this.fetchList();
-      this.fetchBookmark();
+      this.$root.fetchBookmark();
     }
   },
   methods: {
     fetchList () {
-      this.$fetchNovels().then(novels => {
+      this.$api.fetchNovels().then(novels => {
         this.novels = novels;
         this.novels.forEach((val, index, arr) => {
           this.$vuex.commit("upsertNovel", val);
         })
       });
-      this.$fetchComics().then(comics => {
+      this.$api.fetchComics().then(comics => {
         this.comics = comics;
         this.comics.forEach((val, index, arr) => {
           this.$vuex.commit("upsertComic", val);
         })
       });
     },
-    fetchBookmark () {
-      (async () => {
-        if (this.$vuex.getters.isLogging() == true) {
-          this.$fetchLatestBookmark().then(data => {
-            this.$vuex.commit("updateBookmark", data);
-          });
-        }
-      })();
-    }
   }
 }
 </script>
