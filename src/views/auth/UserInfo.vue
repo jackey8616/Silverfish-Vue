@@ -86,32 +86,30 @@ export default {
       }
     }
   },
-  mounted () {
-    (async () => {
-      await this.$root.fetchBookmark();
-      let auth = this.$vuex.getters.getAuth();
-      this.account = auth.account;
-      this.registerDatetime = auth.registerDatetime;
-      this.lastLoginDatetime = auth.lastLoginDatetime;
-      for (let each in auth.bookmark.novel) {
-        let data = this.$vuex.getters.getNovelByID(each);
-        if (data !== undefined) {
-          this.bookmark.novel[each] = auth.bookmark.novel[each];
-          this.bookmark.novel[each]["info"] = data;
-        } else {
-          delete this.bookmark.novel[each];
-        }
+  async mounted () {
+    await this.$root.fetchBookmark();
+    let auth = this.$vuex.getters.getAuth();
+    this.account = auth.account;
+    this.registerDatetime = auth.registerDatetime;
+    this.lastLoginDatetime = auth.lastLoginDatetime;
+    for (let each in auth.bookmark.novel) {
+      let data = this.$vuex.getters.getNovelByID(each);
+      if (data !== undefined) {
+        this.bookmark.novel[each] = auth.bookmark.novel[each];
+        this.bookmark.novel[each]["info"] = data;
+      } else {
+        delete this.bookmark.novel[each];
       }
-      for (let each in auth.bookmark.comic) {
-        let data = this.$vuex.getters.getComicByID(each);
-        if (data !== undefined) {
-          this.bookmark.comic[each] = auth.bookmark.comic[each];
-          this.bookmark.comic[each]["info"] = data;
-        } else {
-          delete this.bookmark.comic[each];
-        }
+    }
+    for (let each in auth.bookmark.comic) {
+      let data = this.$vuex.getters.getComicByID(each);
+      if (data !== undefined) {
+        this.bookmark.comic[each] = auth.bookmark.comic[each];
+        this.bookmark.comic[each]["info"] = data;
+      } else {
+        delete this.bookmark.comic[each];
       }
-    })();
+    }
   },
 }
 </script>

@@ -79,6 +79,18 @@ const router = new Router({
       },
       props: true
     },
+    {
+      path: "/admin",
+      name: "admin",
+      components: {
+        default: () => import(/* webpackChunkName: "admin" */"@/views/Admin"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
+      meta: {
+        requiresAuth: true,
+        requiresAdmin: true,
+      },
+    },
     /*
     {
       path: "/about",
@@ -93,16 +105,27 @@ const router = new Router({
   ]
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (Vue.prototype.$vuex.getters.isLogging() === false) {
-      next({
-        path: '/login',
+      return next({
+        path: "/login",
         query: { redirect: to.fullPath }
+      });
+    } else if (to.matched.some(record => record.meta.requiresAdmin)) {
+      return await Vue.prototype.$api.authIsAdmin(Vue.prototype.$vuex.getters.getSession()).then(data => {
+        if (data.isAdmin == true) {
+          return next();
+        } else {
+          Vue.prototype.$toasted.error("安安你不是管理員ㄛ~")
+          return next({ path: to.name != from.name ? from.path : "/" });
+        }
+      }).catch(() => {
+        return next({ path: to.name != from.name ? from.path : "/" });
       });
     }
   }
-  next();
+  return next();
 });
 
 export default router;

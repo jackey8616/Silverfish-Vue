@@ -68,12 +68,41 @@ class APIUsecase {
         });
     }
 
+    authIsAdmin (session) {
+        return new Promise(async (resolve, reject) => {
+            let res = await axios({
+                url: this.endpoint + "/auth/isAdmin",
+                method: "GET",
+                headers: { Authorization: session },
+            });
+            
+            if (res.data.success)
+                return resolve(res.data.data);
+            return reject(res.data.data);
+        });
+    }
+
+
+    adminFetcherList (session) {
+        return new Promise(async (resolve, reject) => {
+            let res = await axios({
+                url: this.endpoint + "/admin/fetchers",
+                method: "GET",
+                headers: { Authorization: session },
+            });
+            
+            if (res.data.success)
+                return resolve(res.data.data);
+            return reject(res.data.data);
+        })
+    }
+
     fetchLatestBookmark (session) {
         return new Promise(async (resolve, reject) => {
             let res = await axios({
                 url: this.endpoint + "/user/bookmark",
                 method: "GET",
-                headers: { Authorization: session }
+                headers: { Authorization: session },
             });
         
             if (res.data.success)
@@ -198,6 +227,36 @@ class APIUsecase {
                 return resolve(res.data.data);
             return reject(res.data.data);
         });
+    }
+
+    addNewNovel (session, targetUrl) {
+        return new Promise(async (resolve, reject) => {
+            let res = await axios({
+                url: this.endpointRoute() + "/novel",
+                method: "POST",
+                headers: { Authorization: session },
+                data: qs.stringify({ "novel_url": targetUrl }),
+            });
+
+            if (res.data.success == true)
+                return resolve(res.data.data)
+            return reject(res.data.data)
+        })
+    }
+
+    addNewComic (session, targetUrl) {
+        return new Promise(async (resolve, reject) => {
+            let res = await axios({
+                url: this.endpointRoute() + "/comic",
+                method: "POST",
+                headers: { Authorization: session },
+                data: qs.stringify({ "comic_url": targetUrl }),
+            });
+
+            if (res.data.success == true)
+                return resolve(res.data.data)
+            return reject(res.data.data)
+        })
     }
 }
 

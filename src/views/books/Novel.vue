@@ -63,23 +63,22 @@ export default {
       transitIndex: 0
     };
   },
-  created () {
+  async created () {
     const session = this.$vuex.getters.getSession();
     this.novelID = this.$route.params.novelID;
-    (async() => {
-      if (!this.$vuex.getters.isNovelIDExists(this.novelID)) {
-        let novel = await this.$api.fetchNovelByID(session, this.novelID)
-        this.$vuex.commit('insertNovel', {novelID: this.novelID, novel: novel});
-      } else {
-        let localNovel = this.$vuex.getters.getNovelByID(this.novelID);
-        if (localNovel.chapters === undefined || this.$vuex.getters.isNovelNeedUpdate(this.novelID)) {
-          let novel = await this.$api.fetchNovelByID(session, this.novelID);
-          this.$vuex.commit('updateNovel', {novelID: this.novelID, novel: novel})
-        }
-        this.currentIndex = this.bookmark['lastReadIndex'] || this.currentIndex;
+    
+    if (!this.$vuex.getters.isNovelIDExists(this.novelID)) {
+      let novel = await this.$api.fetchNovelByID(session, this.novelID)
+      this.$vuex.commit('insertNovel', {novelID: this.novelID, novel: novel});
+    } else {
+      let localNovel = this.$vuex.getters.getNovelByID(this.novelID);
+      if (localNovel.chapters === undefined || this.$vuex.getters.isNovelNeedUpdate(this.novelID)) {
+        let novel = await this.$api.fetchNovelByID(session, this.novelID);
+        this.$vuex.commit('updateNovel', {novelID: this.novelID, novel: novel})
       }
-      this.get();
-    })();
+      this.currentIndex = this.bookmark['lastReadIndex'] || this.currentIndex;
+    }
+    this.get();
   },
   computed: {
     bookmark() {
@@ -90,14 +89,13 @@ export default {
     }
   },
   methods: {
-    get() {
+    async get() {
       this.sections = [];
       this.fetchIndex = this.currentIndex - 1;
       this.transitIndex = this.currentIndex - 1;
-      (async() => {
-        await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
-        await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
-      })();
+
+      await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
+      await this.fetchChapter(this.fetchIndex++).then(data => this.sections.push(data));
     },
     fetchChapter(index) {
       return this.$api.fetchNovelChapter(this.$vuex.getters.getSession(), this.novelID, index).then(data => {

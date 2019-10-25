@@ -54,25 +54,22 @@ export default {
     }
   },
   methods: {
-    status (sessionToken) {
+    async status (sessionToken) {
       if (sessionToken === "") {
         return;
       }
-      (async () => {
-        let statusData = await this.$api.authStatus(sessionToken);
-        if (statusData == false) {
-          this.$vuex.commit('logout')
-          this.$toasted.show('Session過期，請重新登入')
-        }
-      })();
+
+      let statusData = await this.$api.authStatus(sessionToken);
+      if (statusData == false) {
+        this.$vuex.commit('logout')
+        this.$toasted.show('Session過期，請重新登入')
+      }
     },
-    logout () {
-      (async () => {
-        await this.$api.authLogout(this.$vuex.getters.getSession());
-        this.$vuex.commit('logout');
-        this.$toasted.success('登出成功')
-        this.$router.push({'path': '/'})
-      })();
+    async logout () {
+      await this.$api.authLogout(this.$vuex.getters.getSession());
+      this.$vuex.commit('logout');
+      this.$toasted.success('登出成功')
+      this.$router.push({'path': '/'})
     }
   }
 }

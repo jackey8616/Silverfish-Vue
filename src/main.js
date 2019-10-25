@@ -14,6 +14,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faHome,
   faArrowRight,
+  faArrowCircleRight,
   faLightbulb as fasLightbulb,
   faLink,
   faInfo,
@@ -44,6 +45,7 @@ import Foot from "@/components/Foot";
 library.add(
   faHome,
   faArrowRight,
+  faArrowCircleRight,
   fasLightbulb,
   farLightbulb,
   faLink,
@@ -55,7 +57,7 @@ library.add(
   faChevronDown,
 );
 
-// const backend = "http://127.0.0.1:8080";
+//const backend = "http://127.0.0.1:8080";
 const backend = "https://silverfish-backend.clo5de.info:2087";
 const api_ver = "/api/v1";
 
@@ -163,7 +165,12 @@ new Vue({
           .then(data => {
             this.$vuex.commit("updateBookmark", data);
           }).catch(err => {
-            console.log(err);
+            if (err.reason == "SessionToken not exists") {
+              this.$vuex.commit('logout')
+              this.$toasted.show('不存在的Session，無法獲取書籤，請重新登入！')
+            } else {
+              console.error(err);
+            }
           });
       }
     },

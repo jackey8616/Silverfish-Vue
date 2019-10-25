@@ -50,23 +50,22 @@ export default {
       transitIndex: 0
     }
   },
-  created () {
+  async created () {
     const session = this.$vuex.getters.getSession();
     this.comicID = this.$route.params.comicID;
-    (async() => {
-      if (!this.$vuex.getters.isComicIDExists(this.comicID)) {
+
+    if (!this.$vuex.getters.isComicIDExists(this.comicID)) {
+      let comic = await this.$api.fetchComicByID(session, this.comicID)
+      this.$vuex.commit('insertComic', {comicID: this.comicID, comic: comic})
+    } else {
+      let localComic = this.$vuex.getters.getComicByID(this.comicID);
+      if (localComic.cahpers === undefined || this.$vuex.getters.isComicNeedUpdate(this.comicID)) {
         let comic = await this.$api.fetchComicByID(session, this.comicID)
-        this.$vuex.commit('insertComic', {comicID: this.comicID, comic: comic})
-      } else {
-        let localComic = this.$vuex.getters.getComicByID(this.comicID);
-        if (localComic.cahpers === undefined || this.$vuex.getters.isComicNeedUpdate(this.comicID)) {
-          let comic = await this.$api.fetchComicByID(session, this.comicID)
-          this.$vuex.commit('updateComic', {comicID: this.comicID, comic: comic})
-        }
-        this.currentIndex = this.bookmark['lastReadIndex'] || this.currentIndex
+        this.$vuex.commit('updateComic', {comicID: this.comicID, comic: comic})
       }
-      this.get();
-    })();
+      this.currentIndex = this.bookmark['lastReadIndex'] || this.currentIndex
+    }
+    this.get();
   },
   computed: {
     bookmark () {
@@ -77,14 +76,13 @@ export default {
     }
   },
   methods: {
-    get () {
+    async get () {
       this.sections = [];
       this.fetchIndex = this.currentIndex - 1;
       this.transitIndex = this.currentIndex - 1;
-      (async() => {
-        await this.fetchComicChapter(this.fetchIndex++).then(data => this.sections.push(data));
-        await this.fetchComicChapter(this.fetchIndex++).then(data => this.sections.push(data));
-      })();
+      
+      await this.fetchComicChapter(this.fetchIndex++).then(data => this.sections.push(data));
+      await this.fetchComicChapter(this.fetchIndex++).then(data => this.sections.push(data));
     },
     fetchComicChapter (index) {
       return this.$api.fetchComicChapter(this.$vuex.getters.getSession(), this.comicID, index).then(data => {

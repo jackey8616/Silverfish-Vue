@@ -26,20 +26,18 @@ export default {
       last_deploy_time: "",
     }
   },
-  mounted () {
-    (async () => {
-      let masterRes = await axios({
-        url: 'https://api.github.com/repos/jackey8616/Silverfish-Vue/commits/master',
-        method: 'GET'
-      });
-      let ghRes = await axios({
-        url: 'https://api.github.com/repos/jackey8616/Silverfish-Vue/commits/gh-pages',
-        method: 'GET'
-      })
-      this.last_update_master_hash = masterRes.data.sha
-      this.last_update_master_time = this.$root.formatDate(masterRes.data.commit.committer.date, true);
-      this.last_deploy_time = this.$root.formatDate(ghRes.data.commit.committer.date, true);
-    })();
+  async mounted () {
+    let masterRes = await axios({
+      url: 'https://api.github.com/repos/jackey8616/Silverfish-Vue/commits/master',
+      method: 'GET'
+    });
+    let ghRes = await axios({
+      url: 'https://api.github.com/repos/jackey8616/Silverfish-Vue/commits/gh-pages',
+      method: 'GET'
+    })
+    this.last_update_master_hash = masterRes.data.sha
+    this.last_update_master_time = this.$root.formatDate(masterRes.data.commit.committer.date, true);
+    this.last_deploy_time = this.$root.formatDate(ghRes.data.commit.committer.date, true);
   },
 }
 </script>
