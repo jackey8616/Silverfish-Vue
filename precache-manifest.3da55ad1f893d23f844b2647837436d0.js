@@ -8,11 +8,11 @@ self.__precacheManifest = [
     "url": "/js/admin.53ce6e75.js"
   },
   {
-    "revision": "4ef3e921f383d3216f83",
-    "url": "/js/app.3b104a5a.js"
+    "revision": "b7cd7e96dd31aedb5e99",
+    "url": "/js/app.3cc46c67.js"
   },
   {
-    "revision": "49f167aed4b3d9e824c8b816be972e7d",
+    "revision": "79e2c657f7b5f20c8c85af6d42f64255",
     "url": "/sitemap.xml"
   },
   {
@@ -64,7 +64,7 @@ self.__precacheManifest = [
     "url": "/css/info.7eb88899.css"
   },
   {
-    "revision": "4ef3e921f383d3216f83",
+    "revision": "b7cd7e96dd31aedb5e99",
     "url": "/css/app.61b2babb.css"
   },
   {
@@ -88,7 +88,7 @@ self.__precacheManifest = [
     "url": "/css/novel.7950de67.css"
   },
   {
-    "revision": "f394e3f2bfe7f20793f59a0a01fc92ba",
+    "revision": "3fc7935451687b426d57cb521e0d22fd",
     "url": "/index.html"
   },
   {
