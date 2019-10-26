@@ -36,28 +36,16 @@
     "@vue/cli-plugin-eslint": "^3.5.0",
     "@vue/cli-plugin-pwa": "^3.8.0",
     "@vue/cli-service": "^3.5.0",
-    "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/eslint-config-prettier": "^5.0.0",
     "babel-eslint": "^10.0.1",
     "compression-webpack-plugin": "^3.0.0",
     "eslint": "^5.8.0",
+    "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^5.0.0",
+    "prettier": "^1.18.2",
     "vue-template-compiler": "^2.5.21",
     "webpack-bundle-analyzer": "^3.3.2",
     "xmlbuilder": "^13.0.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
   },
   "postcss": {
     "plugins": {

@@ -1,19 +1,25 @@
 <template>
-  <div id="content" class="container" :style="{ 'min-height': $root.$data.withFootHeight + 'px' }">
+  <div
+    id="content"
+    class="container"
+    :style="{ 'min-height': $root.$data.withFootHeight + 'px' }"
+  >
     <div class="row">
       <div class="col-10 offset-1 col-md-6 offset-md-3">
         <div class="row">
-          帳號<br>
+          帳號<br />
           <div class="col-12 right">&nbsp;{{ account }}</div>
         </div>
         <div class="row">
-          註冊時間<br>
-          <div class="col-12 right">&nbsp;{{ $root.formatDate(registerDatetime) }}</div>
+          註冊時間<br />
+          <div class="col-12 right">
+            &nbsp;{{ $root.formatDate(registerDatetime) }}
+          </div>
         </div>
         <div class="row">
-          上次登入時間<br>
+          上次登入時間<br />
           <div class="col-12 right">
-          &nbsp;{{ $root.formatDate(lastLoginDatetime)}}
+            &nbsp;{{ $root.formatDate(lastLoginDatetime) }}
           </div>
         </div>
         <div class="row">
@@ -30,16 +36,18 @@
                 </div>
                 <div class="d-md-none">
                   <small>
-                    {{ val.info.title }}<br>
-                    <div class="right">{{ val.info.author }}&nbsp;/&nbsp;著</div>
+                    {{ val.info.title }}<br />
+                    <div class="right">
+                      {{ val.info.author }}&nbsp;/&nbsp;著
+                    </div>
                   </small>
                 </div>
               </div>
               <div class="col-4 col-md-3 right center">
                 <small>
                   {{ val.lastReadIndex }}&nbsp;
-                  <router-link :to="{ path: ('/novel/' + val.info.novelID) }">
-                    <font-awesome-icon icon="book-open"/>
+                  <router-link :to="{ path: '/novel/' + val.info.novelID }">
+                    <font-awesome-icon icon="book-open" />
                   </router-link>
                 </small>
               </div>
@@ -51,16 +59,18 @@
                 </div>
                 <div class="d-md-none">
                   <small>
-                    {{ val.info.title }}<br>
-                    <div class="right">{{ val.info.author }}&nbsp;/&nbsp;著</div>
+                    {{ val.info.title }}<br />
+                    <div class="right">
+                      {{ val.info.author }}&nbsp;/&nbsp;著
+                    </div>
                   </small>
                 </div>
               </div>
               <div class="col-4 col-md-3 right center">
                 <small>
                   {{ val.lastReadIndex }}&nbsp;
-                  <router-link :to="{ path: ('/comic/' + val.info.comicID) }">
-                    <font-awesome-icon icon="book-open"/>
+                  <router-link :to="{ path: '/comic/' + val.info.comicID }">
+                    <font-awesome-icon icon="book-open" />
                   </router-link>
                 </small>
               </div>
@@ -75,7 +85,7 @@
 <script>
 export default {
   name: "userinfo",
-  data () {
+  data() {
     return {
       account: "guest",
       registerDatetime: "",
@@ -84,9 +94,9 @@ export default {
         novel: {},
         comic: {}
       }
-    }
+    };
   },
-  async mounted () {
+  async mounted() {
     await this.$root.fetchBookmark();
     let auth = this.$vuex.getters.getAuth();
     this.account = auth.account;
@@ -110,20 +120,19 @@ export default {
         delete this.bookmark.comic[each];
       }
     }
-  },
-}
+  }
+};
 </script>
 
 <style scoped>
-  div.left {
-    text-align: left;
-  }
-  div.right {
-    text-align: right;
-  }
-  div.center {
-    margin-top: auto;
-    margin-bottom: auto;
-  }
+div.left {
+  text-align: left;
+}
+div.right {
+  text-align: right;
+}
+div.center {
+  margin-top: auto;
+  margin-bottom: auto;
+}
 </style>
-

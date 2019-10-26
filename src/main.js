@@ -6,7 +6,7 @@ import "./registerServiceWorker";
 import APIUsecase from "./api";
 
 // ResizeObserver
-import ResizeObserver from 'resize-observer-polyfill';
+import ResizeObserver from "resize-observer-polyfill";
 // Vue-Observe-Visibility
 import { ObserveVisibility } from "vue-observe-visibility";
 // FontAwesome
@@ -21,7 +21,7 @@ import {
   faInfoCircle,
   faBookOpen,
   faUser,
-  faChevronDown,
+  faChevronDown
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faLightbulb as farLightbulb,
@@ -34,9 +34,9 @@ import "bootstrap/dist/css/bootstrap.css";
 // Vue-Toasted
 import Toasted from "vue-toasted";
 // Vue-Js-Toggle-Button
-import ToggleButton from 'vue-js-toggle-button'
+import ToggleButton from "vue-js-toggle-button";
 // Vue-ScrollTo
-import VueScrollTo from 'vue-scrollto';
+import VueScrollTo from "vue-scrollto";
 
 import Navigator from "@/components/Navigator";
 import Loading from "@/components/Loading";
@@ -54,7 +54,7 @@ library.add(
   faBookOpen,
   faTimesCircle,
   faUser,
-  faChevronDown,
+  faChevronDown
 );
 
 //const backend = "http://127.0.0.1:8080";
@@ -94,7 +94,8 @@ new Vue({
         {
           vmid: "description",
           name: "description",
-          content: "提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。"
+          content:
+            "提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。"
         },
         {
           vmid: "og:title",
@@ -116,7 +117,8 @@ new Vue({
         {
           vmid: "og:description",
           property: "og:description",
-          content: "提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。"
+          content:
+            "提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。"
         },
         { vmid: "og:image", property: "og:image", content: "" },
         { vmid: "og:type", property: "og:type", content: "website" },
@@ -135,63 +137,69 @@ new Vue({
     };
   },
   store,
-  data () {
+  data() {
     return {
       height: 0,
-      withFootHeight: 0,
-    }
+      withFootHeight: 0
+    };
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       const ro = new ResizeObserver(() => {
         this.$nextTick(() => {
-          const el = document.getElementById('navigator');
-          const footEl = document.getElementById('foot');
+          const el = document.getElementById("navigator");
+          const footEl = document.getElementById("foot");
           if (el != null) {
             this.height = window.innerHeight - el.clientHeight;
-            this.withFootHeight = window.innerHeight - el.clientHeight - footEl.clientHeight;
+            this.withFootHeight =
+              window.innerHeight - el.clientHeight - footEl.clientHeight;
           }
         });
       });
-      const el = document.getElementById('navigator');
+      const el = document.getElementById("navigator");
       ro.observe(document.body);
       if (el != null) {
         ro.observe(el);
       }
-    })
+    });
   },
   methods: {
-    fetchBookmark () {
+    fetchBookmark() {
       if (this.$vuex.getters.isLogging() == true) {
-        this.$api.fetchLatestBookmark(this.$vuex.getters.getSession())
+        this.$api
+          .fetchLatestBookmark(this.$vuex.getters.getSession())
           .then(data => {
             this.$vuex.commit("updateBookmark", data);
-          }).catch(err => {
+          })
+          .catch(err => {
             if (err.reason == "SessionToken not exists") {
-              this.$vuex.commit('logout')
-              this.$toasted.show('不存在的Session，無法獲取書籤，請重新登入！')
+              this.$vuex.commit("logout");
+              this.$toasted.show("不存在的Session，無法獲取書籤，請重新登入！");
             } else {
               console.error(err);
             }
           });
       }
     },
-    formatDate (dateStr, second) {
+    formatDate(dateStr, second) {
       let date = new Date(dateStr);
       let m = `0${date.getMonth() + 1}`.slice(-2);
       let d = `0${date.getDate()}`.slice(-2);
       let h = `0${date.getHours()}`.slice(-2);
       let M = `0${date.getMinutes()}`.slice(-2);
       if (second == undefined || second == false) {
-        return `${date.getFullYear()}/${m}/${d} ${h}:${M}`; 
+        return `${date.getFullYear()}/${m}/${d} ${h}:${M}`;
       } else {
         let s = `0${date.getSeconds()}`.slice(-2);
         return `${date.getFullYear()}/${m}/${d} ${h}:${M}:${s}`;
       }
     },
-    simpleFormatDate (dateStr) {
+    simpleFormatDate(dateStr) {
       let date = new Date(dateStr);
-      let y = date.getFullYear().toString().substr(-2);
+      let y = date
+        .getFullYear()
+        .toString()
+        .substr(-2);
       let m = `0${date.getMonth() + 1}`.slice(-2);
       let d = `0${date.getDate()}`.slice(-2);
       return `${y}/${m}/${d}`;

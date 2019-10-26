@@ -20,21 +20,25 @@ export default new Vuex.Store({
       }
     },
     Novels: {},
-    Comics: {},
+    Comics: {}
   },
   mutations: {
     login(state, payload) {
-      state.session = payload.session
+      state.session = payload.session;
       state.auth.account = payload.user.account;
       state.auth.registerDatetime = payload.user.registerDatetime;
       state.auth.lastLoginDatetime = payload.user.lastLoginDatetime;
       state.auth.bookmark = {
-        novel: payload.user.bookmark.novel == null ? {} : payload.user.bookmark.novel,
-        comic: payload.user.bookmark.comic == null ? {} : payload.user.bookmark.comic
+        novel:
+          payload.user.bookmark.novel == null
+            ? {}
+            : payload.user.bookmark.novel,
+        comic:
+          payload.user.bookmark.comic == null ? {} : payload.user.bookmark.comic
       };
     },
     logout(state) {
-      state.session = ""
+      state.session = "";
       state.auth = {
         account: "guest",
         registerDatetime: "",

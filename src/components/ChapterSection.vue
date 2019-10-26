@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { tify, sify } from 'chinese-conv';
+import { tify, sify } from "chinese-conv";
 
 export default {
   name: "chapter-section",
@@ -19,12 +19,11 @@ export default {
       return this.isTW ? tify(value) : sify(value);
     }
   }
-}
+};
 </script>
 
 <style scoped>
-  div {
-    text-align: left;
-  }
+div {
+  text-align: left;
+}
 </style>
-
