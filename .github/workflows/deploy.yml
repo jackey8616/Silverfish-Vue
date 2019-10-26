@@ -1,0 +1,25 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  BUILD-DEPLOY:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 10
+    - name: BUILD
+      run: |
+        npm install
+        npm run build
+        echo "silverfish.cc" > ./dist/CNAME
+
+    - name: DEPLOY
+      uses: peaceiris/actions-gh-pages@v2.5.0
+      env:
+        PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./dist

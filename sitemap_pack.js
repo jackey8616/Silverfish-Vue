@@ -35,7 +35,7 @@ sync_get('/api/v1/novels').then((datas) => {
   for(every in datas['data']) {
     doc = doc
       .ele('url')
-        .ele('loc', `${frontend}novel_intro/${datas['data'][every]['novelID']}`)
+        .ele('loc', `${frontend}info/novel/${datas['data'][every]['novelID']}`)
         .up()
       .up();
   }
@@ -44,7 +44,7 @@ sync_get('/api/v1/novels').then((datas) => {
   for(every in datas['data']) {
     doc = doc
       .ele('url')
-        .ele('loc', `${frontend}comic_intro/${datas['data'][every]['comicID']}`)
+        .ele('loc', `${frontend}info/comic/${datas['data'][every]['comicID']}`)
         .up()
       .up();
   }
