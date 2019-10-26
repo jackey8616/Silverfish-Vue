@@ -1,19 +1,17 @@
 <template>
-  <div id="content" class="container" :style="{ 'min-height': $root.$data.height + 'px' }">
+  <div id="content" class="container" :style="{ 'min-height': $root.$data.withFootHeight + 'px' }">
     <div class="row">
-      <div id="form" class="col-8 offset-2 col-md-4 offset-md-4">
+      <div id="form" class="col-8 offset-2 col-md-6 offset-md-3">
         <b><big>為什麼需要註冊？</big></b>
-        <p>
-          壹、保持多裝置間閱讀書籤的紀錄可以同步。<br>
-          貳、針對每隻書蟲的閱讀習慣推薦相似的書籍。<small>（未來功能）</small><br>
-          <del>參、大家都有註冊，好像我們沒有也不行。</del>
-        </p>
+        <ul>
+          <li>壹、保持多裝置間閱讀書籤的紀錄可以同步。</li>
+          <li>貳、針對每隻書蟲的閱讀習慣推薦相似的書籍。<small>（未來功能）</small></li>
+          <li><del>參、大家都有註冊，好像我們沒有也不行。</del></li>
+        </ul>
         <b><big>我的資料安全嗎？</big></b>
-        <p>
-          　　每個帳號的使用過程中，我們只會紀錄該帳號的註冊時間, 上次登錄時間及閱讀紀錄。<br>
-          　　註冊時並不會收集除帳號密碼外的任何額外資料，未來規劃也只會使用閱讀紀錄來做分析使用者習慣。<br>
-          　　如果您仍然有安全上的疑慮，可以使用簡單好記的帳號密碼申請即可。<br>
-        </p>
+        <p>每個帳號的使用過程中，我們只會紀錄該帳號的註冊時間, 上次登錄時間及閱讀紀錄。</p>
+        <p>註冊時並不會收集除帳號密碼外的任何額外資料，未來規劃也只會使用閱讀紀錄來做分析使用者習慣。</p>
+        <p>如果您仍然有安全上的疑慮，可以使用簡單好記的帳號密碼申請即可。</p>
         <form>
           <div class="input-group mb-3">
             <input v-model="auth.account" class="form-control" type="text" placeholder="帳號"/>
@@ -116,8 +114,15 @@ export default {
     border-radius: .5em;
     background-color: rgba(255, 255, 255, 0.212);
   }
+  ul {
+    padding: 0;
+    list-style-type: none;
+    text-align: left;
+    font-size: 14px;
+  }
   p {
     font-size: 14px;
     text-align: left;
+    text-indent: 10px;
   }
 </style>

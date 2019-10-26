@@ -1,5 +1,5 @@
 <template>
-  <div id="content" class="container" :style="{ 'min-height': $root.$data.height + 'px' }">
+  <div id="content" class="container" :style="{ 'min-height': $root.$data.withFootHeight + 'px' }">
     <div v-if="load == true">
       <br>
       <center><loading :size="160"/></center>
@@ -57,7 +57,7 @@ export default {
       meta: [
         { vmid: 'description', name: 'description', content: this.entry.description },
         { vmid: 'og:title', property: 'og:title', content: this.entry.title },
-        { vmid: 'og:url' , property: 'og:url', content: `${this.type}_intro/${this.entry.novelID}` },
+        { vmid: 'og:url' , property: 'og:url', content: `info/${this.type}/${this.entry.novelID}` },
         { vmid: 'og:description', property: 'og:description', content: this.entry.description },
         { vmid: 'og:image', property: 'og:image', content: this.entry.coverURL },
         { vmid: 'og:type', property: 'og:type', content: this.type },

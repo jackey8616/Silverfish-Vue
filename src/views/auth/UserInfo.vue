@@ -1,5 +1,5 @@
 <template>
-  <div id="content" class="container" :style="{ 'min-height': $root.$data.height + 'px' }">
+  <div id="content" class="container" :style="{ 'min-height': $root.$data.withFootHeight + 'px' }">
     <div class="row">
       <div class="col-10 offset-1 col-md-6 offset-md-3">
         <div class="row">

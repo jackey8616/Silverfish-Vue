@@ -94,8 +94,7 @@ new Vue({
         {
           vmid: "description",
           name: "description",
-          content:
-            "提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。"
+          content: "提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。"
         },
         {
           vmid: "og:title",
@@ -117,8 +116,7 @@ new Vue({
         {
           vmid: "og:description",
           property: "og:description",
-          content:
-            "提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。"
+          content: "提供流暢、無廣告的小說/漫畫閱覽，支援各平台裝置使用，無需下載任何App。"
         },
         { vmid: "og:image", property: "og:image", content: "" },
         { vmid: "og:type", property: "og:type", content: "website" },
@@ -140,15 +138,19 @@ new Vue({
   data () {
     return {
       height: 0,
+      withFootHeight: 0,
     }
   },
   mounted () {
     this.$nextTick(() => {
-      const ro = new ResizeObserver((entries) => {
+      const ro = new ResizeObserver(() => {
         this.$nextTick(() => {
           const el = document.getElementById('navigator');
-          if (el != null)
+          const footEl = document.getElementById('foot');
+          if (el != null) {
             this.height = window.innerHeight - el.clientHeight;
+            this.withFootHeight = window.innerHeight - el.clientHeight - footEl.clientHeight;
+          }
         });
       });
       const el = document.getElementById('navigator');

@@ -11,8 +11,8 @@ let doc = xmlBuilder
     .att('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
     .att('xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd')
     .ele('url')
-      .ele('loc', 'https://silverfish.cc/')
-      .up()
+      .ele('loc', 'https://silverfish.cc/#/').up()
+      .ele('lastmod', new Date().toJSON()).up()
     .up();
 
 function sync_get(url) {
@@ -35,8 +35,8 @@ sync_get('/api/v1/novels').then((datas) => {
   for(every in datas['data']) {
     doc = doc
       .ele('url')
-        .ele('loc', `${frontend}info/novel/${datas['data'][every]['novelID']}`)
-        .up()
+        .ele('loc', `${frontend}info/novel/${datas['data'][every]['novelID']}`).up()
+        .ele('lastmod', `${datas['data'][every]['lastCrawlTime']}`).up()
       .up();
   }
   return sync_get('/api/v1/comics')
@@ -44,8 +44,8 @@ sync_get('/api/v1/novels').then((datas) => {
   for(every in datas['data']) {
     doc = doc
       .ele('url')
-        .ele('loc', `${frontend}info/comic/${datas['data'][every]['comicID']}`)
-        .up()
+        .ele('loc', `${frontend}info/comic/${datas['data'][every]['comicID']}`).up()
+        .ele('lastmod', `${datas['data'][every]['lastCrawlTime']}`).up()
       .up();
   }
   doc = doc.end({ pretty: true });

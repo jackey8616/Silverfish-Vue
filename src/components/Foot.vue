@@ -1,14 +1,13 @@
 <template>
-  <div>
+  <div id="foot">
     <small>
       本站所有圖文影來源皆為其他網站，<br class="d-md-none">且針對所有內容未進行任何儲存。<br>
       Version &nbsp;
       <a :href="'https://github.com/jackey8616/Silverfish-Vue/commit/' + last_update_master_hash" target="_blank">
         {{ last_update_master_hash.slice(0, 7) }}
-      </a>
-      &nbsp;updated&nbsp;@&nbsp;{{ last_update_master_time }}<br>
-      Built&nbsp;@&nbsp;{{ last_deploy_time }}&nbsp;with&nbsp;
-      <img class="no-size" src="https://api.travis-ci.com/jackey8616/Silverfish-Vue.svg?branch=master"/><br>
+      </a><br>
+      Updated&nbsp;@&nbsp;{{ last_update_master_time }}<br>
+      Built&nbsp;@&nbsp;{{ last_deploy_time }}<br>
       Service Mail: <a href="mailto:service@silverfish.cc">service@silverfish.cc</a>
     </small>
   </div>
@@ -32,12 +31,12 @@ export default {
       method: 'GET'
     });
     let ghRes = await axios({
-      url: 'https://api.github.com/repos/jackey8616/Silverfish-Vue/commits/gh-pages',
+      url: 'https://api.github.com/repos/jackey8616/Silverfish-Vue/deployments',
       method: 'GET'
     })
     this.last_update_master_hash = masterRes.data.sha
     this.last_update_master_time = this.$root.formatDate(masterRes.data.commit.committer.date, true);
-    this.last_deploy_time = this.$root.formatDate(ghRes.data.commit.committer.date, true);
+    this.last_deploy_time = this.$root.formatDate(ghRes.data[0].created_at, true);
   },
 }
 </script>

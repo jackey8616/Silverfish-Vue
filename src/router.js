@@ -10,6 +10,7 @@ Vue.use(VueMeta, {
 })
 
 const router = new Router({
+  //mode: 'history',
   routes: [
     {
       path: "/",
@@ -53,6 +54,18 @@ const router = new Router({
       },
     },
     {
+      path: "/admin",
+      name: "admin",
+      components: {
+        default: () => import(/* webpackChunkName: "admin" */"@/views/auth/Admin"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      },
+      meta: {
+        requiresAuth: true,
+        requiresAdmin: true,
+      },
+    },
+    {
       path: "/info/:type/:id",
       name: "info",
       components: {
@@ -79,18 +92,6 @@ const router = new Router({
       },
       props: true
     },
-    {
-      path: "/admin",
-      name: "admin",
-      components: {
-        default: () => import(/* webpackChunkName: "admin" */"@/views/Admin"),
-        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
-      },
-      meta: {
-        requiresAuth: true,
-        requiresAdmin: true,
-      },
-    },
     /*
     {
       path: "/about",
@@ -102,6 +103,14 @@ const router = new Router({
         import(/*webpackChunkName: "about""./views/About.vue")
     }
     */
+    {
+      path: "*",
+      name: "not_found",
+      components: {
+        default: () => import(/* webpackChunkName: "not_found" */"@/views/NotFound"),
+        nav: () => import(/* webpackChunkName: "nav" */"@/components/Navigator"),
+      }
+    }
   ]
 });
 
@@ -125,6 +134,7 @@ router.beforeEach(async (to, from, next) => {
       });
     }
   }
+  console.log(to);
   return next();
 });
 

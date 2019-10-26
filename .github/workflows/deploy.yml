@@ -11,13 +11,13 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 10
-    - name: BUILD
+    - name: Build
       run: |
         npm install
         npm run build
         echo "silverfish.cc" > ./dist/CNAME
 
-    - name: DEPLOY
+    - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.5.0
       env:
         PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
