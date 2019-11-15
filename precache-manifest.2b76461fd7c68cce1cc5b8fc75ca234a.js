@@ -8,11 +8,11 @@ self.__precacheManifest = [
     "url": "/js/admin.53ce6e75.js"
   },
   {
-    "revision": "a6dec44acd1b22434d3b",
-    "url": "/js/app.eed74053.js"
+    "revision": "ebd87f7edf19c0e2df3c",
+    "url": "/js/app.b8428d61.js"
   },
   {
-    "revision": "d74306f4738a58abdf932f90ff549786",
+    "revision": "3f27f9bf8926623840281dfa6222e1a5",
     "url": "/sitemap.xml"
   },
   {
@@ -24,8 +24,8 @@ self.__precacheManifest = [
     "url": "/service-worker.js"
   },
   {
-    "revision": "4e0f7bfbd4a8f52d0f3d",
-    "url": "/js/comic.94f19041.js"
+    "revision": "405d6b10a9b9d2a857ca",
+    "url": "/js/comic.a07c27b5.js"
   },
   {
     "revision": "82339bd1f2d9a6a79f4d757dfebc79e4",
@@ -52,8 +52,8 @@ self.__precacheManifest = [
     "url": "/js/list.10ec697d.js"
   },
   {
-    "revision": "3f26af09e09fde3132e2",
-    "url": "/js/novel.715bd93f.js"
+    "revision": "8e6b227e70a08e81bb81",
+    "url": "/js/novel.b4cb32f1.js"
   },
   {
     "revision": "83bb509d3d859f089c7e",
@@ -64,7 +64,7 @@ self.__precacheManifest = [
     "url": "/css/info.7eb88899.css"
   },
   {
-    "revision": "a6dec44acd1b22434d3b",
+    "revision": "ebd87f7edf19c0e2df3c",
     "url": "/css/app.aec0d649.css"
   },
   {
@@ -84,11 +84,11 @@ self.__precacheManifest = [
     "url": "/css/userinfo.dcc14cab.css"
   },
   {
-    "revision": "3f26af09e09fde3132e2",
-    "url": "/css/novel.812057e6.css"
+    "revision": "8e6b227e70a08e81bb81",
+    "url": "/css/novel.1b82f542.css"
   },
   {
-    "revision": "56dc5d6fd8ab155db7e4ea1960ee1d28",
+    "revision": "3c420b93a80bd7fc70aa62ee2e2896b0",
     "url": "/index.html"
   },
   {
@@ -100,8 +100,8 @@ self.__precacheManifest = [
     "url": "/css/index.3e366bde.css"
   },
   {
-    "revision": "4e0f7bfbd4a8f52d0f3d",
-    "url": "/css/comic.511e52e6.css"
+    "revision": "405d6b10a9b9d2a857ca",
+    "url": "/css/comic.e94ce70b.css"
   },
   {
     "revision": "27b20d0d8fced229580d813636e338e8",
