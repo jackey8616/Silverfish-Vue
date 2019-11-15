@@ -82,7 +82,10 @@ export default {
     position: relative;
     top: 5vh;
     text-align: right;
-    width: 20px;
+    width: 60px;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    border-radius: 10px;
   }
   .sticky-bar-el {
     margin-left: 0px;
@@ -104,6 +107,7 @@ export default {
     width: 40px;
     height: 40px;
     padding: 6px 0px;
+    border-color: rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     text-align: center;
     line-height: 1.42857;
