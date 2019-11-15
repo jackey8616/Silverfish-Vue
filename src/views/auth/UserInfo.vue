@@ -18,19 +18,20 @@
         </div>
         <div class="row">
           <label>書籤</label>&nbsp;
-          <div class="col-12">
+          <div class="col-12 booksList">
             <div class="row">
-              <div class="col left">書名 / 作者</div>
+              <div class="col left">小說書名 / 作者</div>
               <div class="col-5 right">上次章節</div>
             </div>
-            <div v-for="(val, key) in bookmark.novel" :key="key" class="row">
+            <div v-for="val in bookmark.novel" :key="val.id" class="row bookRow">
               <div class="col left">
                 <div class="d-none d-md-block">
-                  {{ val.info.title }}&nbsp;/&nbsp;{{ val.info.author }}
+                  <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span>
+                  &nbsp;/&nbsp;{{ val.info.author }}
                 </div>
                 <div class="d-md-none">
                   <small>
-                    {{ val.info.title }}<br>
+                    <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span><br>
                     <div class="right">{{ val.info.author }}&nbsp;/&nbsp;著</div>
                   </small>
                 </div>
@@ -44,14 +45,21 @@
                 </small>
               </div>
             </div>
-            <div v-for="(val, key) in bookmark.comic" :key="key" class="row">
+          </div>
+          <div class="col-12 booksList">
+            <div class="row">
+              <div class="col left">漫畫書名 / 作者</div>
+              <div class="col-5 right">上次章節</div>
+            </div>
+            <div v-for="val in bookmark.comic" :key="val.id" class="row bookRow">
               <div class="col left">
                 <div class="d-none d-md-block">
-                  {{ val.info.title }}&nbsp;/&nbsp;{{ val.info.author }}
+                  <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span>
+                  &nbsp;/&nbsp;{{ val.info.author }}
                 </div>
                 <div class="d-md-none">
                   <small>
-                    {{ val.info.title }}<br>
+                    <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span><br>
                     <div class="right">{{ val.info.author }}&nbsp;/&nbsp;著</div>
                   </small>
                 </div>
@@ -81,33 +89,48 @@ export default {
       registerDatetime: "",
       lastLoginDatetime: "",
       bookmark: {
-        novel: {},
-        comic: {}
+        novel: [],
+        comic: [],
       }
     }
   },
   async mounted () {
-    await this.$root.fetchBookmark();
+    await this.$root.fetchBookmark(true);
     let auth = this.$vuex.getters.getAuth();
     this.account = auth.account;
     this.registerDatetime = auth.registerDatetime;
     this.lastLoginDatetime = auth.lastLoginDatetime;
     for (let each in auth.bookmark.novel) {
+      let bookmarkData = auth.bookmark.novel[each];
       let data = this.$vuex.getters.getNovelByID(each);
       if (data !== undefined) {
-        this.bookmark.novel[each] = auth.bookmark.novel[each];
-        this.bookmark.novel[each]["info"] = data;
-      } else {
-        delete this.bookmark.novel[each];
+        const bookmark = {
+          ...bookmarkData,
+            "info": data,
+        };
+        if (this.bookmark.novel.length > 0 &&
+            this.bookmark.novel[0].lastReadDatetime < bookmarkData.lastReadDatetime) {
+          this.bookmark.novel.unshift(bookmark);
+        } else {
+          this.bookmark.novel.push(bookmark);
+        }
       }
     }
     for (let each in auth.bookmark.comic) {
+      let bookmarkData = auth.bookmark.comic[each];
       let data = this.$vuex.getters.getComicByID(each);
       if (data !== undefined) {
-        this.bookmark.comic[each] = auth.bookmark.comic[each];
-        this.bookmark.comic[each]["info"] = data;
-      } else {
-        delete this.bookmark.comic[each];
+        const bookmark = {
+          ...bookmarkData,
+            "info": data,
+        };
+
+        if (this.bookmark.comic.length > 0 &&
+            this.bookmark.comic[0].lastReadDatetime < bookmarkData.lastReadDatetime) {
+          this.bookmark.comic.unshift(bookmark);
+        } else {
+          this.bookmark.comic.push(bookmark);
+        }
       }
     }
   },
@@ -124,6 +147,12 @@ export default {
   div.center {
     margin-top: auto;
     margin-bottom: auto;
+  }
+  .booksList {
+    padding-top: 5px;
+  }
+  .bookRow {
+    border-bottom: 1px rgba(255, 255, 255, 0.3) solid;
   }
 </style>
 

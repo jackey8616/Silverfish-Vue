@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navigator brand="false" ref="navigator" />
+    <navigator ref="navigator" />
     <div id="top" :style="{ height: $root.$data.height + 'px' }">
       <div class="top-bg" />
       <div class="title-zone">
