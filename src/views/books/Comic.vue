@@ -2,21 +2,12 @@
   <div id="content" :style="{ 'min-height': $root.$data.height + 'px' }">
     <div id="article" class="container">
       <div v-if="Object.keys(comic).length !== 0" class="row">
-        <aside class="col-2 col-md-1">
-          <affix class="sidebar-menu" relative-element-selector="#comic" align="left">
-            <button @click="$router.go(-1)" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-              <font-awesome-icon icon="home"/>
-            </button><br/>
-            <router-link :to="{ path: ('/info/comic/' + comicID) }" tag="button" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-              <font-awesome-icon icon="info"/>
-            </router-link><br/>
-            <input v-model="currentIndex" class="sticky-bar-el chapter-text form-control form-control-sm" :class="{'bg-white': lightOn, 'text-dark': lightOn, 'bg-dark': !lightOn, 'text-white': !lightOn}" maxlength="5" />
-            <button @click="get" :disabled="comic.chapters.length === 0" class="sticky-bar-el btn btn-circle btn-sm" :class="{'btn-primary': lightOn, 'btn-secondary': !lightOn}">
-              <font-awesome-icon icon="arrow-right"/>
-            </button><br />
-          </affix>
-        </aside>
-        <div class="col-10 col-md-10">
+        <reader-nav
+          :type="'comic'"
+          :id="comicID"
+          :currentIndex="currentIndex" @changeIndex="onChangeIndex"
+          :chapterLength="comic.chapters.legnth"/>
+        <div class="col-12">
           <div id="comic">
             <div v-for="each in sections" :key="each.index">
               <img v-for="every in each.content" :key="every" :src="every"/>
@@ -34,11 +25,11 @@
 </template>
 
 <script>
-import { Affix } from 'vue-affix';
+import ReaderNav from '@/components/ReaderNav';
 
 export default {
   name: 'comic',
-  components: { Affix },
+  components: { ReaderNav },
   data () {
     return {
       comicID: "",
@@ -76,6 +67,10 @@ export default {
     }
   },
   methods: {
+    onChangeIndex(index) {
+      this.currentIndex = index;
+      this.get();
+    },
     async get () {
       this.sections = [];
       this.fetchIndex = this.currentIndex - 1;
@@ -120,30 +115,6 @@ export default {
   }
   .container.light-off {
     color: #d3d3d3;
-  }
-  .sticky-bar-el {
-    margin-left: 0px;
-    margin-top: 5px;
-    width: 40px;
-    height: 31px;
-  }
-  .sticky-bar-el.chapter-text {
-    font-size: 10px;
-    padding: 3px;
-  }
-  input.sticky-bar-el {
-    text-align: center;
-    line-height: 31px;
-    height: 40px;
-    border-radius: 20px;
-  }
-  .btn-circle {
-    width: 40px;
-    height: 40px;
-    padding: 6px 0px;
-    border-radius: 20px;
-    text-align: center;
-    line-height: 1.42857;
   }
 </style>
 
