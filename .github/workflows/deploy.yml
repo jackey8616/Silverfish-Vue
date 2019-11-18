@@ -16,6 +16,7 @@ jobs:
         npm install
         npm run build
         echo "silverfish.cc" > ./dist/CNAME
+        cp ./dist/index.html ./dist/404.html
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.5.0

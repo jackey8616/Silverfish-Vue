@@ -2,7 +2,7 @@ const https =require('https');
 const xmlBuilder = require('xmlbuilder');
 const fs = require('fs');
 
-const frontend = 'https://silverfish.cc/#/';
+const frontend = 'https://silverfish.cc/';
 const backend = 'https://silverfish-backend.clo5de.info:2087';
 
 let doc = xmlBuilder
@@ -11,7 +11,7 @@ let doc = xmlBuilder
     .att('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
     .att('xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd')
     .ele('url')
-      .ele('loc', 'https://silverfish.cc/#/').up()
+      .ele('loc', 'https://silverfish.cc/').up()
       .ele('lastmod', new Date().toJSON()).up()
     .up();
 
