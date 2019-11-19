@@ -111,7 +111,7 @@ new Vue({
           vmid: "og:url",
           property: "og:url",
           content: "",
-          template: chunk => `https://silverfish.cc/${chunk}`
+          template: chunk => `https://silverfish.cc/#/${chunk}`
         },
         {
           vmid: "og:description",
