@@ -14,7 +14,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /.*\.css/,
-  workbox.strategies.staleWhileRevalidate({
+  workbox.strategies.networkFirst({
     cacheName: 'workbox:css',
   })
 );
