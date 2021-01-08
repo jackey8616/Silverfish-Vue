@@ -134,7 +134,6 @@ router.beforeEach(async (to, from, next) => {
       });
     }
   }
-  console.log(to);
   return next();
 });
 

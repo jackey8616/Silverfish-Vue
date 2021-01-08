@@ -22,6 +22,7 @@ import {
   faBookOpen,
   faUser,
   faChevronDown,
+  faColumns,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faLightbulb as farLightbulb,
@@ -55,9 +56,10 @@ library.add(
   faTimesCircle,
   faUser,
   faChevronDown,
+  faColumns,
 );
 
-//const backend = "http://127.0.0.1:8080";
+// const backend = "http://127.0.0.1:8080";
 const backend = "https://silverfish-backend.clo5de.info:2087";
 const api_ver = "/api/v1";
 

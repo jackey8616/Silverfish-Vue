@@ -244,6 +244,20 @@ class APIUsecase {
         })
     }
 
+    deleteNovelByID (session, novelID) {
+        return new Promise(async (resolve, reject) => {
+            let res = await axios({
+                url: this.endpointRoute() + "/novel/" + novelID,
+                method: "DELETE",
+                headers: { Authorization: session },
+            });
+
+            if (res.data.success == true)
+                return resolve(res.data.data)
+            return reject(res.data.data)
+        });
+    }
+
     addNewComic (session, targetUrl) {
         return new Promise(async (resolve, reject) => {
             let res = await axios({
@@ -257,6 +271,20 @@ class APIUsecase {
                 return resolve(res.data.data)
             return reject(res.data.data)
         })
+    }
+
+    deleteComicByID (session, comicID) {
+        return new Promise(async (resolve, reject) => {
+            let res = await axios({
+                url: this.endpointRoute() + "/comic/" + comicID,
+                method: "DELETE",
+                headers: { Authorization: session },
+            });
+
+            if (res.data.success == true)
+                return resolve(res.data.data)
+            return reject(res.data.data)
+        });
     }
 }
 

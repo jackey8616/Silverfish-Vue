@@ -16,6 +16,11 @@
             <font-awesome-icon icon="book-open"/> 列表
           </router-link>
         </li>
+        <li v-if="$vuex.getters.getAuth().account === 'admin'" class="nav-item">
+          <router-link :to="{ name: 'admin' }" class="nav-link">
+            <font-awesome-icon icon="columns"/> 後台
+          </router-link>
+        </li>
       </ul>
       <ul id="right-nav" class="navbar-nav col-4">
         <li class="nav-item">
