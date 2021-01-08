@@ -12,7 +12,7 @@ self.__precacheManifest = [
     "url": "/js/app.38c24bd6.js"
   },
   {
-    "revision": "42379b0feffc88f67be27a86a53b25fc",
+    "revision": "8829be18654cbb547a2acb28c30450ee",
     "url": "/sitemap.xml"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/js/chunk-vendors.24beb2c8.js"
   },
   {
-    "revision": "c0b1767acf2ca2f5176dc9bfc1287222",
+    "revision": "0900de251baa941ce145b1627cdd450e",
     "url": "/service-worker.js"
   },
   {
