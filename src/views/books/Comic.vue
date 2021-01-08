@@ -10,7 +10,7 @@
         <div class="col-12">
           <div id="comic">
             <div v-for="each in sections" :key="each.index">
-              <img v-for="every in each.content" :key="every" :src="every"/>
+              <img v-for="every in each.content" :key="every" :src="every" referrerpolicy="no-referrer" />
               <hr v-observe-visibility="{callback: (isVisible, entry) => observe(isVisible, entry, each)}"/>
             </div>
           </div>
