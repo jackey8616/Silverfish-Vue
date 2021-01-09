@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://silverfish.cc/#/</loc>
-    <lastmod>2021-01-08T14:18:37.167Z</lastmod>
+    <lastmod>2021-01-09T16:50:43.916Z</lastmod>
   </url>
   <url>
     <loc>https://silverfish.cc/#/info/novel/rPfEWzV</loc>
-    <lastmod>2020-08-18T06:29:07.959Z</lastmod>
+    <lastmod>2021-01-09T09:54:57.241Z</lastmod>
   </url>
   <url>
     <loc>https://silverfish.cc/#/info/novel/1EeCxoA</loc>
@@ -202,7 +202,7 @@
   </url>
   <url>
     <loc>https://silverfish.cc/#/info/novel/4NcnKnh</loc>
-    <lastmod>2021-01-08T09:37:33.348Z</lastmod>
+    <lastmod>2021-01-09T12:28:01.596Z</lastmod>
   </url>
   <url>
     <loc>https://silverfish.cc/#/info/novel/7mxc8Vm</loc>
@@ -302,11 +302,11 @@
   </url>
   <url>
     <loc>https://silverfish.cc/#/info/comic/12IkNlZ</loc>
-    <lastmod>2021-01-03T03:36:57.904Z</lastmod>
+    <lastmod>2021-01-08T17:00:11.642Z</lastmod>
   </url>
   <url>
     <loc>https://silverfish.cc/#/info/comic/SwkGtGI</loc>
-    <lastmod>2021-01-08T05:17:06.575Z</lastmod>
+    <lastmod>2021-01-09T10:02:19.839Z</lastmod>
   </url>
   <url>
     <loc>https://silverfish.cc/#/info/comic/1XwkIBu</loc>
@@ -318,6 +318,34 @@
   </url>
   <url>
     <loc>https://silverfish.cc/#/info/comic/5eGFYbJ</loc>
-    <lastmod>2021-01-08T05:19:10.001Z</lastmod>
+    <lastmod>2021-01-09T09:53:20.887Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silverfish.cc/#/info/comic/1SXYB1W</loc>
+    <lastmod>2021-01-08T14:20:41.645Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silverfish.cc/#/info/comic/7m87gaA</loc>
+    <lastmod>2021-01-08T15:01:14.84Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silverfish.cc/#/info/comic/6T3YKak</loc>
+    <lastmod>2021-01-08T15:01:31.838Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silverfish.cc/#/info/comic/4KAklXD</loc>
+    <lastmod>2021-01-08T15:07:08.327Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silverfish.cc/#/info/comic/3EkFPww</loc>
+    <lastmod>2021-01-08T15:07:16.111Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silverfish.cc/#/info/comic/76euwhX</loc>
+    <lastmod>2021-01-08T15:07:23.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silverfish.cc/#/info/comic/738KbZm</loc>
+    <lastmod>2021-01-08T15:07:29.536Z</lastmod>
   </url>
 </urlset>
