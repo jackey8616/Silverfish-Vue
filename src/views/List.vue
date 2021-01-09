@@ -69,13 +69,13 @@ export default {
   },
   methods: {
     fetchList () {
-      this.$api.fetchNovels().then(novels => {
+      this.$api.fetchNovels(this.$vuex.getters.getSession()).then(novels => {
         this.novels = novels;
         this.novels.forEach((val, index, arr) => {
           this.$vuex.commit("upsertNovel", val);
         })
       });
-      this.$api.fetchComics().then(comics => {
+      this.$api.fetchComics(this.$vuex.getters.getSession()).then(comics => {
         this.comics = comics;
         this.comics.forEach((val, index, arr) => {
           this.$vuex.commit("upsertComic", val);
