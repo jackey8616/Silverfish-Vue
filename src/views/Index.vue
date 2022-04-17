@@ -39,7 +39,7 @@ export default {
 
 <style scoped>
   #top > div.top-bg {
-    background-image: url(/bg.jpg);
+    background-image: url(@/assets/bg.jpg);
     background-position: 50%;
     background-repeat: no-repeat;
     background-size: cover;
