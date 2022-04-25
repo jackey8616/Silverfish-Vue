@@ -55,7 +55,7 @@ export type TMutations = {
 const mutations: MutationTree<TState> & TMutations = {
   [MutationsTypes.login](state, payload) {
     state.token = payload.token;
-    state.expireDatetime = payload.expireDatetime;
+    state.expireDatetime = new Date(payload.expireDatetime);
   },
   [MutationsTypes.logout](state) {
     state.token = '';

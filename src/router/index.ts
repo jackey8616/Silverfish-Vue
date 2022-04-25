@@ -77,13 +77,13 @@ router.beforeEach(async (to, from) => {
         path: '/login',
         query: { redirect: to.path },
       };
-    } else if /* (store.getters['auth/isSessionExpired'] === true) {
+    } else if (store.getters['auth/isSessionExpired'] === true) {
       toast.error('閒置過長，請重新登入！');
       return {
         path: '/login',
         query: { redirect: to.path },
       };
-    } else if */ (to.matched.some((record) => record.meta.requiresAdmin)) {
+    } else if (to.matched.some((record) => record.meta.requiresAdmin)) {
       if (store.getters['user/isAdmin'] === true) {
         return true;
       } else {

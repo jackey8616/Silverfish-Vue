@@ -22,6 +22,7 @@ import Loading from '@/components/CLoading.vue';
 const app = createApp(App);
 
 app.config.globalProperties.$endpoint = 'https://silverfish-backend.clo5de.info:2087';
+// app.config.globalProperties.$endpoint = 'http://localhost:8080';
 app.config.globalProperties.$apiVersionRoute = '/api/v1';
 
 app.directive('observe-visibility', {

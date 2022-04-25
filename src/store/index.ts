@@ -59,37 +59,42 @@ export default createStore({
           const value: string | null = window.localStorage.getItem(storageKey);
           if (value !== null) {
             const data = JSON.parse(value) as TRootState;
-            const novels = Object.values(data[BookModuleName].Novels);
-            const comics = Object.values(data[BookModuleName].Comics);
-            data[BookModuleName].Novels = {};
-            data[BookModuleName].Comics = {};
+            const auth = data[AuthModuleName];
+            auth.expireDatetime = new Date(auth.expireDatetime);
+
+            const book = data[BookModuleName];
+            const novels = Object.values(book.Novels);
+            const comics = Object.values(book.Comics);
+            book.Novels = {};
+            book.Comics = {};
 
             novels.forEach((each) => {
-              data[BookModuleName].Novels[each.novelID] = {
+              book.Novels[each.novelID] = {
                 ...each,
                 lastCrawlTime: new Date(each.lastCrawlTime),
               };
             });
             comics.forEach((each) => {
-              data[BookModuleName].Comics[each.comicID] = {
+              book.Comics[each.comicID] = {
                 ...each,
                 lastCrawlTime: new Date(each.lastCrawlTime),
               };
             });
 
-            const novelBookmarks = Object.values(data[UserModuleName].bookmark.novel);
-            const comicBookmarks = Object.values(data[UserModuleName].bookmark.comic);
-            data[UserModuleName].bookmark.novel = {};
-            data[UserModuleName].bookmark.comic = {};
+            const user = data[UserModuleName];
+            const novelBookmarks = Object.values(user.bookmark.novel);
+            const comicBookmarks = Object.values(user.bookmark.comic);
+            user.bookmark.novel = {};
+            user.bookmark.comic = {};
 
             novelBookmarks.forEach((each) => {
-              data[UserModuleName].bookmark.novel[each.ID] = {
+              user.bookmark.novel[each.ID] = {
                 ...each,
                 lastReadDatetime: new Date(each.lastReadDatetime),
               };
             });
             comicBookmarks.forEach((each) => {
-              data[UserModuleName].bookmark.comic[each.ID] = {
+              user.bookmark.comic[each.ID] = {
                 ...each,
                 lastReadDatetime: new Date(each.lastReadDatetime),
               };

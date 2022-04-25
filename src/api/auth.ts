@@ -50,10 +50,7 @@ export default function () {
     }).then((res) => {
       if (res.data.success === true) {
         return resolve({
-          session: {
-            token: res.data.data.session,
-            expireDatetime: new Date(0),
-          },
+          session: res.data.data.session,
           user: res.data.data.user,
         });
       }
