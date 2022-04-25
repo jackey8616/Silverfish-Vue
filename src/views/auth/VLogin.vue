@@ -26,7 +26,7 @@
             />
             <div v-if="auth.password.length > 0" class="input-group-append">
               <button
-                class="btn btn-sm btn-light" type="button" tabindex="-1"
+                class="btn btn-light" type="button" tabindex="-1"
                 @click="auth.password = ''"
               >
                 <font-awesome-icon :icon="['far', 'times-circle']"/>

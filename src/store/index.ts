@@ -53,7 +53,7 @@ export function useStore(): TRootStore {
 export default createStore({
   plugins: [
     createPersistedState({
-      key: 'SILVERFISH-DEV',
+      key: `SILVERFISH${process.env.NODE_ENV === 'production' ? '' : '-DEV'}`,
       storage: {
         getItem: (storageKey) => {
           const value: string | null = window.localStorage.getItem(storageKey);
