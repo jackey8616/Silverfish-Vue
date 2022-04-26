@@ -167,8 +167,7 @@ export default defineComponent({
     -webkit-overflow-scrolling: touch;
   }
   .slides::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    display: none;
   }
   .slides > div {
     scroll-snap-align: start;
