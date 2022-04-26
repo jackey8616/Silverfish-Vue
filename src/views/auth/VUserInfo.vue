@@ -24,26 +24,29 @@
               <div class="col left">小說書名 / 作者</div>
               <div class="col-5 right">上次章節</div>
             </div>
-            <div v-for="val in novelBookmarks" :key="val.ID" class="row bookRow">
-              <div class="col left">
-                <div class="d-none d-md-block">
-                  <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span>
-                  &nbsp;/&nbsp;{{ val.info.author }}
+            <div v-for="val in novelBookmarks" :key="val.ID" class="row">
+              <div class="slider">
+                <div class="slides">
+                  <div class="info">
+                    <div class="col left">
+                      <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span>
+                      &nbsp;/&nbsp;{{ val.info.author }}
+                    </div>
+                    <div class="col-4 col-md-4 right center">
+                      <small>第{{ val.lastReadIndex }}章&nbsp;</small>
+                    </div>
+                  </div>
+                  <div class="keepRead">
+                    <router-link :to="{ path: `/novel/${val.ID}` }">
+                      <small>繼續閱讀</small>
+                    </router-link>
+                  </div>
+                  <div class="bookmarkRemove">
+                    <div>
+                      <small>刪除書籤</small>
+                    </div>
+                  </div>
                 </div>
-                <div class="d-md-none">
-                  <small>
-                    <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span><br>
-                    <div class="right">{{ val.info.author }}&nbsp;/&nbsp;著</div>
-                  </small>
-                </div>
-              </div>
-              <div class="col-4 col-md-3 right center">
-                <small>
-                  {{ val.lastReadIndex }}&nbsp;
-                  <router-link :to="{ path: ('/novel/' + val.ID) }">
-                    <font-awesome-icon icon="book-open"/>
-                  </router-link>
-                </small>
               </div>
             </div>
           </div>
@@ -52,26 +55,29 @@
               <div class="col left">漫畫書名 / 作者</div>
               <div class="col-5 right">上次章節</div>
             </div>
-            <div v-for="val in comicBookmarks" :key="val.ID" class="row bookRow">
-              <div class="col left">
-                <div class="d-none d-md-block">
-                  <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span>
-                  &nbsp;/&nbsp;{{ val.info.author }}
+            <div v-for="val in comicBookmarks" :key="val.ID" class="row">
+              <div class="slider">
+                <div class="slides">
+                  <div class="info">
+                    <div class="col left">
+                      <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span>
+                      &nbsp;/&nbsp;{{ val.info.author }}
+                    </div>
+                    <div class="col-4 col-md-4 right center">
+                      <small>第{{ val.lastReadIndex }}章&nbsp;</small>
+                    </div>
+                  </div>
+                  <div class="keepRead">
+                    <router-link :to="{ path: `/comic/${val.ID}` }">
+                      <small>繼續閱讀</small>
+                    </router-link>
+                  </div>
+                  <div class="bookmarkRemove">
+                    <div>
+                      <small>刪除書籤</small>
+                    </div>
+                  </div>
                 </div>
-                <div class="d-md-none">
-                  <small>
-                    <span :title="'上次閱讀: ' + val.lastReadDatetime">{{ val.info.title }}</span><br>
-                    <div class="right">{{ val.info.author }}&nbsp;/&nbsp;著</div>
-                  </small>
-                </div>
-              </div>
-              <div class="col-4 col-md-3 right center">
-                <small>
-                  {{ val.lastReadIndex }}&nbsp;
-                  <router-link :to="{ path: `/comic/${val.ID}` }">
-                    <font-awesome-icon icon="book-open"/>
-                  </router-link>
-                </small>
               </div>
             </div>
           </div>
@@ -148,6 +154,53 @@ export default defineComponent({
 </script>
 
 <style scoped>
+  .slider {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .slides {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slides::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .slides > div {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    transform-origin: center center;
+    transform: scale(1);
+    transition: transform 0.5s;
+    position: relative;
+    display: flex;
+  }
+  .slides > div.info {
+    border-bottom: 1px rgba(255, 255, 255, 0.3) solid;
+    width: 100%;
+  }
+  .slides > div.keepRead,div.bookmarkRemove > a > .small,small {
+    color: white;
+  }
+  .slides > div.keepRead > a {
+    margin: auto;
+  }
+  .slides > div.keepRead {
+    padding: 0 15px;
+    background-color: #0d6efd;
+  }
+  .slides > div.bookmarkRemove > div {
+    margin: auto;
+  }
+  .slides > div.bookmarkRemove {
+    display: none;
+    padding: 0 15px;
+    background-color: red;
+  }
   div.left {
     text-align: left;
   }
@@ -160,8 +213,5 @@ export default defineComponent({
   }
   .booksList {
     padding-top: 5px;
-  }
-  .bookRow {
-    border-bottom: 1px rgba(255, 255, 255, 0.3) solid;
   }
 </style>
