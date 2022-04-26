@@ -72,7 +72,7 @@ export default defineComponent({
       const data = await fetchNovelChapter(session, novelID.value, index);
       return {
         index,
-        title: (novel.value.chapters[index] as any).title,
+        title: novel.value.chapters[index].title,
         content: data,
       };
     };

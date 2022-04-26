@@ -10,7 +10,7 @@ import {
 import {
   TRootActions, TRootGetters, TRootMutations, TRootState,
 } from '@/store/index';
-import { Book, Comic, Novel } from '@/api/type';
+import { Comic, Novel } from '@/api/type';
 
 export const moduleName = 'book';
 type TModuleName = typeof moduleName;

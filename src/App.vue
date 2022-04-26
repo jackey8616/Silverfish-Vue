@@ -9,8 +9,8 @@
 <script lang="ts">
 /* eslint-disable lines-between-class-members, class-methods-use-this */
 import {
-  inject, nextTick, onMounted, provide,
-  ref, defineComponent,
+  nextTick, onMounted, provide, ref,
+  defineComponent,
 } from 'vue';
 import ResizeObserver from 'resize-observer-polyfill';
 import { useToast } from 'vue-toastification';

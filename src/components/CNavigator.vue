@@ -73,9 +73,7 @@
 </template>
 
 <script lang="ts">
-import {
-  watch, inject, defineComponent, computed,
-} from 'vue';
+import { watch, defineComponent, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useStore } from '@/store';

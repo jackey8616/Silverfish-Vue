@@ -100,7 +100,7 @@ export default defineComponent({
   beforeRouteEnter(to: any, from: any, next: any) {
     next(async (vm: any) => {
       const {
-        session, routeType, routeId, id,
+        session, routeType, routeId,
         fetchNovelByID, fetchComicByID,
       } = vm;
       vm.type = routeType;

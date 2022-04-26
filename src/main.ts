@@ -25,17 +25,19 @@ app.config.globalProperties.$endpoint = 'https://silverfish-backend.clo5de.info:
 // app.config.globalProperties.$endpoint = 'http://localhost:8080';
 app.config.globalProperties.$apiVersionRoute = '/api/v1';
 
+/* eslint-disable no-param-reassign, @typescript-eslint/no-explicit-any */
 app.directive('observe-visibility', {
   beforeMount: (el, binding, vnode) => {
-    (vnode as any).context = binding.instance; // eslint-disable-line no-param-reassign
+    (vnode as any).context = binding.instance;
     ObserveVisibility.bind(el, binding, vnode);
   },
   updated: (el, binding, vnode) => {
-    (vnode as any).context = binding.instance; // eslint-disable-line no-param-reassign
+    (vnode as any).context = binding.instance;
     ObserveVisibility.update(el, binding, vnode);
   },
   unmounted: ObserveVisibility.unbind,
 });
+/* eslint-enable no-param-reassign, @typescript-eslint/no-explicit-any */
 app.component('font-awesome-icon', FontAwesomeIcon);
 /* eslint-disable vue/multi-word-component-names */
 app.component('loading', Loading);

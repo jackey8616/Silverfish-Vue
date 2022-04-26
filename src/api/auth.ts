@@ -63,7 +63,7 @@ export default function () {
       url: `${$endpoint}/auth/logout`,
       method: 'GET',
       headers: { Authorization: session },
-    }).then((res) => resolve(true))
+    }).then(() => resolve(true))
       .catch((err) => toast.error(`發生錯誤: ${err.toString()}`)));
   }
 

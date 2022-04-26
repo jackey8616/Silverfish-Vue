@@ -69,7 +69,7 @@ const router = createRouter({
 });
 
 /* eslint-disable no-else-return, no-return-await */
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (store.getters['user/isLogin'] === false) {
       toast.error('請先登入!');
