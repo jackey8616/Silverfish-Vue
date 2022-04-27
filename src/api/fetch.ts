@@ -35,10 +35,9 @@ export default function () {
 
   function fetchNovelByID(session: string, novelID: string): Promise<Novel> {
     return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/novel`,
+      url: `${endpointRoute()}/novels/${novelID}`,
       method: 'GET',
       headers: { Authorization: session },
-      params: { novel_id: novelID },
     }).then((res) => {
       if (res.data.success) {
         const novel = res.data.data;
@@ -61,13 +60,9 @@ export default function () {
 
   function fetchNovelChapter(session: string, novelID: string, chapterIndex: number): Promise<any> {
     return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/chapter`,
+      url: `${endpointRoute()}/novels/${novelID}/chapter/${chapterIndex}`,
       method: 'GET',
       headers: { Authorization: session },
-      params: {
-        novel_id: novelID,
-        chapter_index: chapterIndex,
-      },
     }).then((res) => {
       if (res.data.success) {
         return resolve(res.data.data);
@@ -95,10 +90,9 @@ export default function () {
 
   function fetchComicByID(session: string, comicID: string): Promise<any> {
     return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comic`,
+      url: `${endpointRoute()}/comics/${comicID}`,
       method: 'GET',
       headers: { Authorization: session },
-      params: { comic_id: comicID },
     }).then((res) => {
       if (res.data.success) {
         const comic = res.data.data;
@@ -120,13 +114,9 @@ export default function () {
 
   function fetchComicChapter(session: string, comicID: string, chapterIndex: number): Promise<any> {
     return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comic/chapter`,
+      url: `${endpointRoute()}/comics/${comicID}/chapter/${chapterIndex}`,
       method: 'GET',
       headers: { Authorization: session },
-      params: {
-        comic_id: comicID,
-        chapter_index: chapterIndex,
-      },
     }).then((res) => {
       if (res.data.success) {
         return resolve(res.data.data);

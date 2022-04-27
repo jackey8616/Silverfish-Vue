@@ -29,7 +29,7 @@ export default function () {
 
   function addNewNovel(session: string, targetUrl: string): Promise<any> {
     return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/novel`,
+      url: `${endpointRoute()}/novels`,
       method: 'POST',
       headers: { Authorization: session },
       data: stringify({ novel_url: targetUrl }),
@@ -43,7 +43,7 @@ export default function () {
 
   function deleteNovelByID(session: string, novelID: string): Promise<any> {
     return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/novel/${novelID}`,
+      url: `${endpointRoute()}/novels/${novelID}`,
       method: 'DELETE',
       headers: { Authorization: session },
     }).then((res) => {
@@ -56,7 +56,7 @@ export default function () {
 
   function addNewComic(session: string, targetUrl: string): Promise<any> {
     return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comic`,
+      url: `${endpointRoute()}/comics`,
       method: 'POST',
       headers: { Authorization: session },
       data: stringify({ comic_url: targetUrl }),
@@ -70,7 +70,7 @@ export default function () {
 
   function deleteComicByID(session: string, comicID: string): Promise<any> {
     return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comic/${comicID}`,
+      url: `${endpointRoute()}/comics/${comicID}`,
       method: 'DELETE',
       headers: { Authorization: session },
     }).then((res) => {
