@@ -10,9 +10,12 @@
 /* eslint-disable lines-between-class-members, class-methods-use-this */
 import {
   nextTick, onMounted, provide, ref, defineComponent, computed,
+  watch,
 } from 'vue';
 import ResizeObserver from 'resize-observer-polyfill';
 import { useToast } from 'vue-toastification';
+import { useGtag } from 'vue-gtag-next';
+import { Md5 } from 'ts-md5';
 
 import { useStore } from '@/store';
 import UserAPI from '@/api/user';
@@ -23,6 +26,7 @@ import Foot from '@/components/CFoot.vue';
 export default defineComponent({
   components: { Navigator, Foot },
   setup() {
+    const { set } = useGtag();
     const toast = useToast();
     const { latestBookmark } = UserAPI();
     const store = useStore();
@@ -51,6 +55,14 @@ export default defineComponent({
     provide('fetchBookmark', fetchBookmark);
     provide('isLogin', isLogin);
     provide('session', session);
+
+    watch(() => store.getters['user/isLogin'], (newVal) => {
+      if (newVal === true) {
+        set({ user_id: `${Md5.hashStr(store.getters['user/getUser'].account)}` });
+      } else {
+        set({ user_id: '' });
+      }
+    });
 
     onMounted(() => {
       nextTick(() => {

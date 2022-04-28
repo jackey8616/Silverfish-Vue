@@ -14,6 +14,8 @@ import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 // VueLazyLoad
 import VueLazyLoad from 'vue3-lazyload';
+// vue-gtag-next
+import VueGtag from 'vue-gtag-next';
 
 import App from '@/App.vue';
 import router from '@/router';
@@ -50,4 +52,13 @@ app
   .use(router)
   .use(Toast)
   .use(VueLazyLoad)
+  .use(VueGtag, {
+    isEnabled: process.env.NODE_ENV === 'production',
+    property: {
+      id: 'G-NR4E79EJ0F',
+      params: {
+        send_page_view: true,
+      },
+    },
+  })
   .mount('#app');

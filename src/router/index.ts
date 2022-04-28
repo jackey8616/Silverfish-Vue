@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { trackRouter } from 'vue-gtag-next';
 import { useToast } from 'vue-toastification';
 
 import store from '@/store';
@@ -94,5 +95,7 @@ router.beforeEach(async (to) => {
   }
   return true;
 });
+
+trackRouter(router);
 
 export default router;
