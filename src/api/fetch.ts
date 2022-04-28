@@ -11,15 +11,12 @@ export default function () {
   const $endpoint = getCurrentInstance()?.appContext.config.globalProperties.$endpoint;
   const $apiVersionRoute = getCurrentInstance()?.appContext.config
     .globalProperties.$apiVersionRoute;
-
-  function endpointRoute(): string {
-    return `${$endpoint}${$apiVersionRoute}`;
-  }
+  const $endpointRoute = `${$endpoint}${$apiVersionRoute}`;
+  const novelCli = axios.create({ baseURL: `${$endpointRoute}/novels` });
+  const comicCli = axios.create({ baseURL: `${$endpointRoute}/comics` });
 
   function fetchNovels(session: string): Promise<Array<BookInfo>> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/novels`,
-      method: 'GET',
+    return new Promise((resolve, reject) => novelCli.get('', {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success) {
@@ -34,9 +31,7 @@ export default function () {
   }
 
   function fetchNovelByID(session: string, novelID: string): Promise<Novel> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/novels/${novelID}`,
-      method: 'GET',
+    return new Promise((resolve, reject) => novelCli.get(`/${novelID}`, {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success) {
@@ -59,9 +54,7 @@ export default function () {
   }
 
   function fetchNovelChapter(session: string, novelID: string, chapterIndex: number): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/novels/${novelID}/chapter/${chapterIndex}`,
-      method: 'GET',
+    return new Promise((resolve, reject) => novelCli.get(`/${novelID}/chapter/${chapterIndex}`, {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success) {
@@ -72,9 +65,7 @@ export default function () {
   }
 
   function fetchComics(session: string): Promise<Array<BookInfo>> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comics`,
-      method: 'GET',
+    return new Promise((resolve, reject) => comicCli.get('', {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success) {
@@ -89,9 +80,7 @@ export default function () {
   }
 
   function fetchComicByID(session: string, comicID: string): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comics/${comicID}`,
-      method: 'GET',
+    return new Promise((resolve, reject) => comicCli.get(`/${comicID}`, {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success) {
@@ -113,9 +102,7 @@ export default function () {
   }
 
   function fetchComicChapter(session: string, comicID: string, chapterIndex: number): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comics/${comicID}/chapter/${chapterIndex}`,
-      method: 'GET',
+    return new Promise((resolve, reject) => comicCli.get(`/${comicID}/chapter/${chapterIndex}`, {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success) {
@@ -126,7 +113,7 @@ export default function () {
   }
 
   return {
-    endpointRoute,
+    $endpointRoute,
     fetchNovels,
     fetchNovelByID,
     fetchNovelChapter,

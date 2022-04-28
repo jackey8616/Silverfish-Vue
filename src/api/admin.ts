@@ -10,14 +10,15 @@ import fetchAPI from '@/api/fetch';
 export default function () {
   const toast = useToast();
   const $endpoint = getCurrentInstance()?.appContext.config.globalProperties.$endpoint;
-  const { endpointRoute } = fetchAPI();
+  const { $endpointRoute } = fetchAPI();
+  const adminCli = axios.create({ baseURL: `${$endpoint}/admin` });
+  const novelCli = axios.create({ baseURL: `${$endpointRoute}/novels` });
+  const comicCli = axios.create({ baseURL: `${$endpointRoute}/comics` });
 
   function adminFetcherList(session: string): Promise<{
     fetchers: { comics: Array<string>; novels: Array<string>; };
   }> {
-    return new Promise((resolve, reject) => axios({
-      url: `${$endpoint}/admin/fetchers`,
-      method: 'GET',
+    return new Promise((resolve, reject) => adminCli.get('/fetchers', {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success === true) {
@@ -28,9 +29,7 @@ export default function () {
   }
 
   function addNewNovel(session: string, targetUrl: string): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/novels`,
-      method: 'POST',
+    return new Promise((resolve, reject) => novelCli.post('', {
       headers: { Authorization: session },
       data: stringify({ novel_url: targetUrl }),
     }).then((res) => {
@@ -42,9 +41,7 @@ export default function () {
   }
 
   function deleteNovelByID(session: string, novelID: string): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/novels/${novelID}`,
-      method: 'DELETE',
+    return new Promise((resolve, reject) => novelCli.delete(`/${novelID}`, {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success === true) {
@@ -55,9 +52,7 @@ export default function () {
   }
 
   function addNewComic(session: string, targetUrl: string): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comics`,
-      method: 'POST',
+    return new Promise((resolve, reject) => comicCli.post('', {
       headers: { Authorization: session },
       data: stringify({ comic_url: targetUrl }),
     }).then((res) => {
@@ -69,9 +64,7 @@ export default function () {
   }
 
   function deleteComicByID(session: string, comicID: string): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${endpointRoute()}/comics/${comicID}`,
-      method: 'DELETE',
+    return new Promise((resolve, reject) => comicCli.delete(`/${comicID}`, {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success === true) {

@@ -10,11 +10,10 @@ import { Session, User } from '@/api/type';
 export default function () {
   const toast = useToast();
   const $endpoint = getCurrentInstance()?.appContext.config.globalProperties.$endpoint;
+  const client = axios.create({ baseURL: `${$endpoint}/auth` });
 
   function authStatus(session: string): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${$endpoint}/auth/status`,
-      method: 'GET',
+    return new Promise((resolve, reject) => client.get('/status', {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success === true) {
@@ -27,9 +26,7 @@ export default function () {
   function authRegister(recaptchaToken: string, authData: {
     account: string; password: string;
   }): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${$endpoint}/auth/register`,
-      method: 'POST',
+    return new Promise((resolve, reject) => client.post('/register', {
       data: stringify({ ...{ recaptchaToken }, ...authData }),
     }).then((res) => {
       if (res.data.success === true) {
@@ -42,9 +39,7 @@ export default function () {
   function authLogin(session: string, recaptchaToken: string, authData: {
     account: string; password: string;
   }): Promise<{ session: Session; user: User }> {
-    return new Promise((resolve, reject) => axios({
-      url: `${$endpoint}/auth/login`,
-      method: 'POST',
+    return new Promise((resolve, reject) => client.post('/login', {
       headers: { Authorization: session },
       data: stringify({ ...{ recaptchaToken }, ...authData }),
     }).then((res) => {
@@ -59,18 +54,14 @@ export default function () {
   }
 
   function authLogout(session: string): Promise<any> {
-    return new Promise((resolve) => axios({
-      url: `${$endpoint}/auth/logout`,
-      method: 'GET',
+    return new Promise((resolve) => client.get('/logout', {
       headers: { Authorization: session },
     }).then(() => resolve(true))
       .catch((err) => toast.error(`發生錯誤: ${err.toString()}`)));
   }
 
   function authIsAdmin(session: string): Promise<any> {
-    return new Promise((resolve, reject) => axios({
-      url: `${$endpoint}/auth/isAdmin`,
-      method: 'GET',
+    return new Promise((resolve, reject) => client.get('/isAdmin', {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success) {

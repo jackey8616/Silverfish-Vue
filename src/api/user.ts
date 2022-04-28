@@ -9,14 +9,13 @@ import { useToast } from 'vue-toastification';
 export default function () {
   const toast = useToast();
   const $endpoint = getCurrentInstance()?.appContext.config.globalProperties.$endpoint;
+  const client = axios.create({ baseURL: `${$endpoint}/user` });
 
   function latestBookmark(session: string): Promise<{
     novel: Record<string, Bookmark>;
     comic: Record<string, Bookmark>;
   }> {
-    return new Promise((resolve, reject) => axios({
-      url: `${$endpoint}/user/bookmark`,
-      method: 'GET',
+    return new Promise((resolve, reject) => client.get('/bookmark', {
       headers: { Authorization: session },
     }).then((res) => {
       if (res.data.success) {
