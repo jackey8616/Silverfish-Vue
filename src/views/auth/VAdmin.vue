@@ -73,20 +73,17 @@
 
 <script lang="ts">
 import {
-  defineComponent, inject, onMounted, reactive, ref,
+  defineComponent, inject, onMounted, reactive, ref, ComputedRef,
 } from 'vue';
-
-import { useStore } from '@/store';
+import { useToast } from 'vue-toastification';
 
 import adminAPI from '@/api/admin';
 import fetchAPI from '@/api/fetch';
 import { BookInfo } from '@/api/type';
-import { useToast } from 'vue-toastification';
 
 export default defineComponent({
   setup() {
     const toast = useToast();
-    const store = useStore();
     const {
       adminFetcherList,
       addNewComic, addNewNovel,
@@ -94,7 +91,7 @@ export default defineComponent({
     } = adminAPI();
     const { fetchComics, fetchNovels } = fetchAPI();
     const withFootHeight = inject('withFootHeight');
-    const session = store.getters['auth/getSession'];
+    const session = inject<ComputedRef<string>>('session')!;
     const fetchers = reactive<{ novels: Array<string>; comics: Array<string>; }>({
       novels: [],
       comics: [],
@@ -107,19 +104,19 @@ export default defineComponent({
     const deleteComicID = ref('');
 
     const fetcherList = async () => {
-      adminFetcherList(session).then((data) => {
+      adminFetcherList(session.value).then((data) => {
         Object.assign(fetchers.novels, data.fetchers.novels);
         Object.assign(fetchers.comics, data.fetchers.comics);
       });
-      Object.assign(novels, await fetchNovels(session));
-      Object.assign(comics, await fetchComics(session));
+      Object.assign(novels, await fetchNovels(session.value));
+      Object.assign(comics, await fetchComics(session.value));
     };
     const addNovel = () => {
       if (addNovelUrl.value === '') {
         toast.error('Novel URL不得為空.');
         return;
       }
-      addNewNovel(session, addNovelUrl.value).then((data) => {
+      addNewNovel(session.value, addNovelUrl.value).then((data) => {
         toast('添加成功！');
         fetcherList();
         console.log(data);
@@ -133,7 +130,7 @@ export default defineComponent({
         toast.error('Novel ID不得為空.');
         return;
       }
-      deleteNovelByID(session, deleteNovelID.value).then((data) => {
+      deleteNovelByID(session.value, deleteNovelID.value).then((data) => {
         toast('刪除成功！');
         fetcherList();
         console.log(data);
@@ -147,7 +144,7 @@ export default defineComponent({
         toast.error('Comic URL不得為空.');
         return;
       }
-      addNewComic(session, addComicUrl.value).then((data) => {
+      addNewComic(session.value, addComicUrl.value).then((data) => {
         toast('添加成功！');
         fetcherList();
         console.log(data);
@@ -161,7 +158,7 @@ export default defineComponent({
         toast.error('Comic ID不得為空.');
         return;
       }
-      deleteComicByID(session, deleteComicID.value).then((data) => {
+      deleteComicByID(session.value, deleteComicID.value).then((data) => {
         toast('刪除成功！');
         fetcherList();
         console.log(data);

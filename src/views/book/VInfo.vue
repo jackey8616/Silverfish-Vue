@@ -61,18 +61,16 @@
 
 <script lang="ts">
 import {
-  ref, reactive, inject, defineComponent,
+  ref, reactive, inject, defineComponent, ComputedRef,
 } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { useStore } from '@/store';
 import fetchAPI from '@/api/fetch';
 import utils from '@/utils';
 
 export default defineComponent({
   setup() {
     const route = useRoute();
-    const store = useStore();
     const { fetchComicByID, fetchNovelByID } = fetchAPI();
     const { formatDate, simpleFormatDate } = utils();
     const load = ref(true);
@@ -80,9 +78,10 @@ export default defineComponent({
     const id = ref('');
     const entry = reactive({});
     const withFootHeight = inject('withFootHeight');
+    const session = inject<ComputedRef<string>>('session')!;
 
     return {
-      session: store.getters['auth/getSession'],
+      session,
       routeType: route.params.type,
       routeId: route.params.id,
       withFootHeight,

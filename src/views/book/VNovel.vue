@@ -37,9 +37,10 @@
 
 <script lang="ts">
 import {
-  inject, reactive, ref, defineComponent, computed,
+  inject, reactive, ref, defineComponent, computed, ComputedRef,
 } from 'vue';
 import { useRoute } from 'vue-router';
+
 import { useStore } from '@/store';
 
 import fetchAPI from '@/api/fetch';
@@ -54,8 +55,8 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
     const { fetchNovelByID, fetchNovelChapter } = fetchAPI();
-    const session = store.getters['auth/getSession'];
     const height = inject('height');
+    const session = inject<ComputedRef<string>>('session')!;
     const novelID = ref('');
     const loading = ref(false);
     const fontSize = ref(1);
@@ -69,7 +70,7 @@ export default defineComponent({
     const novel = computed(() => store.getters['book/getNovelByID'](novelID.value) || {});
 
     const fetchChapter = async (index: number): Promise<Chapter> => {
-      const data = await fetchNovelChapter(session, novelID.value, index);
+      const data = await fetchNovelChapter(session.value, novelID.value, index);
       return {
         index,
         title: novel.value.chapters[index].title,
@@ -90,14 +91,14 @@ export default defineComponent({
       novelID.value = route.params.novelID as string;
 
       if (!store.getters['book/isNovelIDExists'](novelID.value)) {
-        await fetchNovelByID(session, novelID.value)
+        await fetchNovelByID(session.value, novelID.value)
           .then((data) => store.commit('book/insertNovel', { novelID: novelID.value, novel: data }));
       } else {
         const localNovel = store.getters['book/getNovelByID'](novelID.value);
         if (localNovel.chapters === undefined
           || store.getters['book/isNovelNeedUpdate'](novelID.value)
         ) {
-          await fetchNovelByID(session, novelID.value)
+          await fetchNovelByID(session.value, novelID.value)
             .then((data) => store.commit('book/updateNovel', { novelID: novelID.value, novel: data }));
         }
         currentIndex.value = bookmark.value.lastReadIndex || currentIndex.value;

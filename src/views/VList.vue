@@ -1,7 +1,8 @@
 <template>
-  <div id="content" :style="{ 'min-height': height + 'px' }">
+  <div id="content" :style="{ 'min-height': `${height}px` }">
     <div class="container">
       <h1>Novels</h1>
+      <!--div style="display: flex; justify-content: center;"><loading :size="150"/></div-->
       <div v-if="novels.length !== 0" class="row">
         <div class="col-6 col-md-3">
           <list-card
@@ -68,8 +69,7 @@
 
 <script lang="ts">
 import {
-  inject, onMounted, reactive, watch,
-  defineComponent,
+  inject, onMounted, reactive, defineComponent, ComputedRef,
 } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -86,32 +86,24 @@ export default defineComponent({
     const store = useStore();
     const height = inject('height');
     /* eslint-disable-next-line @typescript-eslint/ban-types */
-    const fetchBookmark: Function = inject('fetchBookmark') as Function;
+    const fetchBookmark = inject<Function>('fetchBookmark')!;
+    const session = inject<ComputedRef<string>>('session')!;
     const { fetchComics, fetchNovels } = fetchAPI();
     const novels = reactive<Array<Novel>>([]);
     const comics = reactive<Array<Comic>>([]);
 
     const fetchList = () => {
-      const session = store.getters['auth/getSession'];
-      fetchNovels(session).then((fetchedNovels) => {
+      fetchNovels(session.value).then((fetchedNovels) => {
         Object.assign(novels, fetchedNovels);
         novels.forEach((each) => store.commit('book/upsertNovel', each));
       });
-      fetchComics(session).then((fetchedComics) => {
+      fetchComics(session.value).then((fetchedComics) => {
         Object.assign(comics, fetchedComics);
         comics.forEach((each) => store.commit('book/upsertComic', each));
       });
     };
 
     onMounted(() => {
-      fetchList();
-      fetchBookmark();
-    });
-
-    watch(() => route.name, (to) => {
-      if (to === null || to === undefined || ['home', 'list'].includes(to.toString()) === false) {
-        return;
-      }
       fetchList();
       fetchBookmark();
     });

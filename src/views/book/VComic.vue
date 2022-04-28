@@ -30,8 +30,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, ref, reactive, inject,
-  computed,
+  defineComponent, ref, reactive, inject, computed, ComputedRef,
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from '@/store';
@@ -47,8 +46,8 @@ export default defineComponent({
     const route = useRoute();
     const store = useStore();
     const { fetchComicByID, fetchComicChapter } = fetchAPI();
-    const session = store.getters['auth/getSession'];
     const height = inject('height');
+    const session = inject<ComputedRef<string>>('session')!;
     const comicID = ref('');
     const lightOn = ref(false);
     const loading = ref(false);
@@ -60,7 +59,7 @@ export default defineComponent({
     const comic = computed(() => store.getters['book/getComicByID'](comicID.value) || {});
 
     const fetchChapter = async (index: number): Promise<Chapter> => {
-      const data = await fetchComicChapter(session, comicID.value, index);
+      const data = await fetchComicChapter(session.value, comicID.value, index);
       return {
         index,
         content: data,
@@ -80,13 +79,13 @@ export default defineComponent({
       comicID.value = route.params.comicID as string;
 
       if (!store.getters['book/isComicIDExists'](comicID.value)) {
-        await fetchComicByID(session, comicID.value)
+        await fetchComicByID(session.value, comicID.value)
           .then((data) => store.commit('book/insertComic', { comicID: comicID.value, comic: data }));
       } else {
         const localComic = store.getters['book/getComicByID'](comicID.value);
         if (localComic.chapters === undefined
           || store.getters['book/isComicNeedUpdate'](comicID.value)) {
-          await fetchComicByID(session, comicID.value)
+          await fetchComicByID(session.value, comicID.value)
             .then((data) => store.commit('book/updateComic', { comicID: comicID.value, comic: data }));
         }
         currentIndex.value = bookmark.value.lastReadIndex || currentIndex.value;

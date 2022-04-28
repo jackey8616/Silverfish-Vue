@@ -73,7 +73,9 @@
 </template>
 
 <script lang="ts">
-import { watch, defineComponent, computed } from 'vue';
+import {
+  watch, defineComponent, computed, inject, ComputedRef,
+} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useStore } from '@/store';
@@ -88,7 +90,9 @@ export default defineComponent({
     const store = useStore();
     const toast = useToast();
     const { authLogout, authStatus } = authAPI();
-    const session = computed(() => store.getters['auth/getSession']);
+    const isLogin = inject<ComputedRef<boolean>>('isLogin')!;
+    const session = inject<ComputedRef<string>>('session')!;
+    const user = computed(() => store.getters['user/getUser']);
 
     const logout = async () => {
       await authLogout(session.value);
@@ -98,7 +102,7 @@ export default defineComponent({
     };
 
     watch(() => route.path, async () => {
-      if (store.getters['user/isLogin'] === false || session.value === '') {
+      if (isLogin.value === false || session.value === '') {
         return;
       }
 
@@ -110,10 +114,7 @@ export default defineComponent({
     });
 
     return {
-      store,
-      isLogin: computed(() => store.getters['user/isLogin']),
-      user: computed(() => store.getters['user/getUser']),
-      logout,
+      store, isLogin, user, logout,
     };
   },
 });

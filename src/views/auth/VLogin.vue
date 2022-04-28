@@ -86,8 +86,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, inject, onMounted, reactive,
-  ref,
+  defineComponent, inject, onMounted, reactive, ref, ComputedRef,
 } from 'vue';
 import { VueRecaptcha } from 'vue-recaptcha';
 
@@ -106,8 +105,8 @@ export default defineComponent({
     const route = useRoute();
     const { authLogin } = authAPI();
     const withFootHeight = inject('withFootHeight');
+    const session = inject<ComputedRef<string>>('session')!;
     const { redirect } = route.query;
-    const session = store.getters['auth/getSession'];
     const load = ref(false);
     const auth = reactive({
       keepLogin: false,
@@ -123,7 +122,7 @@ export default defineComponent({
     };
     const onRecaptchaExpired = () => (invisibleRecaptcha.value as VueRecaptcha).reset();
     const onRecaptchaVerfiy = (recaptchaToken: string) => {
-      authLogin(session, recaptchaToken, auth).then((data) => {
+      authLogin(session.value, recaptchaToken, auth).then((data) => {
         store.dispatch('auth/login', data);
         toast('登入成功');
         router.push(redirect !== undefined
