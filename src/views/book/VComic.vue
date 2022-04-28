@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, ref, reactive, inject, computed, ComputedRef,
+  defineComponent, ref, reactive, inject, computed, ComputedRef, onMounted,
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from '@/store';
@@ -75,7 +75,7 @@ export default defineComponent({
       await fetchChapter(fetchIndex.value).then((data) => sections.push(data));
       fetchIndex.value += 1;
     };
-    const created = async () => {
+    const mounted = async () => {
       comicID.value = route.params.comicID as string;
 
       if (!store.getters['book/isComicIDExists'](comicID.value)) {
@@ -116,8 +116,7 @@ export default defineComponent({
       }
     };
 
-    created();
-
+    onMounted(() => mounted());
     /* eslint-disable object-property-newline */
     return {
       height, comicID, loading, lightOn,

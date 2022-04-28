@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import {
-  inject, reactive, ref, defineComponent, computed, ComputedRef,
+  inject, reactive, ref, defineComponent, computed, ComputedRef, onMounted,
 } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -87,7 +87,7 @@ export default defineComponent({
       await fetchChapter(fetchIndex.value).then((data) => sections.push(data));
       fetchIndex.value += 1;
     };
-    const created = async () => {
+    const mounted = async () => {
       novelID.value = route.params.novelID as string;
 
       if (!store.getters['book/isNovelIDExists'](novelID.value)) {
@@ -131,8 +131,7 @@ export default defineComponent({
       }
     };
 
-    created();
-
+    onMounted(() => mounted());
     /* eslint-disable object-property-newline */
     return {
       height, novelID, loading, fontSize, lightOn, isTW,
