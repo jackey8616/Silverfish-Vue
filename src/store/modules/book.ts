@@ -38,7 +38,7 @@ type VGettersTypes = (typeof GettersTypes)[keyof typeof GettersTypes];
 export type TGetters = {
   readonly [key in VGettersTypes]: (
     /* eslint-disable-next-line max-len */
-    state: TState, getters?: GettersReturnType<TGetters, key>, rootState?: TRootState, rootGetters?: TRootGetters
+    state: TState, getters: GettersReturnType<TGetters, key>, rootState: TRootState, rootGetters: TRootGetters
   ) =>
     key extends typeof GettersTypes.isNovelIDExists ? (noveiD: string) => boolean
   : key extends typeof GettersTypes.isNovelNeedUpdate ? (novelID: string) => boolean
@@ -80,18 +80,22 @@ const MutationsType = {
   insertNovel: 'insertNovel',
   upsertNovel: 'upsertNovel',
   updateNovel: 'updateNovel',
+  removeNovelsByCondition: 'removeNovelsByCondition',
   insertComic: 'insertComic',
   upsertComic: 'upsertComic',
   updateComic: 'updateComic',
+  removeComicsByCondition: 'removeComicsByCondition',
 } as const;
 /* eslint-disable max-len */
 export type TMutations = {
   [MutationsType.insertNovel]<T extends { novelID: string; novel: Novel }>(state: TState, payload: T): void;
   [MutationsType.upsertNovel]<T extends Novel>(state: TState, payload: T): void;
   [MutationsType.updateNovel]<T extends { novelID: string; novel: Novel }>(state: TState, payload: T): void;
+  [MutationsType.removeNovelsByCondition](state: TState, payload: (each: Novel) => boolean): void;
   [MutationsType.insertComic]<T extends { comicID: string; comic: Comic }>(state: TState, payload: T): void;
   [MutationsType.upsertComic]<T extends Comic>(state: TState, payload: T): void;
   [MutationsType.updateComic]<T extends { comicID: string; comic: Comic }>(state: TState, payload: T): void;
+  [MutationsType.removeComicsByCondition](state: TState, payload: (each: Comic) => boolean): void;
 };
 /* eslint-enable max-len */
 const mutations: MutationTree<TState> & TMutations = {
@@ -111,6 +115,12 @@ const mutations: MutationTree<TState> & TMutations = {
       state.Novels[payload.novelID].lastCrawlTime = new Date(payload.novel.lastCrawlTime);
     }
   },
+  removeNovelsByCondition(state, payload) {
+    Object
+      .values(state.Novels)
+      .filter((each) => payload(each))
+      .forEach((each) => delete state.Novels[each.novelID]);
+  },
   insertComic(state, payload) {
     const { comicID, comic } = payload;
     state.Comics[comicID] = comic;
@@ -126,6 +136,12 @@ const mutations: MutationTree<TState> & TMutations = {
       state.Comics[payload.comicID].chapters = payload.comic.chapters;
       state.Comics[payload.comicID].lastCrawlTime = new Date(payload.comic.lastCrawlTime);
     }
+  },
+  removeComicsByCondition(state, payload) {
+    Object
+      .values(state.Comics)
+      .filter((each) => payload(each))
+      .forEach((each) => delete state.Comics[each.comicID]);
   },
 };
 

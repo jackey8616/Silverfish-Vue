@@ -11,7 +11,9 @@ import {
 import {
   TRootActions, TRootGetters, TRootMutations, TRootState,
 } from '@/store/index';
-import { Session, User } from '@/api/type';
+import {
+  Comic, Novel, Session, User,
+} from '@/api/type';
 
 export const moduleName = 'auth';
 type TModuleName = typeof moduleName;
@@ -88,6 +90,8 @@ const actions: ActionTree<TState, TRootState> & TActions = {
   async logout({ commit }) {
     commit('auth/logout', undefined, { root: true });
     commit('user/logout', undefined, { root: true });
+    commit('book/removeNovelsByCondition', (each: Novel) => !each.isEnable, { root: true });
+    commit('book/removeComicsByCondition', (each: Comic) => !each.isEnable, { root: true });
   },
 };
 /* eslint-enable object-curly-newline */
