@@ -2,6 +2,7 @@
 /* eslint-disable no-async-promise-executor, no-promise-executor-return */
 import { getCurrentInstance } from 'vue';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { useToast } from 'vue-toastification';
 
 import { BookInfo, Novel } from '@/api/type';
@@ -14,6 +15,8 @@ export default function () {
   const $endpointRoute = `${$endpoint}${$apiVersionRoute}`;
   const novelCli = axios.create({ baseURL: `${$endpointRoute}/novels` });
   const comicCli = axios.create({ baseURL: `${$endpointRoute}/comics` });
+  axiosRetry(novelCli, { retries: 3 });
+  axiosRetry(comicCli, { retries: 3 });
 
   function fetchNovels(session: string): Promise<Array<BookInfo>> {
     return new Promise((resolve, reject) => novelCli.get('', {
