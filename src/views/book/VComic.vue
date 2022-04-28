@@ -33,6 +33,8 @@ import {
   defineComponent, ref, reactive, inject, computed, ComputedRef, onMounted,
 } from 'vue';
 import { useRoute } from 'vue-router';
+import { useGtag } from 'vue-gtag-next';
+
 import { useStore } from '@/store';
 
 import fetchAPI from '@/api/fetch';
@@ -43,6 +45,7 @@ import ReaderNav from '@/components/reader/CReaderNav.vue';
 export default defineComponent({
   components: { ReaderNav },
   setup() {
+    const { pageview, event } = useGtag();
     const route = useRoute();
     const store = useStore();
     const { fetchComicByID, fetchComicChapter } = fetchAPI();
@@ -60,6 +63,11 @@ export default defineComponent({
 
     const fetchChapter = async (index: number): Promise<Chapter> => {
       const data = await fetchComicChapter(session.value, comicID.value, index);
+      event('read', {
+        event_category: 'comic',
+        event_label: `${comicID.value}-${comic.value.title}`,
+        value: index,
+      });
       return {
         index,
         content: data,
@@ -116,7 +124,10 @@ export default defineComponent({
       }
     };
 
-    onMounted(() => mounted());
+    onMounted(() => {
+      mounted();
+      pageview({ page_title: comic.value.title });
+    });
     /* eslint-disable object-property-newline */
     return {
       height, comicID, loading, lightOn,

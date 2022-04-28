@@ -40,6 +40,7 @@ import {
   inject, reactive, ref, defineComponent, computed, ComputedRef, onMounted,
 } from 'vue';
 import { useRoute } from 'vue-router';
+import { useGtag } from 'vue-gtag-next';
 
 import { useStore } from '@/store';
 
@@ -52,6 +53,7 @@ import ChapterSection from '@/components/reader/CChapterSection.vue';
 export default defineComponent({
   components: { ReaderNav, ChapterSection },
   setup() {
+    const { pageview, event } = useGtag();
     const route = useRoute();
     const store = useStore();
     const { fetchNovelByID, fetchNovelChapter } = fetchAPI();
@@ -71,6 +73,11 @@ export default defineComponent({
 
     const fetchChapter = async (index: number): Promise<Chapter> => {
       const data = await fetchNovelChapter(session.value, novelID.value, index);
+      event('read', {
+        event_category: 'novel',
+        event_label: `${novelID.value}-${novel.value.title}`,
+        value: index,
+      });
       return {
         index,
         title: novel.value.chapters[index].title,
@@ -131,7 +138,10 @@ export default defineComponent({
       }
     };
 
-    onMounted(() => mounted());
+    onMounted(() => {
+      mounted();
+      pageview({ page_title: novel.value.title });
+    });
     /* eslint-disable object-property-newline */
     return {
       height, novelID, loading, fontSize, lightOn, isTW,
