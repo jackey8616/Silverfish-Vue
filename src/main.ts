@@ -12,6 +12,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // vue-toastification@next
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+// VueLazyLoad
+import VueLazyLoad from 'vue3-lazyload';
 
 import App from '@/App.vue';
 import router from '@/router';
@@ -47,4 +49,5 @@ app
   .use(store, key)
   .use(router)
   .use(Toast)
+  .use(VueLazyLoad)
   .mount('#app');

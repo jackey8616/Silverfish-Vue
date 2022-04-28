@@ -3,7 +3,7 @@
     path: (entry.novelID !== undefined ? `/novel/${entry.novelID}` : `/comic/${entry.comicID}`),
   }">
     <div class="list-card">
-      <img :src="entry.coverUrl" :alt="entry.title"  referrerpolicy="no-referrer" />
+      <img v-lazy="entry.coverUrl" :alt="entry.title"  referrerpolicy="no-referrer" />
       <div class="text-info-section">
         <div style="text-align: left;">
           <h6><strong>{{ entry.title }}</strong></h6>
