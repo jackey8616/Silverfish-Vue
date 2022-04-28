@@ -26,9 +26,10 @@ export default function () {
   function authRegister(recaptchaToken: string, authData: {
     account: string; password: string;
   }): Promise<any> {
-    return new Promise((resolve, reject) => client.post('/register', {
-      data: stringify({ ...{ recaptchaToken }, ...authData }),
-    }).then((res) => {
+    return new Promise((resolve, reject) => client.post(
+      '/register',
+      stringify({ ...{ recaptchaToken }, ...authData }),
+    ).then((res) => {
       if (res.data.success === true) {
         return resolve(res.data.data);
       }
@@ -39,10 +40,11 @@ export default function () {
   function authLogin(session: string, recaptchaToken: string, authData: {
     account: string; password: string;
   }): Promise<{ session: Session; user: User }> {
-    return new Promise((resolve, reject) => client.post('/login', {
-      headers: { Authorization: session },
-      data: stringify({ ...{ recaptchaToken }, ...authData }),
-    }).then((res) => {
+    return new Promise((resolve, reject) => client.post(
+      '/login',
+      stringify({ ...{ recaptchaToken }, ...authData }),
+      { headers: { Authorization: session } },
+    ).then((res) => {
       if (res.data.success === true) {
         return resolve({
           session: res.data.data.session,

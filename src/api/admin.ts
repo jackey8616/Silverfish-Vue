@@ -29,10 +29,11 @@ export default function () {
   }
 
   function addNewNovel(session: string, targetUrl: string): Promise<any> {
-    return new Promise((resolve, reject) => novelCli.post('', {
-      headers: { Authorization: session },
-      data: stringify({ novel_url: targetUrl }),
-    }).then((res) => {
+    return new Promise((resolve, reject) => novelCli.post(
+      '',
+      stringify({ novel_url: targetUrl }),
+      { headers: { Authorization: session } },
+    ).then((res) => {
       if (res.data.success === true) {
         return resolve(res.data.data);
       }
@@ -52,10 +53,11 @@ export default function () {
   }
 
   function addNewComic(session: string, targetUrl: string): Promise<any> {
-    return new Promise((resolve, reject) => comicCli.post('', {
-      headers: { Authorization: session },
-      data: stringify({ comic_url: targetUrl }),
-    }).then((res) => {
+    return new Promise((resolve, reject) => comicCli.post(
+      '',
+      stringify({ comic_url: targetUrl }),
+      { headers: { Authorization: session } },
+    ).then((res) => {
       if (res.data.success === true) {
         return resolve(res.data.data);
       }
