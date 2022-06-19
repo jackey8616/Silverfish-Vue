@@ -3,7 +3,7 @@ const xmlBuilder = require('xmlbuilder');
 const fs = require('fs');
 
 const frontend = 'https://silverfish.cc/#/';
-const backend = 'https://silverfish-backend.clo5de.info:2087';
+const backend = 'https://silverfish-backend.clo5de.info';
 
 let doc = xmlBuilder
   .create('urlset', { version: '1.0', encoding: 'UTF-8' })
