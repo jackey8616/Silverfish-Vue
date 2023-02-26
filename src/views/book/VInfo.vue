@@ -21,7 +21,7 @@
               </a>
               &nbsp;
               <small class="btn-xs btn-color-1 intro">
-                {{ formatDate(entry.lastCrawlTime) }}
+                {{ formatDate(entry.lastCrawlTime, true) }}
               </small>
               <br>
             </div>

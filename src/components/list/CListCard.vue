@@ -24,7 +24,7 @@
         >
           <small class="btn-xm btn-color-3 intro">閱讀</small>
         </router-link><br>
-        <small class="btn-xm btn-color-1 intro">{{ formatDate(entry.lastCrawlTime) }}</small><br>
+        <small class="btn-xm btn-color-1 intro">{{ formatDate(entry.lastCrawlTime, true) }}</small><br>
       </div>
       <div class="d-md-none">
         <router-link :to="{ path: `/info/${entry.novelID !== undefined
