@@ -47,11 +47,39 @@
       </div>
       <div class="col-10 offset-1">
         <div class="row">
-          <div
-            class="col-md-3 offset-md-0 col-11 offset-1 left middle" style="padding: 3px 0;"
-            v-for="each in entry.chapters" :key="each.title"
-          >
-            {{ each.title }}
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item"
+              v-for="each, idx in chapterGroups" :key="idx"
+            >
+              <h2 class="accordion-header" :id="`heading-${idx}`">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  :data-bs-target="`#collapse-${idx}`"
+                  aria-expanded="false"
+                  :aria-controls="`collapseOne-${idx}`"
+                >
+                  {{ `${each[0].title} ~ ${each[each.length - 1].title}` }}
+                </button>
+              </h2>
+              <div
+                :id="`collapse-${idx}`"
+                class="accordion-collapse collapse"
+                :aria-labelledby="`heading-${idx}`"
+                data-bs-parent="#accordionExample"
+              >
+                <div class="accordion-body row">
+                  <div
+                    class="col-md-3 offset-md-0 col-11 offset-1 left middle"
+                    style="padding: 3px 0;"
+                    v-for="{ title } in each" :key="title"
+                  >
+                    {{ title }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -61,65 +89,97 @@
 
 <script lang="ts">
 import {
-  ref, reactive, inject, defineComponent, ComputedRef,
+  ref, watch, inject, defineComponent, ComputedRef, onMounted,
 } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import fetchAPI from '@/api/fetch';
 import utils from '@/utils';
+import { ChapterInfo, Novel } from '@/api/type';
 
 export default defineComponent({
   setup() {
-    const route = useRoute();
+    const router = useRouter();
+    const { params } = useRoute();
     const { fetchComicByID, fetchNovelByID } = fetchAPI();
-    const { formatDate, simpleFormatDate } = utils();
+    const { formatDate, simpleFormatDate, chunkArray } = utils();
     const load = ref(true);
     const type = ref('');
     const id = ref('');
-    const entry = reactive({});
+    const entry = ref<Novel>({
+      novelID: '',
+      dns: '',
+      url: '',
+      chapters: [],
+      isEnable: true,
+      title: '',
+      author: '',
+      description: '',
+      cover_url: '',
+      lastCrawlTime: new Date(0),
+    });
+    const chapterGroups = ref<Array<Array<ChapterInfo>>>([]);
     const withFootHeight = inject('withFootHeight');
     const session = inject<ComputedRef<string>>('session')!;
 
+    onMounted(async () => {
+      load.value = true;
+      const { type: routeType, id: routeId } = params;
+
+      type.value = routeType as string;
+      id.value = routeId as string;
+      switch (type.value) {
+        case 'novel':
+          entry.value = await fetchNovelByID(session.value, id.value);
+          break;
+        case 'comic':
+          entry.value = await fetchComicByID(session.value, id.value);
+          break;
+        default:
+          return router.go(-1);
+      }
+
+      load.value = false;
+      return null;
+    });
+
+    watch(
+      () => entry.value.chapters,
+      (val) => {
+        const a = chunkArray<ChapterInfo>(val, 20);
+        chapterGroups.value = a;
+        console.log(a);
+      },
+      { immediate: true, deep: true },
+    );
+
     return {
       session,
-      routeType: route.params.type,
-      routeId: route.params.id,
       withFootHeight,
       load,
       type,
       id,
       entry,
+      chapterGroups,
       fetchComicByID,
       fetchNovelByID,
       formatDate,
       simpleFormatDate,
     };
   },
-  /* eslint-disable no-param-reassign */
-  beforeRouteEnter(to: any, from: any, next: any) {
-    next(async (vm: any) => {
-      const {
-        session, routeType, routeId,
-        fetchNovelByID, fetchComicByID,
-      } = vm;
-      vm.type = routeType;
-      vm.id = routeId;
-      if (routeType === 'novel') {
-        vm.entry = await fetchNovelByID(session, routeId);
-      } else if (routeType === 'comic') {
-        vm.entry = await fetchComicByID(session, routeId);
-      } else {
-        return false;
-      }
-      vm.load = false;
-      return true;
-    });
-  },
-  /* eslint-enable no-param-reassign */
 });
 </script>
 
 <style scoped>
+  .accordion-button.collapsed {
+    color: #d3d3d3;
+    background-color: #415a6f;
+  }
+  .accordion-body {
+    margin: 0;
+    color: #d3d3d3;
+    background-color: #2c3e50;
+  }
   img {
     min-width: 98px;
     min-height: 130px;
