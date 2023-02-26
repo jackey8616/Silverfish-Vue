@@ -21,5 +21,15 @@ export default function () {
     return `${y}/${m}/${d}`;
   }
 
-  return { formatDate, simpleFormatDate };
+  function chunkArray<T>(data: Array<T>, size: number): Array<Array<T>> {
+    const arrays = [];
+
+    for (let i = 0; i < data.length; i += size) {
+      arrays.push(data.slice(i, i + size));
+    }
+
+    return arrays;
+  }
+
+  return { formatDate, simpleFormatDate, chunkArray };
 }

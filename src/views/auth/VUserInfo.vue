@@ -8,12 +8,12 @@
         </div>
         <div class="row">
           註冊時間<br>
-          <div class="col-12 right">&nbsp;{{ formatDate(registerDatetime) }}</div>
+          <div class="col-12 right">&nbsp;{{ formatDate(registerDatetime, true) }}</div>
         </div>
         <div class="row">
           上次登入時間<br>
           <div class="col-12 right">
-          &nbsp;{{ formatDate(lastLoginDatetime)}}
+          &nbsp;{{ formatDate(lastLoginDatetime, true)}}
           </div>
         </div>
         <div class="row">

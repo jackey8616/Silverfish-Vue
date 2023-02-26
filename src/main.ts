@@ -51,7 +51,7 @@ app
   .use(store, key)
   .use(router)
   .use(Toast)
-  .use(VueLazyLoad)
+  .use(VueLazyLoad, {})
   .use(VueGtag, {
     isEnabled: process.env.NODE_ENV === 'production',
     property: {
