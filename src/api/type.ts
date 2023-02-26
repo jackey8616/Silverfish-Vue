@@ -16,7 +16,7 @@ export type User = {
   };
 };
 
-type ChapterInfo = {
+export type ChapterInfo = {
   title: string;
   url: string;
 };
@@ -42,13 +42,17 @@ export type Book = BookInfo & {
   chapters: Array<ChapterInfo>;
 };
 
-export type Novel = Book & {
+export type NovelInfo = BookInfo & {
   novelID: string;
 };
 
-export type Comic = Book & {
+export type ComicInfo = BookInfo & {
   comicID: string;
 };
+
+export type Novel = NovelInfo & Book;
+
+export type Comic = ComicInfo & Book;
 
 export type Bookmark = {
   type: 'Novel' | 'Comic';

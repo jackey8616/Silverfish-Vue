@@ -20,11 +20,13 @@
               </button>
             </div>
             <div class="input-group mb-3">
-              <select class="form-control" v-model="deleteNovelID">
-                <option v-for="novel in novels" :key="novel.novelID" :value="novel.novelID">
-                  {{ `${novel.novelID} / ${novel.title} / ${novel.author}` }}
-                </option>
-              </select>
+              <label for="deleteNovelID">
+                <select class="form-control" v-model="deleteNovelID">
+                  <option v-for="novel in novels" :key="novel.novelID" :value="novel.novelID">
+                    {{ `${novel.novelID} / ${novel.title} / ${novel.author}` }}
+                  </option>
+                </select>
+              </label>
               <button
                 @click="deleteNovel" :disabled="deleteNovelID === ''"
                 class="btn-sm btn-color-1" type="button"
@@ -52,11 +54,13 @@
               </button>
             </div>
             <div class="input-group mb-3">
-              <select class="form-control" v-model="deleteComicID">
-                <option v-for="comic in comics" :key="comic.comicID" :value="comic.comicID">
-                  {{ `${comic.comicID} / ${comic.title} / ${comic.author}` }}
-                </option>
-              </select>
+              <label for="deleteComicId">
+                <select class="form-control" v-model="deleteComicID">
+                  <option v-for="comic in comics" :key="comic.comicID" :value="comic.comicID">
+                    {{ `${comic.comicID} / ${comic.title} / ${comic.author}` }}
+                  </option>
+                </select>
+              </label>
               <button
                 @click="deleteComic" :disabled="deleteComicID === ''"
                 class="btn-sm btn-color-1" type="button"
@@ -79,7 +83,7 @@ import { useToast } from 'vue-toastification';
 
 import adminAPI from '@/api/admin';
 import fetchAPI from '@/api/fetch';
-import { BookInfo } from '@/api/type';
+import { ComicInfo, NovelInfo } from '@/api/type';
 
 export default defineComponent({
   setup() {
@@ -96,8 +100,8 @@ export default defineComponent({
       novels: [],
       comics: [],
     });
-    const comics = reactive<Array<BookInfo>>([]);
-    const novels = reactive<Array<BookInfo>>([]);
+    const comics = reactive<Array<ComicInfo>>([]);
+    const novels = reactive<Array<NovelInfo>>([]);
     const addNovelUrl = ref('');
     const deleteNovelID = ref('');
     const addComicUrl = ref('');
