@@ -36,18 +36,18 @@ export type BookInfo = {
   lastCrawlTime: Date;
 };
 
-export type Book = BookInfo & {
-  dns: string;
-  url: string;
-  chapters: Array<ChapterInfo>;
+export type ComicInfo = BookInfo & {
+  comicID: string;
 };
 
 export type NovelInfo = BookInfo & {
   novelID: string;
 };
 
-export type ComicInfo = BookInfo & {
-  comicID: string;
+export type Book = BookInfo & {
+  dns: string;
+  url: string;
+  chapters: Array<ChapterInfo>;
 };
 
 export type Novel = NovelInfo & Book;
