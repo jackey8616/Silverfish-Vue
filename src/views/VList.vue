@@ -31,11 +31,10 @@ import { useStore } from '@/store';
 import { Novel, Comic } from '@/api/type';
 import fetchAPI from '@/api/fetch';
 
-import ListCard from '@/components/list/CListCard.vue';
 import CardCarousel from '@/components/CCardCarousel.vue';
 
 export default defineComponent({
-  components: { ListCard, CardCarousel },
+  components: { CardCarousel },
   setup() {
     const route = useRoute();
     const store = useStore();

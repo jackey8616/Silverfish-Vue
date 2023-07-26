@@ -9,11 +9,11 @@
         </div>
       </div>
     </div>
-    <a class="carousel-control-prev" role="button" @click="prev">
+    <a class="carousel-control-prev" role="button" tabindex=0 @click="prev" @keydown="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
-    <a class="carousel-control-next" role="button" @click="next">
+    <a class="carousel-control-next" role="button" tabindex=0 @click="next" @keydown="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
