@@ -4,7 +4,7 @@
   }">
     <div class="list-card">
       <img v-lazy="entry.coverUrl" :alt="entry.title"  referrerpolicy="no-referrer" />
-      <div class="text-info-section">
+      <div class="text-info-section d-none d-lg-block">
         <div style="text-align: left;">
           <h6><strong>{{ entry.title }}</strong></h6>
         </div>

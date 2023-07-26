@@ -4,30 +4,7 @@
       <h1>Novels</h1>
       <!--div style="display: flex; justify-content: center;"><loading :size="150"/></div-->
       <div v-if="novels.length !== 0" class="row">
-        <div class="col-6 col-md-3">
-          <list-card
-            v-for="novel in novels.filter((item, index) => index % 4 == 0)"
-            :key="novel.novelID" :entry="novel"
-          ></list-card>
-        </div>
-        <div class="col-6 col-md-3">
-          <list-card
-            v-for="novel in novels.filter((item, index) => index % 4 == 1)"
-            :key="novel.novelID" :entry="novel"
-          ></list-card>
-        </div>
-        <div class="col-6 col-md-3">
-          <list-card
-            v-for="novel in novels.filter((item, index) => index % 4 == 2)"
-            :key="novel.novelID" :entry="novel"
-          ></list-card>
-        </div>
-        <div class="col-6 col-md-3">
-          <list-card
-            v-for="novel in novels.filter((item, index) => index % 4 == 3)"
-            :key="novel.novelID" :entry="novel"
-          ></list-card>
-        </div>
+        <card-carousel :list="novels"></card-carousel>
       </div>
       <div v-else>
         <center><loading :size="150"/></center>
@@ -35,30 +12,7 @@
       <hr>
       <h1>Comics</h1>
       <div v-if="comics.length !== 0" class="row">
-        <div class="col-6 col-md-3">
-          <list-card
-            v-for="comic in comics.filter((item, index) => index % 4 == 0)"
-            :key="comic.comicID" :entry="comic">
-          </list-card>
-        </div>
-        <div class="col-6 col-md-3">
-          <list-card
-            v-for="comic in comics.filter((item, index) => index % 4 == 1)"
-            :key="comic.comicID" :entry="comic">
-          </list-card>
-        </div>
-        <div class="col-6 col-md-3">
-          <list-card
-            v-for="comic in comics.filter((item, index) => index % 4 == 2)"
-            :key="comic.comicID" :entry="comic"
-          ></list-card>
-        </div>
-        <div class="col-6 col-md-3">
-          <list-card
-            v-for="comic in comics.filter((item, index) => index % 4 == 3)"
-            :key="comic.comicID" :entry="comic"
-          ></list-card>
-        </div>
+        <card-carousel :list="comics"></card-carousel>
       </div>
       <div v-else>
         <center><loading :size="150"/></center>
@@ -78,9 +32,10 @@ import { Novel, Comic } from '@/api/type';
 import fetchAPI from '@/api/fetch';
 
 import ListCard from '@/components/list/CListCard.vue';
+import CardCarousel from '@/components/CCardCarousel.vue';
 
 export default defineComponent({
-  components: { ListCard },
+  components: { ListCard, CardCarousel },
   setup() {
     const route = useRoute();
     const store = useStore();
