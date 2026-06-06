@@ -40,7 +40,7 @@
                 @verify="onRecaptchaVerfiy"
                 @expired="onRecaptchaExpired"
                 :loadRecaptchaScript="true"
-                sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"/>
+                sitekey="6LdLwQ8tAAAAAD48Pqp_OXbHyFLB0pg3tmiTXQul"/>
             <div v-if="load === false">
               <div class="row justify-content-around">
                 <div class="col-2" style="text-align: left;">

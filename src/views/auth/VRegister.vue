@@ -47,7 +47,7 @@
               @verify="onRecaptchaVerfiy"
               @expired="onRecaptchaExpired"
               :loadRecaptchaScript="true"
-              sitekey="6LdgzKYUAAAAAG8KH1AHc_Xjj7yVcAYXZFj7PsPH"></vue-recaptcha>
+              sitekey="6LdLwQ8tAAAAAD48Pqp_OXbHyFLB0pg3tmiTXQul"></vue-recaptcha>
               <div class="row">
                 <div class="col-10 offset-1">
                   <div v-if="load == false" style="text-align: left;">
